@@ -1,0 +1,15 @@
+!!! xml
+!!!
+
+%html
+  %head
+    %title Foo
+  %body
+    %h1 Bar
+    %ul
+      - env.each do |k,v|
+        %li
+          %strong
+            = k
+          = ':'
+          = v
