@@ -5,7 +5,7 @@ require 'rack/builder'
 require 'orange/magick'
 require 'orange/parser'
 require 'orange/router'
-require 'orange/context'
+require 'orange/package'
 
 module Orange
   class Core
@@ -17,9 +17,9 @@ module Orange
     end
 
     def call(env)
-      context = Context.new(orange, env)
-      content = orange[:router].route(context)
-      headers = context[:headers].with_defaults({'Content-Type' => 'text/html'})
+      package = Package.new(orange, env)
+      content = orange[:router].route(package)
+      headers = package[:headers].with_defaults({'Content-Type' => 'text/html'})
       [200, headers, content ]
     end
     

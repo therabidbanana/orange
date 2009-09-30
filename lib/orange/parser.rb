@@ -10,12 +10,12 @@ module Orange
       out = YAML::load(string)
     end
     
-    def haml(file, *vars)
+    def haml(file, package, *vars)
       opts = vars.extract_options!
       opts.merge :orange => orange
       string = File.read(file)
       haml_engine = Haml::Engine.new(string)
-      out = haml_engine.render(self, opts)
+      out = haml_engine.render(package, opts)
     end
     
   end
