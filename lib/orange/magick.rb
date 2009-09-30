@@ -5,13 +5,13 @@ class ::Array
   end
 end
 
-# Monkey Patch for merging defaults into a hash with better name.
+# Monkey Patch for merging defaults into a hash 
 class ::Hash
   def with_defaults(defaults)
-    self.reverse_merge(defaults)
+    self.merge(defaults){ |key, old, new| old.nil? ? new : old } 
   end
   def with_defaults!(defaults)
-    self.reverse_merge!(defaults)
+    self.merge!(defaults){ |key, old, new| old.nil? ? new : old } 
   end
 end
 

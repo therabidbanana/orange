@@ -14,14 +14,13 @@ module Orange
       @resources = {}
       load(Parser.new, :parser)
       load(Router.new, :router)
-      load(Context.new, :context)
     end
 
     def call(env)
-      
-      reroute = orange[:router].route(env)
-      r = orange[:parser].haml('index.haml', :env => env)
-      [200, { 'Content-Type' => 'text/html' }, r ]
+      context = Context.new(orange, env)
+      content = orange[:router].route(context)
+      headers = context[:headers].with_defaults({'Content-Type' => 'text/html'})
+      [200, headers, content ]
     end
     
     # Takes an instance of a Orange::Resource subclass, sets orange
