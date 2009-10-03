@@ -5,11 +5,15 @@
   %head
     %title Foo
   %body
-    %h1 Bar
+    %h1= "#{request.request_method}: #{request.path}"
+    %h2 replace_with_self
+    %p
+      %banana
+      %banana
     %ul
-      - response[:env].each do |k,v|
+      - packet[:env].each do |k,v|
         %li
           %strong
             = k
           = ':'
-          = v
+          &= v
