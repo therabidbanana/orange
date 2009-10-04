@@ -3,12 +3,11 @@
 
 %html
   %head
-    %title Foo
+    %title 404 Not Found
   %body
     %h1= "#{request.request_method}: #{request.path}"
-    %h2 replace_with_self
+    %h2 The file you were looking for cannot be found
     %p
-      %banana
       %banana
     %ul
       - packet[:env].each do |k,v|

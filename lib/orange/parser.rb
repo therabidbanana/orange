@@ -19,8 +19,8 @@ module Orange
       out = haml_engine.render(packet, opts)
     end
     
-    def hpricot(html)
-      Hpricot(html)
+    def hpricot(text)
+      Hpricot(text)
     end
   end 
 end

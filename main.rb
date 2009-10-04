@@ -13,6 +13,7 @@ class Tester < Orange::Resource
       appendHa(packet)
     end
   end
+  
   def appendHa(packet)
     packet.html do |html|
       (html / "li strong" ).append('ha!')

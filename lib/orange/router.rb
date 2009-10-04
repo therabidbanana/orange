@@ -1,5 +1,6 @@
 module Orange
   class Router < Resource
+    # Takes a packet and routes it. 
     def route(packet)
       # Path parts minus the initial empty string at the front
       path_parts = packet.request.path.split('/')
@@ -63,7 +64,8 @@ module Orange
   
   class NotFoundHandler < RoutableResource
     def route(path, packet = false)
-      
+      packet[:content] = orange[:parser].haml('index.haml', packet)
+      packet[:status] = 404
     end
   end
 end

@@ -1,4 +1,5 @@
 module Orange
+  # Orange Resource for being subclassed
   class Resource
     def initialize(*args, &block)
       @options = Options.new(args, &block).hash
