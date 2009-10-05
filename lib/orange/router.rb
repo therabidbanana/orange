@@ -1,13 +1,14 @@
 module Orange
   class Router < Resource
-    # Takes a packet and routes it. 
+    # Takes a packet extracts request information, then calls packet.route
     def route(packet)
       # Path parts minus the initial empty string at the front
       path_parts = packet.request.path.split('/')
       path_parts.shift
       
       # Extract potential context, if any
-      context = path_parts[0].to_sym
+      context = path_parts[0].respond_to?(:to_sym) ? 
+        path_parts[0].to_sym : :context_not_found
       if(orange.options[:contexts].include?(context))
         packet[:context] = path_parts.shift.to_sym
       else
@@ -15,7 +16,8 @@ module Orange
       end
       
       # Extract potential resource
-      resource = path_parts[0].to_sym
+      resource = path_parts[0].respond_to?(:to_sym) ? 
+        path_parts[0].to_sym : :resource_not_found
       if(orange[resource] && orange[resource].routable)
         packet[:path_resource] = path_parts.shift.to_sym
       else
@@ -64,7 +66,7 @@ module Orange
   
   class NotFoundHandler < RoutableResource
     def route(path, packet = false)
-      packet[:content] = orange[:parser].haml('index.haml', packet)
+      packet[:content] = orange[:parser].haml('404.haml', packet)
       packet[:status] = 404
     end
   end

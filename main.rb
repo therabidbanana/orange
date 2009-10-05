@@ -16,7 +16,7 @@ class Tester < Orange::Resource
   
   def appendHa(packet)
     packet.html do |html|
-      (html / "li strong" ).append('ha!')
+      # (html / "li strong" ).append('foo')
       (html / "banana").each do |item|
         item.swap("<a href='http://www.google.com'>Awesome</a>")
       end

@@ -33,7 +33,7 @@ module Orange
       @events = {}
       load(Parser.new, :parser)
       if @options[:custom_router]
-        load(@options[:custom_router], :router)
+        load(@options[:custom_router], :orange_router)
       else
         load(Router.new)
       end

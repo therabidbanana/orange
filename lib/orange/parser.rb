@@ -14,7 +14,13 @@ module Orange
     def haml(file, packet, *vars)
       opts = vars.extract_options!
       opts.merge :orange => orange
-      string = File.read(file)
+      if File.exists?(file)
+        string = File.read(file)
+      elsif File.exists?($ORANGE_VIEW + file)
+        string = File.read($ORANGE_VIEW + file)
+      else 
+        raise LoadError, "Couldn't find haml file '#{file}'"
+      end
       haml_engine = Haml::Engine.new(string)
       out = haml_engine.render(packet, opts)
     end
@@ -23,4 +29,5 @@ module Orange
       Hpricot(text)
     end
   end 
+  
 end
