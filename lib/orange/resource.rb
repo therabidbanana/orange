@@ -24,9 +24,8 @@ module Orange
       false
     end
     
-    # Float missing methods back up to core
-    # def method_missing(name, *args)
-    #   @orange.__send__(name, *args)
-    # end
+    def view(type = :none)
+      ''
+    end
   end
 end

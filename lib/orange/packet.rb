@@ -65,7 +65,7 @@ module Orange
     
     def route
       resource = packet[:path_resource]
-      orange[resource].route(:resource_path, packet)
+      orange[resource].route(packet[:resource_path], packet)
     end
     
     def reroute(url, type = :real)

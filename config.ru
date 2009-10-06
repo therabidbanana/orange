@@ -10,7 +10,9 @@ use Rack::Static, :urls => ["/assets", "/favicon.ico"]
 
 use Rack::AbstractFormat
 
-run Main.new
+run Main.new do 
+  no_database true
+end
 
 # From commandline - 
 # rackup config.rb -s mongrel -p 4321

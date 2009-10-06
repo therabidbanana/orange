@@ -1,4 +1,6 @@
 # This is the class that acts as the Rack responder
+require 'rubygems'
+require 'dm-core'
 
 require 'rack'
 require 'rack/builder'
@@ -6,15 +8,17 @@ require 'orange/magick'
 require 'orange/parser'
 require 'orange/router'
 require 'orange/packet'
-
+require 'orange/carton'
+require 'orange/model_resource'
 module Orange
   class Core
     # Sets the default options for Orange Applications
     DEFAULT_CORE_OPTIONS = 
       {
-        :contexts => [:live, :admin],
+        :contexts => [:live, :admin, :orange],
         :default_context => :live,
-        :default_resource => :not_found
+        :default_resource => :not_found,
+        :default_database => 'sqlite3::memory:'
       }
     
     # Args will be set to the @options array. 
@@ -37,6 +41,10 @@ module Orange
       else
         load(Router.new)
       end
+      unless @options[:no_database]
+        db = @options[:database] || @options[:default_database]
+        DataMapper.setup(:default, db)
+      end
       load(NotFoundHandler.new, :not_found)
       afterLoad
     end
@@ -50,8 +58,13 @@ module Orange
     # returns a tuple of [status, headers, content]
     def call(env)
       packet = Packet.new(orange, env)
-      orange[:orange_router].route(packet)
-      orange.fire(:enroute, packet)
+      begin
+        orange.fire(:before_route, packet)
+        packet.route
+        orange.fire(:enroute, packet)
+      rescue Orange::Reroute => e
+        packet[:content] = ''
+      end
       packet.finish
     end
     
