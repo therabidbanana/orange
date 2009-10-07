@@ -4,7 +4,9 @@ module Orange::Middleware
   # trimmed before continuing on.
   class RouteContext
     def initialize(app, *args)
-      opts = args.extract_options!.with_defaults(:contexts => [:live, :admin, :orange], :default => :live)
+      opts = args.extract_options!
+      opts.with_defaults!(:contexts => [:live, :admin, :orange], 
+                          :default => :live)
       @app = app
       @contexts = opts[:contexts]
       @default = opts[:default]
@@ -18,7 +20,6 @@ module Orange::Middleware
         env['orange.env'][:context] = @default
       else
         if(@contexts.include?(path.first.to_sym))
-          puts path.first + " !!! "
           env['orange.env'][:context] = path.shift.to_sym
           path.unshift(pad)
           request.path_info = path.join('/')
