@@ -25,12 +25,14 @@ module Orange::Middleware
       request = Rack::Request.new(env)
       path = request.path_info.split('/')
       pad = path.shift # Shift off empty first part
+      env['orange.env'][:faked_site_url] = false
       if @multi
         if path.empty?
           env['orange.env'][:site_url] = request.host
         else
           if @fake_it.include?(request.host)
             env['orange.env'][:site_url] = path.shift
+            env['orange.env'][:faked_site_url] = true
           else
             env['orange.env'][:site_url] = request.host
           end
