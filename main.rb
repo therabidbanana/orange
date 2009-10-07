@@ -2,6 +2,7 @@ require 'rubygems'
 
 require 'lib/orange'
 
+
 class Main < Orange::Core
   
   def afterLoad
@@ -12,17 +13,16 @@ end
 
 class Tester < Orange::Resource
   def afterLoad
-    orange.register(:enroute) do |packet|
-      appendHa(packet)
-    end
+    # orange.register(:enroute, 100) do |packet|
+    #   appendHah(packet)
+    # end
   end
   
-  def appendHa(packet)
+  def appendHah(packet)
     # packet.html do |html|
-    #   # (html / "li strong" ).append('foo')
-    #   (html / "banana").each do |item|
+    #   (html / "banana").each { |item|
     #     item.swap("<a href='http://www.google.com'>Awesome</a>")
-    #   end
+    #   }
     # end
   end
 end
@@ -37,12 +37,22 @@ class Page < Orange::Carton
   admin do
     text :admin_only
   end
-  as_resource
+  orange do
+    text :other_admin
+  end
 end
 
-DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/orangerb.sqlite3")
-Page.auto_migrate!
+class Page_Resource < Orange::ModelResource
+  use Page
+  def afterLoad
+    orange.register(:view_admin) do |packet|
+      packet.admin_sidebar_link("Content", :text => "Pages", :link => packet.route_to(@my_orange_name, 'list'))
+    end
+  end
+end
 
+Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
+# Page.auto_migrate!
 
 # 
 # class Orange_Page < Orange::ModelResource

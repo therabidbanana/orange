@@ -14,9 +14,14 @@ module Orange
     
     def haml(file, packet, *vars)
       opts = vars.extract_options!
-      resource = opts[:resource].downcase || false
+      temp = opts.delete(:template)
+      resource = (opts[:resource] || '').downcase
       opts.merge :orange => orange
-      if File.exists?('views/'+resource+'/'+file) && resource
+      if temp && File.exists?('templates/'+file)
+        string = File.read('templates/'+file)
+      elsif temp && File.exists?($ORANGE_PATH + 'templates/' + file)
+        string = File.read($ORANGE_PATH + 'templates/' + file)
+      elsif File.exists?('views/'+resource+'/'+file) && resource
         string = File.read('views/'+resource+'/'+file)
       elsif File.exists?('views/'+file)
         string = File.read('views/'+file)

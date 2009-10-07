@@ -1,0 +1,26 @@
+!!! xml
+!!!
+%html
+  %head
+    %title= part[:title, 'Orange Site']
+    = part[:css]
+    = part[:js]
+  %body
+    #body
+      .header
+        ORANGE
+      .container
+        #inner-body
+          .sidebar
+            - part[:admin_sidebar, {}].each do |k, section|
+              .sidebar_section
+                %h3= k
+                %ul
+                  - for link in section
+                    %li
+                      %a{:href => link[:href], :style => "background-image: url(#{link[:icon]})"}= link[:text]
+          .main
+            = wrapped_content
+      .footer
+        Design stolen from Wildflower CMS
+        %banana

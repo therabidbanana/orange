@@ -1,7 +1,10 @@
+require 'orange/resource'
+
 module Orange
   class Router < Resource
     # Takes a packet extracts request information, then calls packet.route
     def afterLoad
+      orange.mixin Packet_Router
       orange.register(:before_route, 99) do |packet|
         # Path parts minus the initial empty string at the front
         path_parts = packet.request.path.split('/')
@@ -28,6 +31,53 @@ module Orange
         remaining = path_parts.join('/')
         packet[:resource_path] = remaining
       end
+      orange.register(:enroute, 99) do |packet|
+        temp = template(packet)
+        if(temp)
+          packet.wrap_in(temp)
+        end
+      end
+    end
+    
+    def template(packet)
+      if packet[:context] == :admin
+        packet.add_css('admin.css')
+        packet.add_js('admin.js')
+        orange.fire(:view_admin, packet)
+        return 'admin.haml'
+      else 
+        return false
+      end
+    end
+    
+    def route_to(packet, resource, *args)
+      context = packet[:context, nil]
+      site = packet[:site_url, nil]
+      args.unshift(resource)
+      args.unshift(context)
+      args.unshift(site)
+      '/'+args.compact.join('/')
+    end
+  end
+  
+  module Packet_Router
+    def route
+      resource = packet[:path_resource]
+      orange[resource].route(packet[:resource_path], packet)
+    end
+    
+    def route_to(resource, *args)
+      orange[:orange_router].route_to(self, resource, *args)
+    end
+    
+    def reroute(url, type = :real)
+      packet[:reroute_to] = url
+      packet[:reroute_type] = type
+      raise Reroute.new(self), 'Unhandled reroute'
+    end
+    
+    def wrap_in(template)
+      packet[:content] = orange[:parser].haml('admin.haml', packet, :wrapped_content => packet[:content], :template => true)
     end
   end
   
@@ -43,6 +93,8 @@ module Orange
       when :real
         packet[:reroute_to]
       # Parsing for orange urls or something
+      when :orange
+        packet.route_to(packet[:reroute_to])
       end
     end
     

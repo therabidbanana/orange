@@ -4,13 +4,14 @@ require 'dm-core'
 
 require 'rack'
 require 'rack/builder'
-require 'orange/magick'
-require 'orange/parser'
-require 'orange/router'
-require 'orange/packet'
-require 'orange/carton'
-require 'orange/model_resource'
+Dir.glob(File.join($ORANGE_PATH, '*.rb')).each {|f| require f }
+Dir.glob(File.join($ORANGE_PATH, 'middleware/*.rb')).each {|f| require f }
+
 module Orange
+  def self.load_db!(url)
+    DataMapper.setup(:default, url)
+    DataMapper.auto_upgrade!
+  end
   class Core
     # Sets the default options for Orange Applications
     DEFAULT_CORE_OPTIONS = 
@@ -44,6 +45,7 @@ module Orange
       unless @options[:no_database]
         db = @options[:database] || @options[:default_database]
         DataMapper.setup(:default, db)
+        DataMapper.auto_migrate!
       end
       load(NotFoundHandler.new, :not_found)
       afterLoad
@@ -59,6 +61,8 @@ module Orange
     def call(env)
       packet = Packet.new(orange, env)
       begin
+        
+        Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
         orange.fire(:before_route, packet)
         packet.route
         orange.fire(:enroute, packet)
@@ -110,5 +114,8 @@ module Orange
       @resources[name]
     end
     
+    def mixin(inc)
+      Packet.mixin inc
+    end
   end
 end

@@ -11,29 +11,30 @@ module Orange
       @orange = orange
       @response = {}
       @response[:env] = env
-      @response[:request] = Rack::Request.new(env)
-      @response[:headers] = {}
+      @response[:env]['orange.env'] = {}
+      @response[:env]['orange.env'][:request] = Rack::Request.new(env)
+      @response[:env]['orange.env'][:headers] = {}
     end
     
     def [](key, default = false)
-      @response[key] || default
+      @response[:env]['orange.env'][key] || default
     end
     
     def []=(key, val)
-      @response[key] = val
+      @response[:env]['orange.env'][key] = val
     end
     
     def headers
-      @response[:headers].with_defaults(DEFAULT_HEADERS)
+      packet[:headers].with_defaults(DEFAULT_HEADERS)
     end
     
     def content
-      return [@response[:content]] if @response[:content]
+      return [packet[:content]] if packet[:content]
       return []
     end
     
     def request
-      @response[:request]
+      packet[:request]
     end
     
     def html(&block)
@@ -63,15 +64,44 @@ module Orange
       self
     end
     
-    def route
-      resource = packet[:path_resource]
-      orange[resource].route(packet[:resource_path], packet)
+    def part
+      packet[:page_parts] = Page_Parts.new unless packet[:page_parts]
+      packet[:page_parts]
     end
     
-    def reroute(url, type = :real)
-      @response[:reroute_to] = url
-      @response[:reroute_type] = type
-      raise Reroute.new(self), 'Unhandled reroute'
+    def admin_sidebar_link(section, *args)
+      args = args.extract_options!.with_defaults(:position => 0)
+      sidebar = part[:admin_sidebar, {}]
+      sidebar[section] = [] unless sidebar[section]
+      sidebar[section].insert(args[:position], {:href => args[:link], :text => args[:text]})
+      part[:admin_sidebar] = sidebar
+    end
+    
+    def add_css(file, ie = false)
+      file = '/assets/css/' + file
+      if ie
+        part[:ie_css] = part[:ie_css] + "<link rel=\"stylesheet\" href=\"#{file}\" type=\"text/css\" media=\"screen\" charset=\"utf-8\" />"
+      else 
+        part[:css] = part[:css] + "<link rel=\"stylesheet\" href=\"#{file}\" type=\"text/css\" media=\"screen\" charset=\"utf-8\" />"
+      end
+    end
+    def add_js(file, ie = false)
+      file = '/assets/js/' + file
+      if ie
+        part[:ie_js] = part[:ie_js] + "<script src=\"#{file}\" type=\"text/javascript\"></script>"
+      else 
+        part[:js] = part[:js] + "<script src=\"#{file}\" type=\"text/javascript\"></script>"
+      end
+    end
+    
+    def self.mixin(inc)
+      include inc
+    end
+  end
+  
+  class Page_Parts < ::Hash
+    def [](key, default = '')
+      super(key) || default
     end
   end
 end
