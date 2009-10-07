@@ -46,7 +46,7 @@ class Page_Resource < Orange::ModelResource
   use Page
   def afterLoad
     orange.register(:view_admin) do |packet|
-      packet.admin_sidebar_link("Content", :text => "Pages", :link => packet.route_to(@my_orange_name, 'list'))
+      packet.admin_sidebar_link("CONTENT", :text => "Pages", :link => packet.route_to(@my_orange_name, 'list'))
     end
   end
 end

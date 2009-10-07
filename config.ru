@@ -1,5 +1,5 @@
 require 'main'
-
+require 'lib/orange'
 require 'rack/abstract_format'
 
 use Rack::CommonLogger
@@ -10,8 +10,10 @@ use Rack::Session::Cookie, :secret => 'orange_secret'
 use Rack::Static, :urls => ["/assets", "/favicon.ico"]
 
 use Rack::AbstractFormat
+use Orange::Middleware::RouteContext
 
-use Orange::Middleware::Reloader
+# Always use right before final app.
+use Orange::Middleware::Reloader 
 run Main.new do
   no_database true
 end

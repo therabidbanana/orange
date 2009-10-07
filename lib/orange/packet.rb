@@ -9,19 +9,18 @@ module Orange
     
     def initialize(orange, env)
       @orange = orange
-      @response = {}
-      @response[:env] = env
-      @response[:env]['orange.env'] = {}
-      @response[:env]['orange.env'][:request] = Rack::Request.new(env)
-      @response[:env]['orange.env'][:headers] = {}
+      @env = env
+      @env['orange.env'] = {} unless @env['orange.env']
+      @env['orange.env'][:request] = Rack::Request.new(env)
+      @env['orange.env'][:headers] = {}
     end
     
     def [](key, default = false)
-      @response[:env]['orange.env'][key] || default
+      @env['orange.env'][key] || default
     end
     
     def []=(key, val)
-      @response[:env]['orange.env'][key] = val
+      @env['orange.env'][key] = val
     end
     
     def headers
