@@ -21,6 +21,9 @@ module Orange
         :default_resource => :not_found,
         :default_database => 'sqlite3::memory:'
       }
+      
+    def self.static_url;      "/assets/_orange_";     end
+    def self.static_dir;      $ORANGE_ASSETS;         end
     
     # Args will be set to the @options array. 
     # Block DSL style option setting also available:

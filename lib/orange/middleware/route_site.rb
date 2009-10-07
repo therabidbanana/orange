@@ -12,7 +12,7 @@ module Orange::Middleware
   class RouteSite
     def initialize(app, *args)
       opts = args.extract_options!
-      opts.with_defaults!(:multi => false, :fake_it => [false])
+      opts.with_defaults!(:multi => false, :fake_it => ['localhost'])
       @app = app
       @multi = opts[:multi]
       # Put fake_it into an array, if necessary

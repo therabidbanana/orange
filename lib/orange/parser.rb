@@ -19,16 +19,16 @@ module Orange
       opts.merge :orange => orange
       if temp && File.exists?('templates/'+file)
         string = File.read('templates/'+file)
-      elsif temp && File.exists?($ORANGE_PATH + 'templates/' + file)
-        string = File.read($ORANGE_PATH + 'templates/' + file)
+      elsif temp && File.exists?($ORANGE_PATH + '/templates/' + file)
+        string = File.read($ORANGE_PATH + '/templates/' + file)
       elsif File.exists?('views/'+resource+'/'+file) && resource
         string = File.read('views/'+resource+'/'+file)
       elsif File.exists?('views/'+file)
         string = File.read('views/'+file)
-      elsif File.exists?($ORANGE_VIEW + file)
-        string = File.read($ORANGE_VIEW + file)
-      elsif File.exists?($ORANGE_VIEW + 'default_resource/'+file)
-        string = File.read($ORANGE_VIEW+ 'default_resource/'+ file)
+      elsif File.exists?($ORANGE_VIEWS + "/" + file)
+        string = File.read($ORANGE_VIEWS + "/" + file)
+      elsif File.exists?($ORANGE_VIEWS + '/default_resource/'+file)
+        string = File.read($ORANGE_VIEWS+ '/default_resource/'+ file)
       else 
         raise LoadError, "Couldn't find haml file '#{file}'"
       end

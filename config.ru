@@ -7,9 +7,10 @@ use Orange::Middleware::ShowExceptions
 use Rack::Reloader
 use Rack::MethodOverride
 use Rack::Session::Cookie, :secret => 'orange_secret'
-use Rack::Static, :urls => ["/assets", "/favicon.ico"]
+use Orange::Middleware::Static
 
 use Rack::AbstractFormat
+use Orange::Middleware::RouteSite, :multi => false
 use Orange::Middleware::RouteContext
 
 # Always use right before final app.
