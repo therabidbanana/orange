@@ -39,7 +39,7 @@ module Orange::Middleware
         end
       else
         env['orange.env'][:site_url] = request.host
-      ends
+      end
       @app.call(env)
     end
   end
