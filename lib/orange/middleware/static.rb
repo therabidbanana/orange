@@ -6,13 +6,15 @@ module Orange::Middleware
   #
   # This differs from Rack::Static in that it can serve from multiple roots
   # to accommodate both Orange static files and site specific ones.
+  # urls and root act the same as they do for Rack::Static. Only :libs option acts
+  # specially.
   # 
   # Each lib is responsible for responding to static_url and static_dir
   # 
   # Examples:
   #           use Orange::Middleware::Static  :libs => [Orange::Core, AwesomeMod]
   #           use Orange::Middleware::Static  :libs => [Orange::Core, AwesomeMod],
-  #                                           :urls => {"/favicon.ico" => Dir.pwd + '/assets'}
+  #                                           :urls => ["/favicon.ico"]
   #
   #         => Example 1 would load a file root for Orange::Core and Awesome Mod
   #             Orange::Core static_url is _orange_, and dir is the
@@ -30,29 +32,34 @@ module Orange::Middleware
   class Static
 
     def initialize(app, options={})
+      
       @app = app
       @libs = options[:libs] || [Orange::Core]
       
-      @urls = options[:urls] || {"/favicon.ico" => nil, "/assets/public" => nil}
+      @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
+      @root = options[:root] || ::File.join(Dir.pwd, 'assets')
+      @lib_urls = {}
       @libs.each do |lib| 
-        @urls.merge!(File.join('', 'assets', lib.static_url) => lib.static_dir)
+        @lib_urls.merge!(::File.join('', 'assets', lib.static_url) => lib.static_dir)
       end
-      @file_servers = {}
-      @urls.each do |k, v|
-        v = File.join(Dir.pwd, 'assets') unless v
-        @file_servers.merge!(k => Rack::File.new(v))
-      end
+
+      @file_server = Orange::Middleware::File.new(@root)
     end
 
     def call(env)
       path = env["PATH_INFO"]
-      can_serve = @file_servers.select { |url, server| path.index(url) == 0 }.first
-      # Extract url 
-      url = can_serve ? can_serve.first : false
+      env['orange.env'] = {} unless env['orange.env']
+      can_serve_lib = @lib_urls.select{ |url, server| path.index(url) == 0 }.first
+      can_serve = @urls.any?{|url| path.index(url) == 0 }
       
-      if can_serve
-        env["PATH_INFO"] = path.split(url, 2).last
-        can_serve.last.call(env)
+      if can_serve_lib
+        lib_url = can_serve_lib.first
+        env['orange.env']['file.root'] = can_serve_lib.last
+        env['orange.env']['route.path'] = path.split(lib_url, 2).last        
+        @file_server.call(env)
+      elsif can_serve
+        env['orange.env']['route.path'] = path
+        @file_server.call(env)
       else
         @app.call(env)
       end

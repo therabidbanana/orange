@@ -9,7 +9,7 @@ module Orange
     
     def view(packet, *args)
       opts = args.extract_options!.with_defaults({:mode => :show, :path => ''})
-      props = @@model_class.form_props(packet[:context])
+      props = @@model_class.form_props(packet['route.context'])
       
       resource_id = opts[:id] || packet[:resource_id] || false      
       

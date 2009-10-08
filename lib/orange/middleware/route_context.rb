@@ -17,14 +17,14 @@ module Orange::Middleware
       path = request.path_info.split('/')
       pad = path.shift # Shift off empty first part
       if path.empty?
-        env['orange.env'][:context] = @default
+        env['orange.env']['route.context'] = @default
       else
         if(@contexts.include?(path.first.to_sym))
-          env['orange.env'][:context] = path.shift.to_sym
+          env['orange.env']['route.context'] = path.shift.to_sym
           path.unshift(pad)
           request.path_info = path.join('/')
         else
-          env['orange.env'][:context] = @default
+          env['orange.env']['route.context'] = @default
         end
       end
       @app.call(env)

@@ -31,7 +31,7 @@ module Orange
     end
     
     def template(packet)
-      if packet[:context] == :admin
+      if packet['route.context'] == :admin
         packet.add_css('admin.css', :module => '_orange_')
         packet.add_js('admin.js', :module => '_orange_')
         orange.fire(:view_admin, packet)
@@ -42,7 +42,7 @@ module Orange
     end
     
     def route_to(packet, resource, *args)
-      context = packet[:context, nil]
+      context = packet['route.context', nil]
       site = packet[:faked_site_url] ? packet[:site_url, nil] : nil
       args.unshift(resource)
       args.unshift(context)
