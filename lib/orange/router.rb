@@ -7,7 +7,8 @@ module Orange
       orange.mixin Packet_Router
       orange.register(:before_route, 99) do |packet|
         # Path parts minus the initial empty string at the front
-        path_parts = packet.request.path.split('/')
+        path = packet['route.path'] || packet.request.path
+        path_parts = path.split('/')
         path_parts.shift
 
         # Extract potential resource
