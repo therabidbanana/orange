@@ -78,9 +78,9 @@ module Orange
     
     def add_css(file, opts = {})
       ie = opts[:ie] || false
-      mod = opts[:module] || '_orange_'
+      mod = opts[:module] || 'public'
         # module set to false gives the root assets dir
-      assets = (mod ? File.join('assets', mod) : 'assets')
+      assets = File.join('assets', mod)
       file = File.join('', assets, 'css', file)
       if ie
         part[:ie_css] = part[:ie_css] + "<link rel=\"stylesheet\" href=\"#{file}\" type=\"text/css\" media=\"screen\" charset=\"utf-8\" />"
@@ -90,8 +90,8 @@ module Orange
     end
     def add_js(file, opts = {})
       ie = opts[:ie] || false
-      mod = opts[:module] || '_orange_'
-      assets = (mod ? File.join('assets', mod) : 'assets')
+      mod = opts[:module] || 'public'
+      assets = File.join('assets', mod)
       file = File.join('', assets, 'js', file)
       if ie
         part[:ie_js] = part[:ie_js] + "<script src=\"#{file}\" type=\"text/javascript\"></script>"

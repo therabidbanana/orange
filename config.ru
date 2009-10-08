@@ -13,7 +13,7 @@ use Rack::AbstractFormat
 use Orange::Middleware::RouteSite, :multi => false
 use Orange::Middleware::RouteContext
 
-# Always use right before final app.
+# Always use reloader right before final app - useless otherwise
 use Orange::Middleware::Reloader 
 run Main.new do
   no_database true

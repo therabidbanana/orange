@@ -23,6 +23,8 @@ module Orange::Middleware
   # Note that as a general rule, Orange will assume everything static to be in an
   # /assets/ subfolder, therefore, '/assets' will be prepended to the url given
   # by static_url
+  # Also note, that since this is the case - setting up a match for general '/assets'
+  # could yield unpredictable results
   #
   # a static_url corresponds to the :module => in the add_css and add_js helpers
   class Static
@@ -31,7 +33,7 @@ module Orange::Middleware
       @app = app
       @libs = options[:libs] || [Orange::Core]
       
-      @urls = options[:urls] || {"/favicon.ico" => nil, "/assets" => nil}
+      @urls = options[:urls] || {"/favicon.ico" => nil, "/assets/public" => nil}
       @libs.each do |lib| 
         @urls.merge!(File.join('', 'assets', lib.static_url) => lib.static_dir)
       end
