@@ -15,12 +15,16 @@ module Orange::Middleware
   #                                           :urls => {"/favicon.ico" => Dir.pwd + '/assets'}
   #
   #         => Example 1 would load a file root for Orange::Core and Awesome Mod
-  #             Orange::Core static_url is /assets/_orange_/, and dir is the
+  #             Orange::Core static_url is _orange_, and dir is the
   #             orange lib/assets folder
   #         => Example 2 would also redirect favicon.ico to the assets dir
   #
+  # 
   # Note that as a general rule, Orange will assume everything static to be in an
-  # /assets/ subfolder, so custom libs should stick urls in there.
+  # /assets/ subfolder, therefore, '/assets' will be prepended to the url given
+  # by static_url
+  #
+  # a static_url corresponds to the :module => in the add_css and add_js helpers
   class Static
 
     def initialize(app, options={})
@@ -29,7 +33,7 @@ module Orange::Middleware
       
       @urls = options[:urls] || {"/favicon.ico" => nil, "/assets" => nil}
       @libs.each do |lib| 
-        @urls.merge!(lib.static_url => lib.static_dir)
+        @urls.merge!(File.join('', 'assets', lib.static_url) => lib.static_dir)
       end
       @file_servers = {}
       @urls.each do |k, v|
