@@ -1,7 +1,5 @@
 require 'rubygems'
-
 require 'lib/orange'
-
 
 class Main 
   def initialize(app = false)
@@ -14,7 +12,16 @@ class Main
   end
   
   def call(env)
-    raise 'Error'
+    raise 'Banana'
+  end
+  
+  def self.app
+    require 'stack'
+    Orange::Stack.new &@app
+  end
+  
+  def self.stack(&block)
+    @app = Proc::new
   end
 end
 

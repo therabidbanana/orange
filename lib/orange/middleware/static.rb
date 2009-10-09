@@ -1,3 +1,5 @@
+require 'orange/middleware/base'
+
 module Orange::Middleware
 
   # The Orange::Middleware::Static middleware intercepts requests for static files
@@ -29,11 +31,12 @@ module Orange::Middleware
   # could yield unpredictable results
   #
   # a static_url corresponds to the :module => in the add_css and add_js helpers
-  class Static
+  class Static < Base
 
-    def initialize(app, options={})
+    def initialize(app, core, options={})
       
       @app = app
+      @core = core
       @libs = options[:libs] || [Orange::Core]
       
       @urls = options[:urls] || ["/favicon.ico", "/assets/public"]

@@ -65,10 +65,8 @@ module Orange
       @resources[name] = resource.set_orange(self, name)
     end
     
-    # Returns self for consistent naming
-    def orange
-      self
-    end
+    # Convenience self for consistent naming across middleware
+    def orange;     self;     end
     
     # Registers a callback
     def register(event, position = 0, &block)
@@ -102,10 +100,6 @@ module Orange
     
     def mixin(inc)
       Packet.mixin inc
-    end
-    
-    def inspect
-      self.to_s
     end
   end
 end

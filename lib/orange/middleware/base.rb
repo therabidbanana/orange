@@ -26,5 +26,7 @@ module Orange::Middleware
     
     def packet_call(packet)
     end
+    
+    def orange;     @core;    end
   end
 end

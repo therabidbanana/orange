@@ -1,7 +1,6 @@
-require 'time'
 require 'rubygems'
+require 'rack'
 require 'rack/utils'
-require 'rack/mime'
 
 module Orange::Middleware
   # Rack::File serves files below the +root+ given, according to the
