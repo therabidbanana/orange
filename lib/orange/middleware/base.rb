@@ -10,13 +10,13 @@ require 'orange/packet'
 # a basic call
 module Orange::Middleware
   class Base
-    def initialize(app, core)
+    def initialize(app, core, *args)
       @app = app
       @core = core
-      init
+      init(*args)
     end
     
-    def init
+    def init(*args)
     end
     
     def call(env)
@@ -25,6 +25,11 @@ module Orange::Middleware
     end
     
     def packet_call(packet)
+      pass packet
+    end
+    
+    def pass(packet)
+      @app.call(packet.env)
     end
     
     def orange;     @core;    end

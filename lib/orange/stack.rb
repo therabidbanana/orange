@@ -36,6 +36,9 @@ module Orange
     def run(app)
       @build.run(app)
     end
+    def orange
+      @core
+    end
 
     def map(path, &block)
       @build.map(path, &block)

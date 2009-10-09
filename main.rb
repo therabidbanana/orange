@@ -2,8 +2,8 @@ require 'rubygems'
 require 'lib/orange'
 
 class Main 
-  def initialize(app = false)
-    @app = app
+  def initialize(core = false)
+    @core = core
   end
   
   def afterLoad
@@ -12,7 +12,10 @@ class Main
   end
   
   def call(env)
-    raise 'Banana'
+    packet = Orange::Packet.new(@core, env)
+    # packet.route
+    # packet.finish
+    [200, {"Content-Type" => 'text/plain'}, ["Test"]]
   end
   
   def self.app
@@ -21,7 +24,7 @@ class Main
   end
   
   def self.stack(&block)
-    @app = Proc::new
+    @app = Proc.new
   end
 end
 

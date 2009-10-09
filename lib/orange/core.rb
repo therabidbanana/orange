@@ -58,6 +58,10 @@ module Orange
       true
     end
     
+    def loaded?(resource_name)
+      @resources.has_key?(resource_name)
+    end
+    
     # Takes an instance of a Orange::Resource subclass, sets orange
     # then adds it to the orange resources
     def load(resource, name = false)
