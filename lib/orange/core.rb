@@ -1,4 +1,3 @@
-# This is the class that acts as the Rack responder
 require 'rubygems'
 require 'dm-core'
 
@@ -35,8 +34,7 @@ module Orange
     #   end
     #
     #   orange.options[:site_name] #=> "Banana"
-    def initialize(app = false, *args, &block)
-      @app = app
+    def initialize(*args, &block)
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
       @events = {}
@@ -58,27 +56,6 @@ module Orange
     
     def afterLoad
       true
-    end
-    
-    # Responds to the Rack interface. Routes the packet with the
-    # configured router, fires the routed event, then 
-    # returns a tuple of [status, headers, content]
-    def call(env)
-      env['orange.core'] ||= self
-      packet = Packet.new(orange, env)
-      env['orange.packet'] ||= packet
-      # begin
-      #   
-      #   Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
-      #   orange.fire(:before_route, packet)
-      #   packet.route
-      #   orange.fire(:enroute, packet)
-      # rescue Orange::Reroute => e
-      #   packet[:content] = ''
-      # end
-      # packet.finish
-      puts @app
-      @app.call(env)
     end
     
     # Takes an instance of a Orange::Resource subclass, sets orange
