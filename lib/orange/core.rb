@@ -4,8 +4,8 @@ require 'dm-core'
 
 require 'rack'
 require 'rack/builder'
-Dir.glob(File.join($ORANGE_PATH, '*.rb')).each {|f| require f }
-Dir.glob(File.join($ORANGE_PATH, 'middleware/*.rb')).each {|f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), '*.rb')).each {|f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), 'middleware', '*.rb')).each {|f| require f }
 
 module Orange
   def self.load_db!(url)
@@ -35,7 +35,8 @@ module Orange
     #   end
     #
     #   orange.options[:site_name] #=> "Banana"
-    def initialize(*args, &block)
+    def initialize(app = false, *args, &block)
+      @app = app
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
       @events = {}
@@ -52,6 +53,7 @@ module Orange
       end
       load(NotFoundHandler.new, :not_found)
       afterLoad
+      self
     end
     
     def afterLoad
@@ -62,17 +64,21 @@ module Orange
     # configured router, fires the routed event, then 
     # returns a tuple of [status, headers, content]
     def call(env)
+      env['orange.core'] ||= self
       packet = Packet.new(orange, env)
-      begin
-        
-        Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
-        orange.fire(:before_route, packet)
-        packet.route
-        orange.fire(:enroute, packet)
-      rescue Orange::Reroute => e
-        packet[:content] = ''
-      end
-      packet.finish
+      env['orange.packet'] ||= packet
+      # begin
+      #   
+      #   Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
+      #   orange.fire(:before_route, packet)
+      #   packet.route
+      #   orange.fire(:enroute, packet)
+      # rescue Orange::Reroute => e
+      #   packet[:content] = ''
+      # end
+      # packet.finish
+      puts @app
+      @app.call(env)
     end
     
     # Takes an instance of a Orange::Resource subclass, sets orange
@@ -119,6 +125,10 @@ module Orange
     
     def mixin(inc)
       Packet.mixin inc
+    end
+    
+    def inspect
+      self.to_s
     end
   end
 end

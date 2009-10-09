@@ -3,11 +3,18 @@ require 'rubygems'
 require 'lib/orange'
 
 
-class Main < Orange::Core
+class Main 
+  def initialize(app = false)
+    @app = app
+  end
   
   def afterLoad
     load(Tester.new)
     load(Page_Resource.new, :pages)
+  end
+  
+  def call(env)
+    raise 'Error'
   end
 end
 

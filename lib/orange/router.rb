@@ -44,7 +44,7 @@ module Orange
     
     def route_to(packet, resource, *args)
       context = packet['route.context', nil]
-      site = packet[:faked_site_url] ? packet[:site_url, nil] : nil
+      site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil
       args.unshift(resource)
       args.unshift(context)
       args.unshift(site)

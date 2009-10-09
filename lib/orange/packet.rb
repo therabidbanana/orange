@@ -7,9 +7,15 @@ module Orange
   class Packet
     DEFAULT_HEADERS = {"Content-Type" => 'text/html'}
     
+    def self.new(orange, env)
+      return env['orange.packet'] if env['orange.packet']
+      super(orange, env)
+    end
+    
     def initialize(orange, env)
       @orange = orange
       @env = env
+      @env['orange.packet'] = self
       @env['orange.env'] = {} unless @env['orange.env']
       @env['orange.env'][:request] = Rack::Request.new(env)
       @env['orange.env'][:headers] = {}
@@ -21,6 +27,10 @@ module Orange
     
     def []=(key, val)
       @env['orange.env'][key] = val
+    end
+    
+    def env
+      @env
     end
     
     def headers
