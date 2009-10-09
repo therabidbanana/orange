@@ -10,16 +10,13 @@ use Rack::CommonLogger
 use Orange::Middleware::ShowExceptions
 use Rack::Reloader
 use Rack::MethodOverride
-# use Rack::Session::Cookie, :secret => 'orange_secret'
+use Rack::Session::Cookie, :secret => 'orange_secret'
 use Orange::Middleware::Static
 
 use Rack::AbstractFormat
-app= Orange::Stack.new do
+app = Orange::Stack.new do
   use Orange::Middleware::RouteSite, :multi => false
   use Orange::Middleware::RouteContext
-  
-  # Always use reloader right before final app - useless otherwise
-  # use Orange::Middleware::Reloader 
   
   run Main.new
 end

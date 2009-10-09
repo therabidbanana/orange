@@ -113,6 +113,7 @@ module Orange
     def self.mixin(inc)
       include inc
     end
+    
   end
   
   class Page_Parts < ::Hash
