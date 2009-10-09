@@ -16,26 +16,30 @@ module Orange::Middleware
         parts = path.split('/')
         pad = parts.shift
         if !parts.empty?
-          resource = parts.shift.to_sym
-          if orange.loaded?(resource)
-            packet['route.resource'] = resource
+          resource = parts.shift
+          if orange.loaded?(resource.to_sym)
+            packet['route.resource'] = resource.to_sym
             if !parts.empty?
               second = parts.shift
               if second =~ /^\d+$/
                 packet['route.resource_id'] = second
                 if !parts.empty?
-                  packet['route.resource_slice'] = parts.shift.to_sym
+                  packet['route.resource_action'] = parts.shift.to_sym
                 end
               else
-                packet['route.resource_slice'] = second.to_sym
-              end
-            end
-          end
-        end
-      end
-      packet['route.resource'] ||= @root_resource
-      packet['route.resource_path'] = parts.unshift(pad).join('/')
-      packet['route.router'] = self
+                packet['route.resource_action'] = second.to_sym
+              end 
+            end # end check for second part
+          else
+            parts.unshift(resource)
+          end # end check for loaded resource
+        end # end check for nonempty route
+        
+        packet['route.resource'] ||= @root_resource
+        packet['route.resource_path'] = parts.unshift(pad).join('/')
+        packet['route.router'] = self
+      end # End context match if
+      
       pass packet
     end
   end

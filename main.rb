@@ -7,15 +7,14 @@ class Main
   end
   
   def afterLoad
-    load(Tester.new)
-    load(Page_Resource.new, :pages)
   end
   
   def call(env)
     packet = Orange::Packet.new(@core, env)
     # packet.route
     # packet.finish
-    [200, {"Content-Type" => 'text/plain'}, ["Test"]]
+    # raise 'lol'
+    [200, {"Content-Type" => 'text/html'}, ["Test"]]
   end
   
   def self.app

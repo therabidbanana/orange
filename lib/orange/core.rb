@@ -3,6 +3,16 @@ require 'dm-core'
 
 require 'rack'
 require 'rack/builder'
+
+module Orange
+end
+
+module Orange::Pulp
+end
+
+module Orange::Mixins
+end
+
 Dir.glob(File.join(File.dirname(__FILE__), '*.rb')).each {|f| require f }
 Dir.glob(File.join(File.dirname(__FILE__), 'middleware', '*.rb')).each {|f| require f }
 
@@ -20,9 +30,6 @@ module Orange
         :default_resource => :not_found,
         :default_database => 'sqlite3::memory:'
       }
-      
-    def self.static_url;      "_orange_";             end
-    def self.static_dir;      $ORANGE_ASSETS;         end
     
     # Args will be set to the @options array. 
     # Block DSL style option setting also available:
@@ -38,12 +45,9 @@ module Orange
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
       @events = {}
+      @statics = {}
+      add_static('_orange_', File.join(File.dirname(__FILE__), 'assets'))
       load(Parser.new, :parser)
-      if @options[:custom_router]
-        load(@options[:custom_router], :orange_router)
-      else
-        load(Router.new)
-      end
       unless @options[:no_database]
         db = @options[:database] || @options[:default_database]
         DataMapper.setup(:default, db)
@@ -97,12 +101,25 @@ module Orange
       @options
     end
     
+    def add_static(lib_name, path)
+      key = File.join('', 'assets', lib_name)
+      @statics.merge!(key => path)
+    end
+    
+    def statics
+      @statics
+    end
+    
     # Accesses resources array
     def [](name)
       @resources[name]
     end
     
-    def mixin(inc)
+    def self.mixin(inc)
+      include inc
+    end
+    
+    def add_pulp(inc)
       Packet.mixin inc
     end
   end

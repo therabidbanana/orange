@@ -25,8 +25,12 @@ module Orange
       @build.use(middleware, *args, &block)
     end
     
+    def load(*args)
+      @core.load(*args)
+    end
+    
     def stack(middleware, *args, &block)
-      @build.use(middleware, args.unshift(@core), &block)
+      @build.use(middleware, @core, *args, &block)
     end
     
     def auto_reload!(val = true)

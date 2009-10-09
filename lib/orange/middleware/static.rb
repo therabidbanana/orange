@@ -1,7 +1,6 @@
 require 'orange/middleware/base'
 
 module Orange::Middleware
-
   # The Orange::Middleware::Static middleware intercepts requests for static files
   # (javascript files, images, stylesheets, etc) based on the url prefixes
   # passed in the options, and serves them using a Rack::File object. 
@@ -41,30 +40,26 @@ module Orange::Middleware
       
       @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
       @root = options[:root] || ::File.join(Dir.pwd, 'assets')
-      @lib_urls = {}
-      @libs.each do |lib| 
-        @lib_urls.merge!(::File.join('', 'assets', lib.static_url) => lib.static_dir)
-      end
+      @lib_urls = core.statics
 
       @file_server = Orange::Middleware::File.new(@root)
     end
 
-    def call(env)
-      path = env["PATH_INFO"]
-      env['orange.env'] = {} unless env['orange.env']
+    def packet_call(packet)
+      path = packet.env["PATH_INFO"]
       can_serve_lib = @lib_urls.select{ |url, server| path.index(url) == 0 }.first
       can_serve = @urls.any?{|url| path.index(url) == 0 }
       
       if can_serve_lib
         lib_url = can_serve_lib.first
-        env['orange.env']['file.root'] = can_serve_lib.last
-        env['orange.env']['route.path'] = path.split(lib_url, 2).last        
-        @file_server.call(env)
+        packet['file.root'] = can_serve_lib.last
+        packet['route.path'] = path.split(lib_url, 2).last        
+        @file_server.call(packet.env)
       elsif can_serve
-        env['orange.env']['route.path'] = path
-        @file_server.call(env)
+        packet['route.path'] = path
+        @file_server.call(packet.env)
       else
-        @app.call(env)
+        pass packet
       end
     end
 

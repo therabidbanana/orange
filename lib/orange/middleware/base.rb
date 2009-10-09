@@ -33,5 +33,9 @@ module Orange::Middleware
     end
     
     def orange;     @core;    end
+    
+    def inspect
+      self.to_s
+    end
   end
 end
