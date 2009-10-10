@@ -1,5 +1,7 @@
 Main.stack do
   auto_reload!
+  
+  stack Orange::Middleware::ShowExceptions
   stack Orange::Middleware::Static
   stack Orange::Middleware::RouteSite, :multi => false
   stack Orange::Middleware::RouteContext
