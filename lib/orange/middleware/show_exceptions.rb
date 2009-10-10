@@ -62,7 +62,7 @@ module Orange::Middleware
       env["rack.errors"].puts exception.backtrace.map { |l| "\t" + l }
       env["rack.errors"].flush
       orange_env = env["orange.env"]
-      parse = orange[:parser].haml("exceptions.haml", binding, :wrapped_content => '', :template => true)
+      parse = orange[:parser].haml("exceptions.haml", binding, :template => true)
       [parse]
     end
 
