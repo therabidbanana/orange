@@ -1,8 +1,8 @@
+require 'orange/core'
 require 'orange/middleware/base'
 
 module Orange::Middleware
   class Template < Base
-    
     def init(*args)
       @core.add_pulp(Orange::Pulp::Template)
       @core.class.mixin(Orange::Mixins::Template) 

@@ -86,7 +86,7 @@ TEMPLATE = <<'HTML'
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="robots" content="NONE,NOARCHIVE" />
-  <title><%=h exception.class %> at <%=h path %></title>
+  <title>Orange rasied <%=h exception.class %> at <%=h path %></title>
   <style type="text/css">
     html * { padding:0; margin:0; }
     body * { padding:10px 20px; }
@@ -123,7 +123,7 @@ TEMPLATE = <<'HTML'
     div.context ol.context-line li span { float: right; }
     div.commands { margin-left: 40px; }
     div.commands a { color:black; text-decoration:none; }
-    #summary { background: #ffc; }
+    #summary { background: #fda; }
     #summary h2 { font-weight: normal; color: #666; }
     #summary ul#quicklinks { list-style-type: none; margin-bottom: 2em; }
     #summary ul#quicklinks li { float: left; padding: 0 1em; }

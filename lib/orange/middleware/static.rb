@@ -1,4 +1,5 @@
 require 'orange/middleware/base'
+require 'orange/middleware/file'
 
 module Orange::Middleware
   # The Orange::Middleware::Static middleware intercepts requests for static files

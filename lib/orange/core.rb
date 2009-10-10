@@ -5,18 +5,17 @@ require 'rack'
 require 'rack/builder'
 
 module Orange
-end
-
-module Orange::Pulp
-end
-
-module Orange::Mixins
-end
-
-Dir.glob(File.join(File.dirname(__FILE__), '*.rb')).each {|f| require f }
-Dir.glob(File.join(File.dirname(__FILE__), 'middleware', '*.rb')).each {|f| require f }
-
-module Orange
+  module Pulp; end
+  module Mixins; end
+  
+  def self.mixin(inc)
+    Core.mixin inc
+  end
+  
+  def self.pulp(inc)
+    Packet.mixin inc
+  end
+  
   def self.load_db!(url)
     DataMapper.setup(:default, url)
     DataMapper.auto_upgrade!
