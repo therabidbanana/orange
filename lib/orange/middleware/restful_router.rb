@@ -8,9 +8,14 @@ module Orange::Middleware
       @root_resource = opts[:root_resource]
     end
     
+    # sets resource, resource_id, resource_action and resource_path
+    # /resource/id/action/[resource/path/if/any]
+    # /resource/action/[resource/path/if/any]
+    # 
+    # In future - support for nested resources
     def packet_call(packet)
-      pass packet if packet['route.router'] # Don't route if other middleware
-                                            # already has
+      return (pass packet) if packet['route.router']  # Don't route if other middleware
+                                                      # already has
       if(@contexts.include?(packet['route.context']))
         path = packet['route.path'] || packet.request.path_info
         parts = path.split('/')
