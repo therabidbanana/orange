@@ -1,19 +1,16 @@
 Main.stack do
   auto_reload!
-  
-  stack Orange::Middleware::ShowExceptions
-  stack Orange::Middleware::Static
-  stack Orange::Middleware::RouteSite, :multi => false
-  stack Orange::Middleware::RouteContext
+  use_exceptions
+  stack Orange::Middleware::Globals
+  prerouting :multi => false
   use Rack::AbstractFormat
   
   stack Orange::Middleware::Template
   
   stack Orange::Middleware::RestfulRouter, :contexts => [:admin]
-  
+  stack Orange::Middleware::Database
   load Tester.new
   load Page_Resource.new, :pages
   
-  stack Orange::Middleware::Recapture
   run Main.new(orange)
 end

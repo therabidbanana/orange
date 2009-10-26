@@ -1,3 +1,5 @@
+require 'orange/middleware/base'
+
 module Orange::Middleware
   # This middleware handles setting orange.env['route.site_url'] 
   # to a value based on the route, if any. The route is then 

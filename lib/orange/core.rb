@@ -20,6 +20,7 @@ module Orange
     DataMapper.setup(:default, url)
     DataMapper.auto_upgrade!
   end
+  
   class Core
     # Sets the default options for Orange Applications
     DEFAULT_CORE_OPTIONS = 
@@ -47,11 +48,6 @@ module Orange
       @statics = {}
       add_static('_orange_', File.join(File.dirname(__FILE__), 'assets'))
       load(Parser.new, :parser)
-      unless @options[:no_database]
-        db = @options[:database] || @options[:default_database]
-        DataMapper.setup(:default, db)
-        DataMapper.auto_migrate!
-      end
       load(NotFoundHandler.new, :not_found)
       afterLoad
       self

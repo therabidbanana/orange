@@ -11,8 +11,8 @@ class Main
   
   def call(env)
     packet = Orange::Packet.new(@core, env)
-    # packet.route
-    # packet.finish
+    packet.route
+    return packet.finish
     raise 'lol'
     [200, {"Content-Type" => 'text/html'}, ["Test"]]
   end
@@ -67,7 +67,7 @@ class Page_Resource < Orange::ModelResource
   end
 end
 
-Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
+# Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
 # Page.auto_migrate!
 
 # 
