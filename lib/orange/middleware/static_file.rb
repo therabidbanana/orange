@@ -11,7 +11,7 @@ module Orange::Middleware
   # Handlers can detect if bodies are a Rack::File, and use mechanisms
   # like sendfile on the +path+.
 
-  class File < Rack::File
+  class StaticFile < Rack::File
     def _call(env)
       @path_info = Rack::Utils.unescape(env['orange.env']["route.path"]) || Rack::Utils.unescape(env["PATH_INFO"])
       @root = env['orange.env']['file.root'] || @root

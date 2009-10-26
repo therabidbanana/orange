@@ -1,5 +1,5 @@
 require 'orange/middleware/base'
-require 'orange/middleware/file'
+require 'orange/middleware/static_file'
 
 module Orange::Middleware
   # The Orange::Middleware::Static middleware intercepts requests for static files
@@ -34,16 +34,17 @@ module Orange::Middleware
   class Static < Base
 
     def initialize(app, core, options={})
-      
+      core.mixin Orange::Mixins::Static
+      core.add_static('_orange_', File.join(File.dirname(core.file), 'assets'))
       @app = app
       @core = core
       @libs = options[:libs] || [Orange::Core]
       
       @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
-      @root = options[:root] || ::File.join(Dir.pwd, 'assets')
+      @root = options[:root] || File.join(Dir.pwd, 'assets')
       @lib_urls = core.statics
 
-      @file_server = Orange::Middleware::File.new(@root)
+      @file_server = Orange::Middleware::StaticFile.new(@root)
     end
 
     def packet_call(packet)
@@ -64,5 +65,17 @@ module Orange::Middleware
       end
     end
 
+  end
+end
+
+module Orange::Mixins::Static
+  def add_static(lib_name, path)
+    @statics ||= {}
+    key = File.join('', 'assets', lib_name)
+    @statics.merge!(key => path)
+  end
+  
+  def statics
+    @statics || {}
   end
 end

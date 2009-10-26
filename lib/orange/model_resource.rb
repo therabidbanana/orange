@@ -8,28 +8,28 @@ module Orange
     end
     
     def view(packet, *args)
-      opts = args.extract_options!.with_defaults({:mode => :show, :path => ''})
+      opts = args.extract_options!.with_defaults({:path => ''})
       props = @@model_class.form_props(packet['route.context'])
-      
-      resource_id = opts[:id] || packet[:resource_id] || false      
+      mode = opts[:mode] || packet['route.resource_action'] || :show
+      resource_id = opts[:id] || packet['route.resource_id'] || false      
       
       haml_opts = {:props => props, :resource => self.class.to_s, :model_name => @my_orange_name}.merge!(opts)
       
-      case opts[:mode]
+      case mode
       when :show
-        haml_opts.with_defaults! :model => findOne(packet, opts[:mode], resource_id)
+        haml_opts.with_defaults! :model => findOne(packet, mode, resource_id)
         orange[:parser].haml('show.haml', packet, haml_opts)
       when :edit
-        haml_opts.with_defaults! :model => findOne(packet, opts[:mode], resource_id)
+        haml_opts.with_defaults! :model => findOne(packet, mode, resource_id)
         orange[:parser].haml('edit.haml', packet, haml_opts)
       when :create
-        haml_opts.with_defaults! :model => findOne(packet, opts[:mode], resource_id)
+        haml_opts.with_defaults! :model => findOne(packet, mode, resource_id)
         orange[:parser].haml('create.haml', packet, haml_opts)
       when :table_row
-        haml_opts.with_defaults! :model => findOne(packet, opts[:mode], resource_id)
+        haml_opts.with_defaults! :model => findOne(packet, mode, resource_id)
         orange[:parser].haml('table_row.haml', packet, haml_opts)
       when :list
-        haml_opts.with_defaults! :list => findList(packet, opts[:mode])
+        haml_opts.with_defaults! :list => findList(packet, mode)
         orange[:parser].haml('list.haml', packet, haml_opts)
       else
         'other'

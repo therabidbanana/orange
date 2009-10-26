@@ -34,7 +34,7 @@ module Orange
     end
     
     def headers
-      packet[:headers].with_defaults(DEFAULT_HEADERS)
+      packet[:headers, {}].with_defaults(DEFAULT_HEADERS)
     end
     
     def content
@@ -114,6 +114,11 @@ module Orange
       include inc
     end
     
+    def route
+      router = packet['route.router']
+      raise 'Router not found' unless router
+      router.route(self)
+    end
   end
   
   class Page_Parts < ::Hash

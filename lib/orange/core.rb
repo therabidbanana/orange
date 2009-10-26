@@ -45,12 +45,15 @@ module Orange
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
       @events = {}
-      @statics = {}
-      add_static('_orange_', File.join(File.dirname(__FILE__), 'assets'))
+      @file = __FILE__
       load(Parser.new, :parser)
       load(NotFoundHandler.new, :not_found)
       afterLoad
       self
+    end
+    
+    def file
+      @file
     end
     
     def afterLoad
@@ -96,25 +99,24 @@ module Orange
       @options
     end
     
-    def add_static(lib_name, path)
-      key = File.join('', 'assets', lib_name)
-      @statics.merge!(key => path)
-    end
-    
-    def statics
-      @statics
-    end
     
     # Accesses resources array
     def [](name)
       @resources[name]
     end
     
+    def add_pulp(inc)
+      self.class.add_pulp inc
+    end
+    
+    def mixin(inc)
+      self.class.mixin inc
+    end
+    
     def self.mixin(inc)
       include inc
     end
-    
-    def add_pulp(inc)
+    def self.add_pulp(inc)
       Packet.mixin inc
     end
   end
