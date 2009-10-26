@@ -6,7 +6,7 @@ module Orange::Middleware
   # Rack::File serves files below the +root+ given, according to the
   # path info of the Rack request.
   # Orange::Middleware::File acts the same as Rack::File, but acts on
-  # the orange specific path if available.
+  # the orange specific path if available. (So site url would be ignored, etc.)
   #
   # Handlers can detect if bodies are a Rack::File, and use mechanisms
   # like sendfile on the +path+.
