@@ -11,7 +11,10 @@ class Main
   
   def call(env)
     packet = Orange::Packet.new(@core, env)
-    packet.route
+    begin
+      packet.route
+    rescue Orange::Reroute
+    end
     return packet.finish
     raise 'lol'
     [200, {"Content-Type" => 'text/html'}, ["Test"]]
@@ -19,11 +22,11 @@ class Main
   
   def self.app
     require 'stack'
-    Orange::Stack.new &@app
+    Orange::Stack.new &@app   # turn saved proc into a block arg
   end
   
   def self.stack(&block)
-    @app = Proc.new
+    @app = Proc.new           # pulls in the block and makes it a proc
   end
 end
 

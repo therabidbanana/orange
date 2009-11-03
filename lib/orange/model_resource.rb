@@ -10,8 +10,9 @@ module Orange
     def view(packet, *args)
       opts = args.extract_options!.with_defaults({:path => ''})
       props = @@model_class.form_props(packet['route.context'])
-      mode = opts[:mode] || packet['route.resource_action'] || :show
-      resource_id = opts[:id] || packet['route.resource_id'] || false      
+      resource_id = opts[:id] || packet['route.resource_id'] || false
+      mode = opts[:mode] || packet['route.resource_action'] || 
+        (resource_id ? :show : :list)  
       
       haml_opts = {:props => props, :resource => self.class.to_s, :model_name => @my_orange_name}.merge!(opts)
       
@@ -32,7 +33,7 @@ module Orange
         haml_opts.with_defaults! :list => findList(packet, mode)
         orange[:parser].haml('list.haml', packet, haml_opts)
       else
-        'other'
+        self.__send__(mode, packet, haml_opts)
       end
     end
     
@@ -58,58 +59,59 @@ module Orange
       end
       parts.unshift('show') if parts.empty? && route_id
       new_path = parts.join('/')
-      packet[:resource_id] = route_id if route_id
+      packet['route.resource_id'] = route_id if route_id
       super(new_path, packet)
     end
     
-    def new(path, packet)
+    def new(packet, *opts)
       if packet.request.post?
         @@model_class.new(packet.request.params[@my_orange_name.to_s]).save
       end
       packet.reroute(@my_orange_name, :orange)
     end
     
-    def delete(path, packet)
+    def delete(packet, *opts)
       if packet.request.post?
-        m = @@model_class.get(packet[:resource_id])
+        m = @@model_class.get(packet['route.resource_id'])
         m.destroy! if m
       end
       packet.reroute(@my_orange_name, :orange)
     end
     
-    def save(path, packet)
+    def save(packet, *opts)
       if packet.request.post?
-        m = @@model_class.get(packet[:resource_id])
+        m = @@model_class.get(packet['route.resource_id'])
         if m
           m.update(packet.request.params[@my_orange_name.to_s])
+        else 
         end
       end
       packet.reroute(@my_orange_name, :orange)
     end
     
     
-    def show(path, packet)
-      view(packet, :path => path, :mode => :show)
+    def show(packet, *opts)
+      view(packet, :mode => :show, *opts)
     end
     
-    def edit(path, packet)
-      view(packet, :path => path, :mode => :edit)
+    def edit(packet, *opts)
+      view(packet, :mode => :edit, *opts)
     end
     
-    def create(path, packet)
-      view(packet, :path => path, :mode => :create)
+    def create(packet, *opts)
+      view(packet, :mode => :create, *opts)
     end
     
-    def table_row(path, packet)
-      view(packet, :path => path, :mode => :table_row)
+    def table_row(packet, *opts)
+      view(packet, :mode => :table_row, *opts)
     end
     
-    def list(path, packet)
-      view(packet, :path => path, :mode => :list)
+    def list(packet, *opts)
+      view(packet, :mode => :list, *opts)
     end
     
-    def index(path, packet)
-      view(packet, :path => path, :mode => :list)
+    def index(packet, *opts)
+      view(packet, :mode => :list, *opts)
     end
   
   end

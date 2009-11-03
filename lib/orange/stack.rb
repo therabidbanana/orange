@@ -43,7 +43,9 @@ module Orange
     def no_recapture
       @recapture = false
     end
+    
     def prerouting(*args)
+      stack Orange::Middleware::Rerouter
       stack Orange::Middleware::Static, *args
       stack Orange::Middleware::RouteSite, *args
       stack Orange::Middleware::RouteContext, *args

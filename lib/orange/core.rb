@@ -47,6 +47,7 @@ module Orange
       @events = {}
       @file = __FILE__
       load(Parser.new, :parser)
+      load(Linker.new, :linker)
       load(NotFoundHandler.new, :not_found)
       afterLoad
       self

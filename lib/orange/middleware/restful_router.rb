@@ -51,7 +51,8 @@ module Orange::Middleware
     def route(packet)
       resource = packet['route.resource']
       raise 'resource not found' unless orange.loaded? resource
-      mode = packet['route.resource_action'] || :show
+      mode = packet['route.resource_action'] || 
+        (packet['route.resource_id'] ? :show : :list)
       packet[:content] = orange[resource].view packet
     end
   end
