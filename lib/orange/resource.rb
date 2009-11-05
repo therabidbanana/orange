@@ -1,3 +1,5 @@
+require 'orange/core'
+
 module Orange
   # Orange Resource for being subclassed
   class Resource

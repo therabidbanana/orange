@@ -11,13 +11,8 @@ class Main
   
   def call(env)
     packet = Orange::Packet.new(@core, env)
-    begin
-      packet.route
-    rescue Orange::Reroute
-    end
-    return packet.finish
-    raise 'lol'
-    [200, {"Content-Type" => 'text/html'}, ["Test"]]
+    packet.route
+    packet.finish
   end
   
   def self.app

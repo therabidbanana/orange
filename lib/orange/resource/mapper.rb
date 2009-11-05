@@ -1,10 +1,10 @@
-require 'orange/resource'
+require 'orange/core'
 
 module Orange
-  class Linker < Resource
+  class Mapper < Resource
     # Takes a packet extracts request information, then calls packet.route
     def afterLoad
-      orange.add_pulp Pulp::Packet_Linker
+      orange.add_pulp Pulp::Packet_Mapper
     end
     
     def template(packet)
@@ -28,9 +28,9 @@ module Orange
     end
   end
   
-  module Pulp::Packet_Linker
+  module Pulp::Packet_Mapper
     def route_to(resource, *args)
-      orange[:linker].route_to(self, resource, *args)
+      orange[:mapper].route_to(self, resource, *args)
     end
     
     def reroute(url, type = :real)
@@ -39,6 +39,28 @@ module Orange
       raise Reroute.new(self), 'Unhandled reroute'
     end
     
+  end
+  
+  class Reroute < Exception
+    def initialize(packet)
+      @packet = packet
+      @packet[:headers] = {"Content-Type" => 'text/html', "Location" => self.url}
+      @packet[:status] = 302
+    end
+    
+    def url
+      case packet['reroute.type']
+      when :real
+        packet['reroute.to']
+      # Parsing for orange urls or something
+      when :orange
+        packet.route_to(packet['reroute.to'])
+      end
+    end
+    
+    def packet
+      @packet
+    end
   end
   
 end

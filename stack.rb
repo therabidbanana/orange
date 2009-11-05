@@ -1,13 +1,14 @@
+require 'rack/builder'
+require 'rack/abstract_format'
+
 Main.stack do
   auto_reload!
   use_exceptions
   stack Orange::Middleware::Globals
   prerouting :multi => false
-  use Rack::AbstractFormat
   
   stack Orange::Middleware::Template
-  
-  stack Orange::Middleware::RestfulRouter, :contexts => [:admin]
+  restful_routing
   stack Orange::Middleware::Database
   load Tester.new
   load Page_Resource.new, :pages

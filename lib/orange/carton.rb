@@ -22,6 +22,11 @@ module Orange
       @scaffold_properties = []
     end
     
+    # Return properties that should be shown for a given context
+    def self.form_props(context)
+      @scaffold_properties.select{|p| p[:levels].include?(context)  }
+    end
+    
     # Helper to wrap properties into admin level
     def self.admin(&block)
       @levels = [:admin, :orange]
@@ -41,11 +46,6 @@ module Orange
       @levels = [:live, :admin, :orange]
       instance_eval(&block)
       @levels = false
-    end
-    
-    # Return properties that should be shown for a given context
-    def self.form_props(context)
-      @scaffold_properties.select{|p| p[:levels].include?(context)  }
     end
     
     # Define a helper for title type database stuff

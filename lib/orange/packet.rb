@@ -1,4 +1,3 @@
-require 'orange/router'
 
 module Orange
   # By default, haml files are parsed in the context of their

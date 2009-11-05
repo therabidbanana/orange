@@ -3,8 +3,6 @@ require 'main'
 require 'lib/orange'
 require 'rubygems'
 require 'rack'
-require 'rack/builder'
-require 'rack/abstract_format'
 
 use Rack::CommonLogger
 use Rack::Reloader

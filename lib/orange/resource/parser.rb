@@ -1,4 +1,4 @@
-require 'orange/resource'
+require 'orange/core'
 require 'rubygems'
 require 'haml'
 require 'yaml'

@@ -45,10 +45,19 @@ module Orange
     end
     
     def prerouting(*args)
-      stack Orange::Middleware::Rerouter
-      stack Orange::Middleware::Static, *args
-      stack Orange::Middleware::RouteSite, *args
-      stack Orange::Middleware::RouteContext, *args
+      opts = args.extract_options!
+      stack Orange::Middleware::Rerouter, opts
+      stack Orange::Middleware::Static, opts
+      use Rack::AbstractFormat unless opts[:no_abstract_format] 
+          # Must be used before non-destructive route altering done by Orange,
+          # since all orange stuff is non-destructive
+      stack Orange::Middleware::RouteSite, opts
+      stack Orange::Middleware::RouteContext, opts
+    end
+    
+    def restful_routing(*args)
+      opts = args.extract_options!
+      stack Orange::Middleware::RestfulRouter, opts
     end
 
     def run(app)

@@ -1,4 +1,4 @@
-require 'orange/router'
+require 'orange/routable_resource'
 
 module Orange
   class ModelResource < RoutableResource

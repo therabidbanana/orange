@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'dm-core'
-
 require 'rack'
 require 'rack/builder'
 
@@ -46,9 +45,8 @@ module Orange
       @resources = {}
       @events = {}
       @file = __FILE__
-      load(Parser.new, :parser)
-      load(Linker.new, :linker)
-      load(NotFoundHandler.new, :not_found)
+      load(Orange::Parser.new, :parser)
+      load(Orange::Mapper.new, :mapper)
       afterLoad
       self
     end

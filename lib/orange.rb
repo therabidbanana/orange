@@ -7,3 +7,4 @@ $ORANGE_VIEWS = File.join($ORANGE_PATH, 'views')
 
 Dir.glob(File.join(File.dirname(__FILE__), 'orange', '*.rb')).each {|f| require f }
 Dir.glob(File.join(File.dirname(__FILE__), 'orange', 'middleware', '*.rb')).each {|f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), 'orange', 'resource', '*.rb')).each {|f| require f }
