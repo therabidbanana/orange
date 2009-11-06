@@ -15,6 +15,20 @@ class ::Hash
   end
 end
 
+# Monkey patch for awesome array -> hash conversions
+# use:
+#
+# [:x, :y, :z].inject_hash do |results, letter|
+#   results[letter] = rand(100)
+# end
+#
+# => {:x => 32, :y => 63, :z => 91}
+module Enumerable
+  def inject_hash(hash = {}) 
+    inject(hash) {|(h,item)| yield(h,item); h}
+  end 
+end
+
 # Simple class for evaluating options and allowing us to access them.
 module Orange
   class Options

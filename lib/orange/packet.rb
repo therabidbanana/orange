@@ -21,7 +21,7 @@ module Orange
     end
     
     def [](key, default = false)
-      @env['orange.env'][key] || default
+      @env['orange.env'].has_key?(key) ? @env['orange.env'][key] : default
     end
     
     def []=(key, val)
@@ -122,7 +122,7 @@ module Orange
   
   class Page_Parts < ::Hash
     def [](key, default = '')
-      super(key) || default
+      self.has_key?(key) ? super(key) : default
     end
   end
 end

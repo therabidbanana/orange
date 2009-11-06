@@ -1,28 +1,9 @@
 require 'rubygems'
 require 'lib/orange'
+require 'stack'
 
-class Main 
-  def initialize(core = false)
-    @core = core
-  end
+class Main < Orange::Application
   
-  def afterLoad
-  end
-  
-  def call(env)
-    packet = Orange::Packet.new(@core, env)
-    packet.route
-    packet.finish
-  end
-  
-  def self.app
-    require 'stack'
-    Orange::Stack.new &@app   # turn saved proc into a block arg
-  end
-  
-  def self.stack(&block)
-    @app = Proc.new           # pulls in the block and makes it a proc
-  end
 end
 
 class Tester < Orange::Resource
@@ -47,6 +28,7 @@ class Page < Orange::Carton
   front do
     title :title
     fulltext :body
+    fulltext :summary
   end
   admin do
     text :admin_only
@@ -64,11 +46,3 @@ class Page_Resource < Orange::ModelResource
     end
   end
 end
-
-# Orange::load_db!("sqlite3://#{Dir.pwd}/db/orangerb.sqlite3")
-# Page.auto_migrate!
-
-# 
-# class Orange_Page < Orange::ModelResource
-#   use Page
-# end

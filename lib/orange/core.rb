@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'dm-core'
 require 'rack'
 require 'rack/builder'

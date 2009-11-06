@@ -71,7 +71,7 @@ module Orange
     end
     
     def delete(packet, *opts)
-      if packet.request.post?
+      if packet.request.delete?
         m = @@model_class.get(packet['route.resource_id'])
         m.destroy! if m
       end
@@ -117,11 +117,13 @@ module Orange
   end
   
   class Packet
-    def form_link(text, link, confirm = false)
+    def form_link(text, link, confirm = false, *args)
+      opts = args.extract_options!
+      meth = (opts[:method]? "<input type='hidden' name='_method' value='#{opts[:method]}' />" : '')
       if confirm
-        "<form action='#{link}' method='post' class='mini' onsubmit='return confirm(\"#{confirm}\")'><button class='link_button'><a href='#'>#{text}</a></button></form>"
+        "<form action='#{link}' method='post' class='mini' onsubmit='return confirm(\"#{confirm}\")'><button class='link_button'><a href='#'>#{text}</a></button>#{meth}</form>"
       else
-        "<form action='#{link}' method='post' class='mini'><button class='link_button'><a href='#'>#{text}</a></button></form>"
+        "<form action='#{link}' method='post' class='mini'><button class='link_button'><a href='#'>#{text}</a></button>#{meth}</form>"
       end
     end
     
