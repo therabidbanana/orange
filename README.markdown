@@ -25,7 +25,7 @@ programming. Some core ideas behind Orange:
 
 Should I Use Orange?
 --------------------
-Right now, not unless you want to write half the framework yourself.
+Not right now, unless you want to write half the framework yourself.
 
 
 When it's finished, would I want to use it?
