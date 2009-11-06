@@ -18,7 +18,7 @@ The Orange application framework is intended to be a fully customizable CMS
 capable of hosting multiple sites while maintaining Sinatra-like ease of 
 programming. Some core ideas behind Orange:
 
-* Most of the time, scaffolding doesn't have to be replaced if it's smart enough
+* Scaffolding doesn't have to be replaced if it's smart enough (most of the time)
 * Put as much functionality into middleware as possible, so it can be reused
 * Give middleware a little more power so it's useful enough to handle more tasks
 
