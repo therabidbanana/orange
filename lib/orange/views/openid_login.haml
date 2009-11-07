@@ -1,0 +1,13 @@
+%html
+  %head
+    %title Woah.
+  %body
+    %h2 Wait a minute... 
+    %p You'll need to log in before you can continue. Use your OpenID.
+    - if(session['flash.error'])
+      .error= session['flash.error']
+    %form{:action => '', :method => 'POST'}
+      %input{:type => 'text', :name => 'openid_identifier'}
+      %input{:type => 'submit', :value => 'Log in'}
+
+      

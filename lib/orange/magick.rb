@@ -3,6 +3,9 @@ class ::Array
   def extract_options!
     last.is_a?(::Hash) ? pop : {}
   end
+  def extract_with_defaults(defaults)
+    extract_options!.with_defaults(defaults)
+  end
 end
 
 # Monkey Patch for merging defaults into a hash 

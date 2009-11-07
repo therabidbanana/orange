@@ -59,6 +59,15 @@ module Orange
       opts = args.extract_options!
       stack Orange::Middleware::RestfulRouter, opts
     end
+    
+    def openid_access_control(*args)
+      opts = args.extract_options!
+      require 'rack/openid'
+      require 'openid_dm_store'
+      
+      use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
+      stack Orange::Middleware::AccessControl, opts.with_defaults(:openid => true)
+    end
 
     def run(app)
       if @recapture

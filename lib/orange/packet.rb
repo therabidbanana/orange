@@ -32,8 +32,19 @@ module Orange
       @env
     end
     
+    def session
+      env['rack.session']
+    end
+    
     def headers
       packet[:headers, {}].with_defaults(DEFAULT_HEADERS)
+    end
+    def header(key, val)
+      @env['orange.env'][:headers][key] = val
+    end
+    
+    def add_header(key, val)
+      header key, val
     end
     
     def content

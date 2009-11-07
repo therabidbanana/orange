@@ -18,9 +18,13 @@ module Orange::Middleware
     
     def packet_call(packet)
       packet['template.file'] = orange.template_for packet
-      pass packet
-      wrap packet if needs_wrapped?(packet)
-      packet.finish
+      ret = pass packet
+      if needs_wrapped?(packet)
+        wrap packet 
+        packet.finish 
+      else
+        ret
+      end
     end
     
     def needs_wrapped?(packet)

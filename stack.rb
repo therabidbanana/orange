@@ -8,10 +8,12 @@ class Main < Orange::Application
     use_exceptions
     stack Orange::Middleware::Globals
     prerouting :multi => false
-
-    stack Orange::Middleware::Template
-    restful_routing
     stack Orange::Middleware::Database
+    
+    openid_access_control
+    restful_routing
+    
+    stack Orange::Middleware::Template
     load Tester.new
     load Page_Resource.new, :pages
 

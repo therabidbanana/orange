@@ -22,7 +22,8 @@ module Orange
     end
     
     def route(packet)
-      packet[:content] = 'default response'
+      packet.session['user.id'] = false
+      raise 'default response'
     end
     
     def self.set(key, v = true)
