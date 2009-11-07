@@ -9,11 +9,11 @@ class Main < Orange::Application
     stack Orange::Middleware::Globals
     prerouting :multi => false
     stack Orange::Middleware::Database
+    stack Orange::Middleware::Template
     
     openid_access_control
     restful_routing
     
-    stack Orange::Middleware::Template
     load Tester.new
     load Page_Resource.new, :pages
 

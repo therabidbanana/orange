@@ -18,21 +18,22 @@ module Orange::Middleware
     
     def packet_call(packet)
       packet['template.file'] = orange.template_for packet
-      ret = pass packet
+      status, headers, content = pass packet
       if needs_wrapped?(packet)
-        wrap packet 
-        packet.finish 
-      else
-        ret
+        content = wrap(packet, content)
       end
+      [status, headers, content]
     end
     
     def needs_wrapped?(packet)
       packet['template.file'] && !packet['template.disable']
     end
     
-    def wrap(packet)
-      packet.wrap
+    def wrap(packet, content = false)
+      content = packet.content unless content
+      content = content.join
+      content = orange[:parser].haml(packet['template.file'], packet, :wrapped_content => content, :template => true)
+      [content]
     end
   end
 end

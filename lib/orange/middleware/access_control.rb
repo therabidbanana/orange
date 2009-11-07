@@ -26,17 +26,10 @@ module Orange::Middleware
         packet.session['user.after_login'] = packet.request.path
         packet.reroute(@login)
       end
-      after = packet.session.has_key?('user.after_login') ?
-                  packet.session['user.after_login'] : false
-      packet.session['user.after_login'] = false
       
-      # Save id into session if we have one.
-      packet.session['user.id'] = packet['user.id']
-      
-      # If the user was supposed to be going somewhere, redirect there
-      packet.reroute(after) if after && packet['user.id'] && need_to_handle?(packet)
       pass packet
     end
+    
     def access_allowed?(packet)
       return true unless @locked.include?(packet['route.context'])
       if packet['user.id']
@@ -63,12 +56,24 @@ module Orange::Middleware
       packet.reroute('/') if packet['user.id'] # Reroute to index if we're logged in.
       # If login set
       if packet.request.post?
+        packet['template.disable'] = true
         # Check for openid response
         if resp = packet.env["rack.openid.response"]
           if resp.status == :success
             packet['user.id'] = resp.identity_url
             packet['user.openid.url'] = resp.identity_url
             packet['user.openid.response'] = resp
+            
+            after = packet.session.has_key?('user.after_login') ?
+                        packet.session['user.after_login'] : false
+            packet.session['user.after_login'] = false
+            
+            # Save id into session if we have one.
+            packet.session['user.id'] = packet['user.id']
+            
+            # If the user was supposed to be going somewhere, redirect there
+            packet.reroute(after) if after
+            packet.reroute('/')
             false
           else
             packet.session['flash.error'] = resp.status
