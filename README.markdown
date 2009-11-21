@@ -5,7 +5,7 @@ Orange is intended to be a middle ground between the simplicity of Sinatra
 and the power of Rails. Our main focus is on creating a super-extensible CMS
 with Orange, but we're trying to make components as reusable as possible. Our
 intention is to use Orange for all client website builds at Orange Sparkle Ball by
-January 2010. 
+March 2010. 
 
 *Note*: Orange is still in the pre-alpha stage. No formal tests have been written at this
 stage. 
