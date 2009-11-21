@@ -39,3 +39,20 @@ as an extensible CMS, like Radiant but without the heavy Rails backend. We
 tend to think that having lots of tests and full MVC separation just so you 
 can add an extra type of page to the CMS is a bit overkill. We designed this
 to replace ModX in our web builds for clients. 
+
+Required Gems
+-------------
+
+Make sure githubs gems can be downloaded:
+
+    $ gem sources -a http://gems.github.com
+
+* dm-core (+ do_[sqlite3|mysql|...] )
+* rack
+* haml
+* mynyml-rack-abstract-format (github)
+* ruby-openid
+* rack-openid
+* meekish-openid_dm_store
+
+Also, you'll need a web server of some kind and need to set it up for rack.

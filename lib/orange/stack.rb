@@ -66,7 +66,7 @@ module Orange
       require 'openid_dm_store'
       
       use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-      stack Orange::Middleware::AccessControl, opts.with_defaults(:openid => true)
+      stack Orange::Middleware::AccessControl, opts
     end
 
     def run(app)
