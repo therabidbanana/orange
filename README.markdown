@@ -7,7 +7,7 @@ with Orange, but we're trying to make components as reusable as possible. Our
 intention is to use Orange for all client website builds at Orange Sparkle Ball by
 March 2010. 
 
-*Note*: Orange is still in the pre-alpha stage. No formal tests have been written at this
+**Note**: Orange is still in the pre-alpha stage. No formal tests have been written at this
 stage. 
 (We know, we're horrible people for not giving in to the TDD craze). Tread carefully.
 

@@ -23,7 +23,7 @@ module Orange
     
     def route(packet)
       packet.session['user.id'] = false
-      raise 'default response'
+      raise 'default response from Orange::Application.route'
     end
     
     def self.set(key, v = true)

@@ -88,6 +88,9 @@ module Orange
       packet[:page_parts]
     end
     
+    # Feels like part should be plural, no?
+    def parts;    part;     end
+    
     def admin_sidebar_link(section, *args)
       args = args.extract_options!.with_defaults(:position => 0)
       sidebar = part[:admin_sidebar, {}]
@@ -108,6 +111,7 @@ module Orange
         part[:css] = part[:css] + "<link rel=\"stylesheet\" href=\"#{file}\" type=\"text/css\" media=\"screen\" charset=\"utf-8\" />"
       end
     end
+    
     def add_js(file, opts = {})
       ie = opts[:ie] || false
       mod = opts[:module] || 'public'

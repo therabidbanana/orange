@@ -2,10 +2,13 @@ require 'orange/core'
 require 'orange/middleware/base'
 
 module Orange::Middleware
+  
   class Template < Base
     def init(*args)
       @core.add_pulp(Orange::Pulp::Template)
-      @core.class.mixin(Orange::Mixins::Template) 
+      @core.mixin(Orange::Mixins::Template)
+       
+      # Establish a default template chooser
       @core.template_chooser do |packet|
         if packet['route.context'] == :admin
           packet.add_css('admin.css', :module => '_orange_')
