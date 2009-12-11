@@ -9,7 +9,7 @@ module Orange::Middleware
     
     def packet_call(packet)
       ret = pass packet
-      packet[:status] = ret[0]
+      packet[:status]  = ret[0]
       packet[:headers] = ret[1]
       packet[:content] = ret[2].first
       ret

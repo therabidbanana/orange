@@ -64,7 +64,7 @@ module Orange
       opts = args.extract_options!
       require 'rack/openid'
       require 'openid_dm_store'
-      
+
       use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
       stack Orange::Middleware::AccessControl, opts
     end
@@ -76,6 +76,7 @@ module Orange
       end
       @build.run(app)
     end
+    
     def orange
       @core
     end

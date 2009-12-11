@@ -26,7 +26,7 @@ module Orange
       false
     end
     
-    def view(type = :none)
+    def view(packet = false)
       ''
     end
   end

@@ -18,23 +18,27 @@ module Orange
       temp = opts.delete(:template)
       resource = (opts[:resource] || '').downcase
       opts.merge :orange => orange
-      if temp && File.exists?('templates/'+file)
-        string = File.read('templates/'+file)
-      elsif temp && File.exists?($ORANGE_PATH + '/templates/' + file)
-        string = File.read($ORANGE_PATH + '/templates/' + file)
-      elsif File.exists?('views/'+resource+'/'+file) && resource
-        string = File.read('views/'+resource+'/'+file)
-      elsif File.exists?('views/'+file)
-        string = File.read('views/'+file)
-      elsif File.exists?($ORANGE_VIEWS + "/" + file)
-        string = File.read($ORANGE_VIEWS + "/" + file)
-      elsif File.exists?($ORANGE_VIEWS + '/default_resource/'+file)
-        string = File.read($ORANGE_VIEWS+ '/default_resource/'+ file)
-      else 
-        raise LoadError, "Couldn't find haml file '#{file}'"
-      end
+      
+      templates_dir = File.join(orange.core_dir, 'templates')
+      views_dir = File.join(orange.core_dir, 'views')
+      default_dir = File.join(views_dir, 'default_resource')
+      
+      string = false
+      string ||= read_if('templates', file) if temp
+      string ||= read_if(templates_dir, file) if temp
+      string ||= read_if('views', resource, file) if resource
+      string ||= read_if('views', file)
+      string ||= read_if(views_dir, file)
+      string ||= read_if(views_dir, 'default_resource', file)
+      raise LoadError, "Couldn't find haml file '#{file}" unless string
+      
       haml_engine = Haml::Engine.new(string)
       out = haml_engine.render(packet, opts)
+    end
+    
+    def read_if(*args)
+      return File.read(File.join(*args)) if File.exists?(File.join(*args))
+      false
     end
     
     def hpricot(text)

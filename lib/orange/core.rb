@@ -3,13 +3,16 @@ require 'rack'
 require 'rack/builder'
 
 module Orange
+  # Declare submodules for later use
   module Pulp; end
   module Mixins; end
   
+  # Allow mixins directly from Orange
   def self.mixin(inc)
     Core.mixin inc
   end
   
+  # Allow pulp directly from Orange
   def self.pulp(inc)
     Packet.mixin inc
   end
@@ -50,8 +53,8 @@ module Orange
       self
     end
     
-    def file
-      @file
+    def core_dir
+      File.dirname(__FILE__)
     end
     
     def afterLoad

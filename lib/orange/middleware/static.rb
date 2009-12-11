@@ -35,7 +35,7 @@ module Orange::Middleware
 
     def initialize(app, core, options={})
       core.mixin Orange::Mixins::Static
-      core.add_static('_orange_', File.join(File.dirname(core.file), 'assets'))
+      core.add_static('_orange_', File.join(core.core_dir, 'assets'))
       @app = app
       @core = core
       @libs = options[:libs] || [Orange::Core]
