@@ -3,7 +3,18 @@ require 'lib/orange'
 require 'stack'
 
 class Main < Orange::Application
-  
+  def init
+    @core.template_chooser do |packet|
+      if packet['route.context'] == :admin
+        packet.add_css('admin.css', :module => '_orange_')
+        packet.add_js('admin.js', :module => '_orange_')
+        orange.fire(:view_admin, packet)
+        'admin.haml'
+      else 
+        false
+      end
+    end # end do
+  end
 end
 
 class Tester < Orange::Resource
@@ -29,6 +40,7 @@ class Page < Orange::Carton
     title :title
     fulltext :body
     fulltext :summary
+    text :foo
   end
   admin do
     text :admin_only

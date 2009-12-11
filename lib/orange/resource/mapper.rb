@@ -7,17 +7,6 @@ module Orange
       orange.add_pulp Pulp::Packet_Mapper
     end
     
-    def template(packet)
-      if packet['route.context'] == :admin
-        packet.add_css('admin.css', :module => '_orange_')
-        packet.add_js('admin.js', :module => '_orange_')
-        orange.fire(:view_admin, packet)
-        return 'admin.haml'
-      else 
-        return false
-      end
-    end
-    
     def route_to(packet, resource, *args)
       context = packet['route.context', nil]
       site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil

@@ -69,7 +69,8 @@ module Orange
       stack Orange::Middleware::AccessControl, opts
     end
 
-    def run(app)
+    def run(app, *args)
+      opts = args.extract_options!
       if @recapture
         stack Orange::Middleware::Recapture
         @recapture = false
@@ -88,6 +89,8 @@ module Orange
     def app
       @app = false if @auto_reload      # Rebuild no matter what if autoload
       @app ||= @build.to_app            # Build if necessary
+      orange.fire(:stack_loaded, @app)
+      @app
     end
 
     def call(env)

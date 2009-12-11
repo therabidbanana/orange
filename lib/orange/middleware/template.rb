@@ -7,7 +7,7 @@ module Orange::Middleware
     def init(*args)
       @core.add_pulp(Orange::Pulp::Template)
       @core.mixin(Orange::Mixins::Template)
-       
+      
       # Establish a default template chooser
       @core.template_chooser do |packet|
         if packet['route.context'] == :admin

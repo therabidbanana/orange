@@ -4,10 +4,18 @@ module Orange
     def initialize(core = false)
       @core = core
       @options ||= {}
-      afterLoad
+      orange.register(:stack_loaded) do |s|
+        init
+      end
     end
-
-    def afterLoad
+    
+    # init is called after the full middleware stack is fully loaded
+    # (just in case the middleware stack added necessary functionality, etc)
+    def init
+    end
+    
+    def set_core(core)
+      @core = core
     end
     
     def call(env)
@@ -19,6 +27,10 @@ module Orange
       end
       packet.route
       packet.finish
+    end
+    
+    def orange
+      @core
     end
     
     def route(packet)
