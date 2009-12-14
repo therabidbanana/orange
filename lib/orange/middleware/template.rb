@@ -35,7 +35,9 @@ module Orange::Middleware
     def wrap(packet, content = false)
       content = packet.content unless content
       content = content.join
-      content = orange[:parser].haml(packet['template.file'], packet, :wrapped_content => content, :template => true)
+      content = orange[:parser].haml(packet['template.file'], packet, :wrapped_content => content, :template => true) do 
+        content
+      end
       [content]
     end
   end
@@ -43,7 +45,9 @@ end
 
 module Orange::Pulp::Template
   def wrap
-    packet[:content] = orange[:parser].haml(packet['template.file'], packet, :wrapped_content => packet[:content], :template => true)
+    packet[:content] = orange[:parser].haml(packet['template.file'], packet, :wrapped_content => packet[:content], :template => true) do
+      content
+    end
   end
 end
 

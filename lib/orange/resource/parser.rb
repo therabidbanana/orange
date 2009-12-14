@@ -1,5 +1,4 @@
 require 'orange/core'
-require 'rubygems'
 require 'haml'
 require 'yaml'
 require 'hpricot'
@@ -13,7 +12,7 @@ module Orange
       out = YAML::load(string)
     end
     
-    def haml(file, packet, *vars)
+    def haml(file, packet, *vars, &block)
       opts = vars.extract_options!
       temp = opts.delete(:template)
       resource = (opts[:resource] || '').downcase
@@ -33,7 +32,7 @@ module Orange
       raise LoadError, "Couldn't find haml file '#{file}" unless string
       
       haml_engine = Haml::Engine.new(string)
-      out = haml_engine.render(packet, opts)
+      out = haml_engine.render(packet, opts, &block)
     end
     
     def read_if(*args)

@@ -20,7 +20,7 @@
                     %li
                       %a{:href => link[:href], :style => "background-image: url(#{link[:icon]})"}= link[:text]
           .main
-            = wrapped_content
+            = yield
       .footer
         Design stolen from Wildflower CMS
         %banana
