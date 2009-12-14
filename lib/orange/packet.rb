@@ -1,4 +1,3 @@
-
 module Orange
   # By default, haml files are parsed in the context of their
   # packet. This means all of instance variables and functions should
