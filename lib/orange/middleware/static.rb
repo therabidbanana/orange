@@ -41,7 +41,7 @@ module Orange::Middleware
       @libs = options[:libs] || [Orange::Core]
       
       @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
-      @root = options[:root] || File.join(Dir.pwd, 'assets')
+      @root = options[:root] || File.join(orange.app_dir, 'assets')
       @lib_urls = core.statics
 
       @file_server = Orange::Middleware::StaticFile.new(@root)
@@ -76,6 +76,6 @@ module Orange::Mixins::Static
   end
   
   def statics
-    @statics || {}
+    @statics ||= {}
   end
 end

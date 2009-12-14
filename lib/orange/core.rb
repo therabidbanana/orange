@@ -17,11 +17,6 @@ module Orange
     Packet.mixin inc
   end
   
-  def self.load_db!(url)
-    DataMapper.setup(:default, url)
-    DataMapper.auto_upgrade!
-  end
-  
   class Core
     # Sets the default options for Orange Applications
     DEFAULT_CORE_OPTIONS = 
@@ -55,6 +50,10 @@ module Orange
     
     def core_dir
       File.dirname(__FILE__)
+    end
+    
+    def app_dir
+      options[:app_dir] ||= Dir.pwd
     end
     
     def afterLoad

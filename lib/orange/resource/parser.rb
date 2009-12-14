@@ -9,7 +9,7 @@ module Orange
     
     def yaml(file)
       string = File.read(file)
-      string.gsub!('__ORANGE__', Dir.pwd)
+      string.gsub!('__ORANGE__', orange.app_dir)
       out = YAML::load(string)
     end
     

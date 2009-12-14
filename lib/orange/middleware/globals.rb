@@ -4,7 +4,7 @@ module Orange::Middleware
   class Globals < Base
     def init(*args)
       opts = args.extract_options!.with_defaults(:file => "__ORANGE__/config.yml")
-      @file = opts[:file].gsub('__ORANGE__', Dir.pwd)
+      @file = opts[:file].gsub('__ORANGE__', orange.app_dir)
       @globals = orange[:parser].yaml(@file)
     end
     def packet_call(packet)

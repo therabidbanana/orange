@@ -42,7 +42,6 @@ class Page < Orange::Carton
     title :title
     fulltext :body
     fulltext :summary
-    text :foo
   end
   admin do
     text :admin_only
