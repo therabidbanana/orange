@@ -68,6 +68,10 @@ module Orange
       use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
       stack Orange::Middleware::AccessControl, opts
     end
+    
+    def add_pulp(mod)
+      orange.add_pulp(mod)
+    end
 
     def run(app, *args)
       opts = args.extract_options!
