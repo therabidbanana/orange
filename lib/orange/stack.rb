@@ -33,7 +33,7 @@ module Orange
     def stack(middleware, *args, &block)
       @build.use(middleware, @core, *args, &block)
     end
-    
+        
     def auto_reload!(val = true)
       @auto_reload = val
     end

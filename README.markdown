@@ -48,6 +48,7 @@ Make sure githubs gems can be downloaded:
     $ gem sources -a http://gems.github.com
 
 * dm-core (+ do_[sqlite3|mysql|...] )
+* dm-more
 * rack
 * haml
 * mynyml-rack-abstract-format (github)

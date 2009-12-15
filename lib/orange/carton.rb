@@ -19,6 +19,10 @@ module Orange
       include DataMapper::Resource
       self.property(:id, Serial)
       @scaffold_properties = []
+      init
+    end
+    
+    def self.init
     end
     
     # Return properties that should be shown for a given context

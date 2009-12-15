@@ -59,3 +59,9 @@ class Page_Resource < Orange::ModelResource
     end
   end
 end
+
+class Orange::Site
+  admin do
+    text :extra
+  end
+end

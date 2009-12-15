@@ -2,14 +2,21 @@ require 'orange/routable_resource'
 
 module Orange
   class ModelResource < RoutableResource
+    extend ClassInheritableAttributes
+    cattr_inheritable :model_class
     
-    def self.use(model_class)
-      @@model_class = model_class
+    def self.use(my_model_class)
+      @model_class = my_model_class
+    end
+    
+    
+    def model_class
+      self.class.model_class
     end
     
     def view(packet, *args)
       opts = args.extract_options!.with_defaults({:path => ''})
-      props = @@model_class.form_props(packet['route.context'])
+      props = model_class.form_props(packet['route.context'])
       resource_id = opts[:id] || packet['route.resource_id'] || false
       mode = opts[:mode] || packet['route.resource_action'] || 
         (resource_id ? :show : :list)  
@@ -39,11 +46,11 @@ module Orange
     
     def findOne(packet, mode, id = false)
       return false unless id
-      @@model_class.get(id) 
+      model_class.get(id) 
     end
     
     def findList(packet, mode)
-      @@model_class.all || []
+      model_class.all || []
     end
     
     def viewExtras(packet, mode)
@@ -65,14 +72,14 @@ module Orange
     
     def new(packet, *opts)
       if packet.request.post?
-        @@model_class.new(packet.request.params[@my_orange_name.to_s]).save
+        model_class.new(packet.request.params[@my_orange_name.to_s]).save
       end
       packet.reroute(@my_orange_name, :orange)
     end
     
     def delete(packet, *opts)
       if packet.request.delete?
-        m = @@model_class.get(packet['route.resource_id'])
+        m = model_class.get(packet['route.resource_id'])
         m.destroy! if m
       end
       packet.reroute(@my_orange_name, :orange)
@@ -80,7 +87,7 @@ module Orange
     
     def save(packet, *opts)
       if packet.request.post?
-        m = @@model_class.get(packet['route.resource_id'])
+        m = model_class.get(packet['route.resource_id'])
         if m
           m.update(packet.request.params[@my_orange_name.to_s])
         else 
