@@ -7,9 +7,8 @@ with Orange, but we're trying to make components as reusable as possible. Our
 intention is to use Orange for all client website builds at Orange Sparkle Ball by
 March 2010. 
 
-**Note**: Orange is still in the pre-alpha stage. No formal tests have been written at this
-stage. 
-(We know, we're horrible people for not giving in to the TDD craze). Tread carefully.
+**Note**: Orange is still in the pre-alpha stage. Test coverage is near non-existent. 
+Tread carefully.
 
 
 Orange Philosophy
@@ -57,6 +56,13 @@ Make sure githubs gems can be downloaded:
 * meekish-openid_dm_store
 
 Also, you'll need a web server of some kind and need to set it up for rack.
+
+**Testing** 
+
+If you want to test, you'll need the following gems:
+
+* rspec
+* rack-test
 
 Programming Info
 ================
