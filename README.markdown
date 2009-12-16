@@ -64,6 +64,16 @@ If you want to test, you'll need the following gems:
 * rspec
 * rack-test
 
+Yard is also helpful for generating API docs
+
+The following are useful rake tasks for testing purposes:
+
+    * rake test   =>  (same as rake spec)
+    * rake spec   =>  runs rspec with color enabled and spec_helper included
+    * rake doc    =>  runs yardoc (no, not really necessary)
+    * rake clean  =>  clear out the temporary files not included in the repo
+    * rake rcov   =>  runs rspec with rcov
+    
 Programming Info
 ================
 

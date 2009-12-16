@@ -19,9 +19,14 @@ module Orange
       @core = Orange::Core.new
       @auto_reload = false
       @recapture = true
+      @main_app = nil
       instance_eval(&block) if block_given?
     end
-
+    
+    def main_app
+      @main_app
+    end
+    
     def use(middleware, *args, &block)
       @build.use(middleware, *args, &block)
     end
@@ -79,6 +84,7 @@ module Orange
         stack Orange::Middleware::Recapture
         @recapture = false
       end
+      @main_app = app
       @build.run(app)
     end
     
