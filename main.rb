@@ -3,7 +3,7 @@ require 'lib/orange'
 require 'stack'
 
 class Main < Orange::Application
-  def init
+  def stack_init
     @core.template_chooser do |packet|
       if packet['route.context'] == :admin
         packet.add_css('admin.css', :module => '_orange_')
@@ -63,5 +63,6 @@ end
 class Orange::Site
   admin do
     text :extra
+    text :extra2
   end
 end

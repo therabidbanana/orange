@@ -58,6 +58,7 @@ module Orange
     
     def initialize(*options, &block)
       @options = options.extract_options!
+      @options ||= {}
       instance_eval(&block) if block_given?
     end
     
