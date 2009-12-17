@@ -19,13 +19,14 @@ describe Orange::Stack do
       end
     end
   end
+  
   def app
     MockApplication.app
   end
   
   it "should create a default stack when called by Application" do
-    MockApplication.app.should be_an_instance_of(Orange::Stack)
-    MockApplication.app.main_app.should be_a_kind_of(Orange::Application)
+    MockApplication2.app.should be_an_instance_of(Orange::Stack)
+    MockApplication2.app.main_app.should be_a_kind_of(Orange::Application)
   end
   
   it "should have access to core" do
@@ -33,7 +34,7 @@ describe Orange::Stack do
   end
   
   it "should have access to the main application instance" do
-    MockApplication.app.main_app.should be_an_instance_of(MockApplication)
+    MockApplication2.app.main_app.should be_an_instance_of(MockApplication2)
   end
   
   it "should have the run function" do
@@ -176,4 +177,26 @@ describe Orange::Stack do
     end
     defined?(Rack::OpenID).should == "constant"
   end
+  
+  it "should add middleware when calling openid_access_control" do
+    x= Orange::Stack.new do
+      no_recapture
+      run MockExitware.new
+    end
+    x.middlewarez.should have(1).middlewares
+    x.openid_access_control
+    x.middlewarez.should have(3).middlewares
+    x.middlewarez.select{|y| y.instance_of?(Rack::OpenID)}.should_not be_empty
+    x.middlewarez.select{|y| y.instance_of?(Orange::Middleware::AccessControl)}.should_not be_empty
+  end
+  
+  it "should include a module into Orange::Packet on add_pulp" do
+    x= Orange::Stack.new
+    p= Orange::Packet.new(Orange::Core.new, {})
+    p.should_not respond_to(:my_new_mock_method)
+    x.add_pulp(MockPulp)
+    p.should respond_to(:my_new_mock_method)
+    p.should be_a_kind_of(MockPulp)
+  end
+  
 end

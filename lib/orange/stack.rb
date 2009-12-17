@@ -1,21 +1,20 @@
 require 'orange/core'
 require 'rack/builder'
-
-# Builds an orange stack of middleware
-# Use in the rackup file as follows:
-# app = Orange::Stack.new do 
-#    stack Orange::DataMapper 'sqlite3::memory:'  <= loads orange specific middleware
-#    use OtherMiddleware
-#    run SomeApp.new
-# end
-# run app
-#
-# All middleware placed inside the Orange::Stack will have access
-# to the Orange Core (as long as it's been written to accept it as the second
-# initialization argument) when added with the 'stack' method
-# 
-# In general, Orange::Stack works like Rack::Builder.
 module Orange
+  # Builds an orange stack of middleware
+  # Use in the rackup file as follows:
+  # app = Orange::Stack.new do 
+  #    stack Orange::DataMapper 'sqlite3::memory:'  <= loads orange specific middleware
+  #    use OtherMiddleware
+  #    run SomeApp.new
+  # end
+  # run app
+  #
+  # All middleware placed inside the Orange::Stack will have access
+  # to the Orange Core (as long as it's been written to accept it as the second
+  # initialization argument) when added with the 'stack' method
+  # 
+  # In general, Orange::Stack works like Rack::Builder.
   class Stack
     
     # Creates a new Orange::Stack out of the passed block.
@@ -171,7 +170,11 @@ module Orange
     end
 
     # Passes through to Rack::Builder#map
+    # @todo Make this work - passing the block on to builder 
+    #   means we can't intercept anything, which will yield 
+    #   unexpected results
     def map(path, &block)
+      raise 'not yet supported'
       @build.map(path, &block)
     end
     
