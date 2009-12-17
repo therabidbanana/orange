@@ -5,6 +5,9 @@ require 'hpricot'
 
 module Orange
   class Parser < Resource
+    def afterLoad
+      orange.add_pulp Orange::Pulp::ParserPulp
+    end
     
     def yaml(file)
       string = File.read(file)
@@ -45,4 +48,13 @@ module Orange
     end
   end 
   
+  module Pulp::ParserPulp
+    def html(&block)
+      if block_given?
+        doc = orange[:parser].hpricot(packet[:content])
+        yield doc
+        packet[:content] = doc.to_s
+      end
+    end
+  end
 end

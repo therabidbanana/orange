@@ -18,6 +18,8 @@ class ::Hash
   end
 end
 
+
+
 # Monkey patch for awesome array -> hash conversions
 # use:
 #
@@ -52,8 +54,17 @@ module ClassInheritableAttributes
   end
 end
 
-# Simple class for evaluating options and allowing us to access them.
 module Orange
+  
+  # Class that extends hash so that [] can have an optional second attribute
+  class DefaultHash < ::Hash
+    def [](key, my_default = nil)
+      my_default = self.default if my_default.nil?
+      self.has_key?(key) ? super(key) : my_default
+    end
+  end
+  
+  # Simple class for evaluating options and allowing us to access them.
   class Options
     
     def initialize(*options, &block)

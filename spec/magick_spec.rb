@@ -4,6 +4,27 @@ describe "Black::Magick" do
   it "should be spec'ed"
 end
 
+describe Orange::DefaultHash do
+  it "should be a kind of Hash" do
+    Orange::DefaultHash.new.should be_a_kind_of Hash
+  end
+  it "should handle setting default" do
+    x = Orange::DefaultHash.new
+    y = Orange::DefaultHash.new
+    x.default = true
+    y.default = false
+    x[:not_there].should be_true
+    y[:not_there].should be_false
+  end
+  
+  it "should handle default in key access []" do
+    x = Orange::DefaultHash.new
+    x.default = 'baz'
+    x[:not_there].should == 'baz'
+    x[:not_there, 'bar'].should == 'bar'
+  end
+end
+
 describe "Orange::Options" do
   it "should give a hash on hash" do
     Orange::Options.new.hash.should be_an_instance_of(Hash)

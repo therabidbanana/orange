@@ -56,6 +56,7 @@ module Orange
       @file = __FILE__
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
+      load(Orange::PageParts.new, :page_parts)
       afterLoad
       self
     end

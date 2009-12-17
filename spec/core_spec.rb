@@ -53,9 +53,9 @@ describe Orange::Core do
     Orange::Core::DEFAULT_CORE_OPTIONS[:default_context].should == :live
   end
   
-  it "should load two resources by default" do
+  it "should load at least two resources by default" do
     c= Orange::Core.new
-    c.resources.should have(2).resources
+    c.resources.size.should >= 2
     c.loaded?(:mapper).should be_true
     c.loaded?(:parser).should be_true
   end
