@@ -7,6 +7,10 @@ require 'spec/mock/mock_resource'
 require 'spec/mock/mock_middleware'
 require 'rack/test'
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
+require 'orange'
 Spec::Runner.configure do |config|
   config.include(Rack::Test::Methods)
 end

@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'lib/orange'
+require 'orange'
 require 'rack/abstract_format'
 
 class MockApplication < Orange::Application

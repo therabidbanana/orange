@@ -8,6 +8,34 @@ rescue LoadError
   exit
 end
 
+begin
+  require 'jeweler'
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install jeweler"
+end
+
+
+Jeweler::Tasks.new do |gemspec|
+  gemspec.name = "orange"
+  gemspec.summary = "Middle ground between Sinatra and Rails"
+  gemspec.description = "Orange is a Ruby framework for building managed websites with code as simple as Sinatra"
+  gemspec.email = "therabidbanana@gmail.com"
+  gemspec.homepage = "http://github.com/therabidbanana/orange"
+  gemspec.authors = ["David Haslem"]
+  gemspec.files = FileList['lib/**/*.rb']
+  gemspec.test_files = FileList['spec/**/*.rb']
+  gemspec.add_dependency('dm-core', '>= 0.10.2')
+  gemspec.add_dependency('dm-more', '>= 0.10.2')
+  gemspec.add_dependency('rack', '>= 1.0.1')
+  gemspec.add_dependency('haml', '>= 2.2.13')
+  gemspec.add_dependency('mynyml-rack-abstract-format', '>= 0.9.7')
+  gemspec.add_dependency('rack-openid', '>= 0.2.0')
+  gemspec.add_dependency('meekish-openid_dm_store', '>= 0.1.2')
+  gemspec.add_development_dependency "rspec", ">= 0"
+  gemspec.add_development_dependency "rack-test", ">= 0"
+end
+Jeweler::GemcutterTasks.new
+
 desc "Report code statistics on the application and specs code"
 task :stats do
   stats_directories = {
