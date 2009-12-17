@@ -14,6 +14,10 @@ module Orange
       self
     end
     
+    def self.set_orange(*args)
+      raise 'trying to call set orange on a class (you probably need to instantiate a resource)'
+    end
+    
     def afterLoad
       true
     end

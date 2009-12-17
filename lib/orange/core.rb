@@ -13,7 +13,7 @@ module Orange
   end
   
   # Allow pulp directly from Orange
-  def self.pulp(inc)
+  def self.add_pulp(inc)
     Packet.mixin inc
   end
   
@@ -64,7 +64,7 @@ module Orange
     # @return [String] the directory name indicating where the core file is
     #   located
     def core_dir
-      File.dirname(__FILE__)
+      options[:core_dir] ||= File.dirname(__FILE__)
     end
     
     # Returns the directory of the currently executing file (using Dir.pwd),
