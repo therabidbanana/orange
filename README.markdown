@@ -2,14 +2,64 @@ Orange
 ======
 
 Orange is intended to be a middle ground between the simplicity of Sinatra 
-and the power of Rails. Our main focus is on creating a super-extensible CMS
-with Orange, but we're trying to make components as reusable as possible. Our
-intention is to use Orange for all client website builds at Orange Sparkle Ball by
+and the power of Rails. Orange is being developed by Orange Sparkle Ball, inc
+for our own use. Our main focus is on creating a super-extensible CMS
+with Orange, but we're trying to make the components as reusable as possible. Our
+intention is to be ready to use Orange for most client website builds by
 March 2010. 
 
-**Note**: Orange is still in the pre-alpha stage. Test coverage is near non-existent. 
+**Note**: Orange is still in the alpha stage. Test coverage is lack-luster at best. 
 Tread carefully.
 
+A (Theoretical) Example of Orange
+=================================
+
+_This doesn't actually work quite yet, but it's the goal we're working toward._
+
+After installing the orange gem, create an 'app.rb'
+
+**app.rb:**
+
+    require 'rubygems'
+    require 'orange'
+    class App < Orange::Application
+    end
+
+You now have an Orange CMS that can be made by calling "App.app". 
+Put this line in your rackup file...
+
+**config.ru:**
+
+    require 'app'
+    run App.app
+
+Run rack however you run rack. 
+
+Look at that, a full fledged CMS in 6 lines! Not so impressive, it's all prebuilt, 
+right? The real question is how hard is it to customize?
+
+I want my pages to have more than just titles and bodies. I want sidebars...
+
+**app.rb:**
+
+    require 'rubygems'
+    require 'orange'
+    class App < Orange::Application
+    end
+    class Orange::Page
+       markdown :sidebar, :context => [:front]
+    end
+
+We now have a sidebar that anybody can see. The backend scaffolding will adapt to allow 
+editing, and the front end will print it out for each page. Slap some CSS on it to make it 
+look like a sidebar, and tada! 
+
+Pages now have sidebars, in three lines of code and some
+styling. No migrations (we rely on DataMapper's auto_upgrade functionality), no extra
+files (unless we want them).
+
+More Info
+=========
 
 Orange Philosophy
 -----------------
@@ -18,7 +68,8 @@ capable of hosting multiple sites while maintaining Sinatra-like ease of
 programming. Some core ideas behind Orange:
 
 * Scaffolding doesn't have to be replaced if it's smart enough (most of the time)
-* Put as much functionality into middleware as possible, so it can be reused
+* Put as much functionality into middleware as possible, so it can be easily reused
+  and remixed
 * Give middleware a little more power so it's useful enough to handle more tasks
 
 
@@ -30,14 +81,14 @@ Not right now, unless you want to write half the framework yourself.
 When it's finished, would I want to use it?
 -------------------------------------------
 Depends on what you're looking for. Orange has a middleware stack intended to 
-be reused. If the stack has something you'd like, you could put the middleware stack on
-top of Sinatra or Rails. 
+be reused. If the stack has something you'd like, you could theoretically
+put the middleware stack on top of Sinatra or Rails. (This hasn't actually
+been tested yet.)
 
 The full Orange application framework is intended to run
-as an extensible CMS, like Radiant but without the heavy Rails backend. We
-tend to think that having lots of tests and full MVC separation just so you 
-can add an extra type of page to the CMS is a bit overkill. We designed this
-to replace ModX in our web builds for clients. 
+as an easily extensible CMS. We tend to think that having lots of tests
+and full MVC separation just so you can add an extra type of page to the CMS 
+is a bit overkill. We designed this to replace ModX in our web builds for clients. 
 
 Required Gems
 -------------
@@ -84,19 +135,20 @@ Terminology
 
 * **Application**: The last stop for the packet after traversing through the middleware stack.
 * **Core**: This is the core orange object, accessible from all points of the orange 
-system. Usually the orange instance can be called by simply using the "orange" function
+  system. Usually the orange instance can be called by simply using the "orange" function
 * **Mixins**: Extra functionality added directly to the core. Mixins are generally for only
-a couple of extra methods, anything more should probably be created as a resource.
+  a couple of extra methods, anything more should probably be created as a resource.
 * **Packet**: This object represents a web request coming in to the orange system. 
-Each request is instantiated as a packet before it is sent through the middleware stack.
+  Each request is instantiated as a packet before it is sent through the middleware stack.
 * **Pulp**: Mixin added to the packet object rather than the Core.
 * **Resources**: Resources are extra functionality contained within an object, accessible
-from the core. 
-* **Stack**: The collection of Orange-enhanced middleware sitting on top of the Orange application
+  from the core. 
+* **Stack**: The bundled collection of Orange-enhanced middleware sitting on top of the 
+  Orange application
 
 Pulp and Mixins
 ---------------
 The ability to add pulp and mixins is incredibly handy because the packet and the core are 
 available from just about anywhere in the Orange framework. For instance, the haml parser
-evaluates all calls as if made to the packet, so adding pulp is essentially adding 
+evaluates all local calls as if made to the packet, so adding pulp is essentially adding 
 functionality that is directly available to haml.

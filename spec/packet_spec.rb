@@ -127,4 +127,8 @@ describe Orange::Packet do
     }.should raise_error(RuntimeError, 'die, die, death, death')
   end
   
+  it "should give a request object" do
+    p= Orange::Packet.new(Orange::Core.new, {})
+    p.request.should be_an_instance_of Rack::Request
+  end
 end
