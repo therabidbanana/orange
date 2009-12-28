@@ -41,3 +41,7 @@ class MockModelResourceFour < Orange::ModelResource
     'mock_list'
   end
 end
+
+class MockModelResourceExtreme < Orange::ModelResource
+  
+end

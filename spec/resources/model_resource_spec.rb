@@ -138,5 +138,18 @@ describe Orange::ModelResource do
     a.find_extras(Orange::Packet.new(Orange::Core.new, {}), :show).should == {}
   end
   
-  
+  it "should have the view_list method in packet" do
+    c = Orange::Core.new
+    c.load(MockModelResourceOne.new, :mocked)
+    p = Orange::Packet.new(c, {})
+    lambda {
+      p.view_index(:mocked)
+    }.should raise_error(RuntimeError, "I see you're using index")
+    lambda {
+      p.view_show(:mocked)
+    }.should raise_error(RuntimeError, "I see you're using show")
+    lambda {
+      p.view_other(:mocked)
+    }.should raise_error(RuntimeError, "I see you're using other")
+  end
 end

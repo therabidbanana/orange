@@ -7,7 +7,9 @@ module Orange
   #
   # All subclasses should start by declaring the "id" attribute. All models
   # are assumed to have an id attribute by most everything else, so it's 
-  # a good idea to have one. 
+  # a good idea to have one. Also, we use this to tie in initialization before
+  # using the other dsl-ish methods (since these other methods are class level
+  # and would happen before initialize ever gets called)
   # 
   # Orange::Carton adds many shortcut methods for adding various datatypes
   # to the model in a more declarative style (`id` vs `property :id, Serial`)
@@ -15,6 +17,10 @@ module Orange
   # For classes that don't need anything but scaffolding, there's the 
   # as_resource method, which automatically creates a scaffolding resource
   # for the model.
+  # 
+  # A model that doesn't need scaffolded at all could optionally forgo the carton
+  # class and just include DataMapper::Resource. All carton methods are to
+  # improve scaffolding capability.
   class Carton
     # 
     def self.as_resource
