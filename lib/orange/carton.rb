@@ -1,8 +1,22 @@
 require 'dm-core'
 
 module Orange
+  # Orange::Carton is the main model class for Orange. It's based on Datamapper.
+  # In addition to handling the database interactions, the carton keeps
+  # track of declared properties, which is used to create scaffolds.
+  #
+  # All subclasses should start by declaring the "id" attribute. All models
+  # are assumed to have an id attribute by most everything else, so it's 
+  # a good idea to have one. 
+  # 
+  # Orange::Carton adds many shortcut methods for adding various datatypes
+  # to the model in a more declarative style (`id` vs `property :id, Serial`)
+  # 
+  # For classes that don't need anything but scaffolding, there's the 
+  # as_resource method, which automatically creates a scaffolding resource
+  # for the model.
   class Carton
-    
+    # 
     def self.as_resource
       name = self.to_s
       eval <<-HEREDOC

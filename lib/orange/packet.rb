@@ -27,6 +27,27 @@ module Orange
       super(orange, env)
     end
     
+    # Allows tying in to the method_missing method without redefining it 
+    # elsewhere. This lets dynamic methods be defined on the packet.
+    # Regexes are defined to match method names. #method_missing will
+    # loop through and try to find a match, executing the proc defined in
+    # the block.
+    # @param [Regexp] regex the regex to match
+    # @yield [Orange::Packet, MatchData, args] the block to execute if matched 
+    #   (passed instance, match data and args)
+    def self.meta_methods(regex, &block)
+      return unless block_given?
+      proc = block
+      @@matchers ||= {}
+      @@matchers[regex] = proc
+    end
+    
+    # Allows access to the matchers added via the #meta_methods method
+    # @return [Hash] the matchers hash
+    def matchers
+      @@matchers || {}
+    end
+    
     # Initialize is only called if a packet hasn't already been called for 
     # this env. Sets up the basic env, creating a pointer back to self
     # and a Rack::Request object.
@@ -144,6 +165,18 @@ module Orange
       router = packet['route.router']
       raise 'Router not found' unless router
       router.route(self)
+    end
+    
+    # Method Missing allows defining custom methods
+    def method_missing(id, *args)
+      matched = false
+      id = id.to_s
+      @@matchers.each_key do |k|
+        matched = k if id =~ k
+        break if matched
+      end
+      return @@matchers[matched].call(packet, matched.match(id), args) if matched
+      raise NoMethodError
     end
   end
 end

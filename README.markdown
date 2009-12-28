@@ -93,7 +93,7 @@ is a bit overkill. We designed this to replace ModX in our web builds for client
 Required Gems
 -------------
 
-Make sure githubs gems can be downloaded:
+Make sure github gems can be downloaded:
 
     $ gem sources -a http://gems.github.com
 

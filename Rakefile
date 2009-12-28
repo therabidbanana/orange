@@ -61,6 +61,10 @@ task :doc do
   sh "yardoc"
 end
 
+desc "Opens Coverage File"
+task :show_cov do
+  sh "open coverage/index.html"
+end
 
 desc "Run the specs under spec"
 Spec::Rake::SpecTask.new do |t|
@@ -72,5 +76,5 @@ desc "Run all specs with RCov"
 Spec::Rake::SpecTask.new('specs_with_rcov') do |t|
   t.spec_files = FileList['spec/**/*.rb']
   t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec,1.8/gems']
+  t.rcov_opts = ['--exclude', 'spec,1.8/gems,1.9/gems']
 end

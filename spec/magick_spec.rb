@@ -1,9 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Black::Magick" do
-  it "should be spec'ed"
-end
-
 describe Orange::DefaultHash do
   it "should be a kind of Hash" do
     Orange::DefaultHash.new.should be_a_kind_of Hash

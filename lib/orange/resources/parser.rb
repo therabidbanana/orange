@@ -26,19 +26,19 @@ module Orange
       default_dir = File.join(views_dir, 'default_resource')
       
       string = false
-      string ||= read_if('templates', file) if temp
-      string ||= read_if(templates_dir, file) if temp
-      string ||= read_if('views', resource, file) if resource
-      string ||= read_if('views', file)
-      string ||= read_if(views_dir, file)
-      string ||= read_if(views_dir, 'default_resource', file)
+      string ||= read_if_exists('templates', file) if temp
+      string ||= read_if_exists(templates_dir, file) if temp
+      string ||= read_if_exists('views', resource, file) if resource
+      string ||= read_if_exists('views', file)
+      string ||= read_if_exists(views_dir, file)
+      string ||= read_if_exists(views_dir, 'default_resource', file)
       raise LoadError, "Couldn't find haml file '#{file}" unless string
       
       haml_engine = Haml::Engine.new(string)
       out = haml_engine.render(packet, opts, &block)
     end
     
-    def read_if(*args)
+    def read_if_exists(*args)
       return File.read(File.join(*args)) if File.exists?(File.join(*args))
       false
     end

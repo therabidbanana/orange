@@ -5,5 +5,5 @@
         %th= prop[:name]
   %tbody
     - for obj in list
-      = view(model_name, :mode => :table_row, :model => obj)
+      = view_table_row(model_name, :model => obj)
 %a{:href => route_to(model_name, 'create')} New

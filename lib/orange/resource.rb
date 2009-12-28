@@ -4,7 +4,7 @@ module Orange
   # Orange Resource for being subclassed
   class Resource
     def initialize(*args, &block)
-      @options = Options.new(args, &block).hash
+      @options = Options.new(*args, &block).hash
     end
     
     def set_orange(orange, name)
@@ -15,7 +15,7 @@ module Orange
     end
     
     def self.set_orange(*args)
-      raise 'trying to call set orange on a class (you probably need to instantiate a resource)'
+      raise 'instantiate the resource before calling set orange'
     end
     
     def afterLoad
@@ -30,8 +30,16 @@ module Orange
       false
     end
     
-    def view(packet = false)
+    def view(packet = false, *args)
       ''
+    end
+    
+    def orange_name
+      @my_orange_name
+    end
+    
+    def options
+      @options
     end
   end
 end

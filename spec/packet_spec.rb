@@ -131,4 +131,49 @@ describe Orange::Packet do
     p= Orange::Packet.new(Orange::Core.new, {})
     p.request.should be_an_instance_of Rack::Request
   end
+  
+  it "should store method matchers for extending method_missing handlers" do
+    class Orange::Packet 
+      meta_methods(/pretend_method_we_dont_want/) do |match, args|
+        "my mock meta method"
+      end
+      
+      meta_methods(/pretend_method_we_dont_want(\w+)/) do |match, args|
+        "my mock meta method"
+      end
+    end
+    p= Orange::Packet.new(Orange::Core.new, {})
+    p.matchers.size.should >= 2
+  end
+  
+  it "should have method_missing capabilities" do
+    p= Orange::Packet.new(Orange::Core.new, {})
+    p.should respond_to(:method_missing)
+    lambda {
+      p.my_mock_meta_method
+      p.mock_meta_test
+      p.mock_meta_test_with_args
+    }.should raise_error(NoMethodError)
+    class Orange::Packet 
+      meta_methods(/my_mock_meta_method/) do 
+        "my mock meta method"
+      end
+      
+      meta_methods(/mock_meta_(\w+)/) do |packet, match|
+        "my mock #{match[1]} method"
+      end
+      
+      meta_methods(/mock_meta_(\w+)_with_args/) do |packet, match, args|
+        "my mock #{match[1]} method args0 = #{args[0]}"
+      end
+    end
+    lambda {
+      p.my_mock_meta_method
+      p.mock_meta_test
+      p.mock_meta_test_with_args 'test'
+    }.should_not raise_error(NoMethodError)
+    p.my_mock_meta_method.should == "my mock meta method"
+    p.mock_meta_test.should == "my mock test method"
+    p.mock_meta_test_with_args('test').should == "my mock test method args0 = test"
+  end
 end
