@@ -1,6 +1,6 @@
 require 'rack/builder'
 require 'rack/abstract_format'
-require 'lib/orange'
+require '../../lib/orange'
 
 class Main < Orange::Application
   stack do

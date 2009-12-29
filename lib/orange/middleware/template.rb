@@ -24,8 +24,10 @@ module Orange::Middleware
       status, headers, content = pass packet
       if needs_wrapped?(packet)
         content = wrap(packet, content)
+        packet[:content] = content.first
       end
-      [status, headers, content]
+      orange.fire(:wrapped, packet)
+      [status, headers, packet.content]
     end
     
     def needs_wrapped?(packet)

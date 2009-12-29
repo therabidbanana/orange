@@ -1,6 +1,6 @@
 #\-s thin -p 4321
 require 'main'
-require 'lib/orange'
+require '../../lib/orange'
 require 'rubygems'
 require 'rack'
 require 'rack/bug'

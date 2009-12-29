@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'lib/orange'
+require '../../lib/orange'
 require 'stack'
 
 class Main < Orange::Application
@@ -21,17 +21,17 @@ end
 
 class Tester < Orange::Resource
   def afterLoad
-    # orange.register(:enroute, 100) do |packet|
-    #   appendHah(packet)
-    # end
+    orange.register(:wrapped, 100) do |packet|
+      appendHah(packet)
+    end
   end
   
   def appendHah(packet)
-    # packet.html do |html|
-    #   (html / "banana").each { |item|
-    #     item.swap("<a href='http://www.google.com'>Awesome</a>")
-    #   }
-    # end
+    packet.html do |html|
+      (html / "banana").each { |item|
+        item.swap("<a href='http://www.google.com'>Orange is Awesome</a>")
+      }
+    end
   end
 end
 
