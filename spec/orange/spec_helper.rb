@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
+require 'rubygems'
 require 'orange'
 
 require 'mock/mock_app'
@@ -17,4 +18,22 @@ require 'rack/test'
 
 Spec::Runner.configure do |config|
   config.include(Rack::Test::Methods)
+end
+
+def mock_post
+  p= mock("request", :null_object => true)
+  p.stub!(:post?).and_return(true)
+  p.stub!(:params).and_return({})
+  p
+end
+
+def mock_delete
+  p= mock("request", :null_object => true)
+  p.stub!(:delete?).and_return(true)
+  p.stub!(:params).and_return({})
+  p
+end
+
+def empty_packet(c = Orange::Core.new)
+  Orange::Packet.new(c, {})
 end

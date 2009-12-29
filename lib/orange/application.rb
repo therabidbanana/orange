@@ -81,7 +81,7 @@ module Orange
     # The intent is for the application subclass to override this method
     # and use it to handle packets not routed by Stack middleware.
     def route(packet)
-      raise "default response from Orange::Application.route for #{packet.env['PATH_INFO']}"
+      raise "default response from Orange::Application.route"
     end
     
     # Used to set optional values at class level. Will be merged into the options

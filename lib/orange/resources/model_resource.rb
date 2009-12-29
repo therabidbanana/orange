@@ -119,7 +119,8 @@ module Orange
       packet.reroute(@my_orange_name, :orange)
     end
     
-    # Deletes an object specified by packet['route.resource_id'], then reroutes to main
+    # Deletes an object specified by packet['route.resource_id'], then reroutes to main.
+    # The request must come in as a delete. Rack::MethodOverride can be used to do this.
     # @param [Orange::Packet] packet the packet being routed
     def delete(packet, *opts)
       if packet.request.delete?
@@ -136,7 +137,6 @@ module Orange
         m = model_class.get(packet['route.resource_id'])
         if m
           m.update(packet.request.params[@my_orange_name.to_s])
-        else 
         end
       end
       packet.reroute(@my_orange_name, :orange)

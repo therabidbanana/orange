@@ -152,4 +152,95 @@ describe Orange::ModelResource do
       p.view_other(:mocked)
     }.should raise_error(RuntimeError, "I see you're using other")
   end
+  
+  it "should call carton's save on POST new and reroute" do
+    a= MockModelResourceTwo.new
+    m= mock("carton", :null_object => true)
+    m.should_receive(:save)
+    a.stub!(:model_class).and_return(m)
+    p2 = mock("packet", :null_object => true)
+    p2.should_receive(:reroute)
+    p2.stub!(:request).and_return(mock_post)
+    lambda{
+      a.new(Orange::Packet.new(Orange::Core.new, {}))
+    }.should raise_error(Orange::Reroute, 'Unhandled reroute')
+    a.new(p2)
+  end
+  
+  it "should call carton's destroy! on DELETE delete and reroute" do
+    a= MockModelResourceTwo.new
+    m= mock("carton", :null_object => true)
+    m.should_receive(:destroy!)
+    a.stub!(:model_class).and_return(m)
+    p2 = mock("packet", :null_object => true)
+    p2.should_receive(:reroute)
+    p2.stub!(:request).and_return(mock_delete)
+    lambda{
+      a.delete(Orange::Packet.new(Orange::Core.new, {}))
+    }.should raise_error(Orange::Reroute, 'Unhandled reroute')
+    a.delete(p2)
+  end
+  
+  it "should call carton's update on POST save and reroute" do
+    a= MockModelResourceTwo.new
+    m= mock("carton", :null_object => true)
+    m.should_receive(:update)
+    a.stub!(:model_class).and_return(m)
+    p2 = mock("packet", :null_object => true)
+    p2.should_receive(:reroute)
+    p2.stub!(:request).and_return(mock_post)
+    lambda{
+      a.delete(Orange::Packet.new(Orange::Core.new, {}))
+    }.should raise_error(Orange::Reroute, 'Unhandled reroute')
+    a.save(p2)
+  end
+  
+  it "should call do_view with mode = :show for show" do
+    a= MockModelResource.new
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :show)
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :show, {})
+    a.show(empty_packet)
+    a.show(empty_packet, {})
+  end
+  it "should call do_view with mode = :edit for edit" do
+    a= MockModelResource.new
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :edit)
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :edit, {})
+    a.edit(empty_packet)
+    a.edit(empty_packet, {})
+  end
+  it "should call do_view with mode = :create for create" do
+    a= MockModelResource.new
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :create)
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :create, {})
+    a.create(empty_packet)
+    a.create(empty_packet, {})
+  end
+  
+  it "should call do_view with mode = :table_row for table_row" do
+    a= MockModelResource.new
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :table_row)
+    a.should_receive(:do_view).with(an_instance_of(Orange::Packet), :table_row, {})
+    a.table_row(empty_packet)
+    a.table_row(empty_packet, {})
+  end
+  
+  it "should call do_list_view with mode = :list for list" do
+    a= MockModelResource.new
+    a.should_receive(:do_list_view).with(an_instance_of(Orange::Packet), :list)
+    a.should_receive(:do_list_view).with(an_instance_of(Orange::Packet), :list, {})
+    a.list(empty_packet)
+    a.list(empty_packet, {})
+  end
+  
+  
+  it "should call do_list_view with mode = :list for index" do
+    a= MockModelResource.new
+    a.should_receive(:do_list_view).with(an_instance_of(Orange::Packet), :list)
+    a.should_receive(:do_list_view).with(an_instance_of(Orange::Packet), :list, {})
+    a.index(empty_packet)
+    a.index(empty_packet, {})
+  end
+  
+  
 end

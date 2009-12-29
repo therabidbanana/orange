@@ -18,6 +18,7 @@ module Orange
     # Feels like part should be plural, no?
     def parts;    part;     end
     
+    # @todo Move to an admin resource
     def admin_sidebar_link(section, *args)
       args = args.extract_options!.with_defaults(:position => 0)
       sidebar = part[:admin_sidebar, {}]
