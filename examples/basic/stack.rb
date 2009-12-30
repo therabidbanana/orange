@@ -7,7 +7,7 @@ class Main < Orange::Application
     auto_reload!
     use_exceptions
     stack Orange::Middleware::Globals
-    prerouting :multi => true
+    prerouting :multi => false
     stack Orange::Middleware::Database
     stack Orange::Middleware::SiteLoad
     stack Orange::Middleware::Template
