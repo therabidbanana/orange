@@ -39,7 +39,7 @@ module Orange
     # Do setup of object and declare an id
     def self.id
       include DataMapper::Resource
-      self.property(:id, Serial)
+      property(:id, Serial)
       @scaffold_properties = []
       init
     end
@@ -49,7 +49,7 @@ module Orange
     end
     
     # Return properties that should be shown for a given context
-    def self.form_props(context)
+    def self.form_props(context = :live)
       @scaffold_properties.select{|p| p[:levels].include?(context)  }
     end
     
@@ -102,10 +102,10 @@ module Orange
     end
     
     # Override DataMapper to include context sensitivity (as set by helpers)
-    def self.property(name, type, opts = {})
+    def self.scaffold_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
       @scaffold_properties << {:name => name, :type => my_type, :levels => @levels}.merge(opts) if @levels
-      property(name, type, opts)
+      self.property(name, type, opts)
     end
       
     

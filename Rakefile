@@ -1,7 +1,7 @@
 require 'rake/clean'
+require 'spec/stats.rb'
 begin
   require 'spec/rake/spectask'
-  require 'spec/stats.rb'
 rescue LoadError
   puts 'To use rspec for testing you must install rspec gem:'
   puts '$ sudo gem install rspec'
