@@ -45,7 +45,7 @@ module Orange::Middleware
       else
         packet['route.site_url'] = request.host
       end
-      @app.call(packet.env)
+      pass packet
     end
   end
 end

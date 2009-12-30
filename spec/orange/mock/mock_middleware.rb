@@ -11,3 +11,11 @@ class MockMiddleware
     raise "I'm in ur #{env[:test]}"
   end
 end
+
+class MockOrangeBasedMiddlewareTwo < Orange::Middleware::Base; end
+class MockOrangeDeathMiddleware < Orange::Middleware::Base
+  def init(*args)
+    opts = args.extract_options!
+    raise "middleware_init with foo=#{opts[:foo]}"
+  end
+end

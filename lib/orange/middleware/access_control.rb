@@ -3,13 +3,23 @@ require 'orange/middleware/base'
 
 
 module Orange::Middleware
-  
+  # This middleware locks down entire contexts and puts them behind an openid 
+  # login system. Currently only supports a single user id. 
+  #
+  # 
   class AccessControl < Base
-    def init(*args)
+    # Sets up the options for the middleware
+    # @param [Hash] opts hash of options
+    # @option opts [Boolean] :openid Whether to use openid logins or not (currently only option)
+    # @option opts [Boolean] :handle_login Whether the access control system should handle 
+    #   presenting the login form, or let other parts of the app do that. 
+    # @option opts [Boolean] :config_id Whether to use the id set in a config file
+    
+    def init(opts = {})
       defs = {:locked => [:admin, :orange], :login => '/login', 
               :handle_login => true, :openid => true, :config_id => true}
-      opts = args.extract_with_defaults(defs)
-      @openid = opts.has_key?(:openid) ? opts[:openid] : false
+      opts = opts.with_defaults!(defs)
+      @openid = opts[:openid]
       @locked = opts[:locked]
       @login = opts[:login]
       @handle = opts[:handle_login]
@@ -65,15 +75,14 @@ module Orange::Middleware
             packet['user.openid.response'] = resp
             
             after = packet.session.has_key?('user.after_login') ?
-                        packet.session['user.after_login'] : false
+                        packet.session['user.after_login'] : '/'
             packet.session['user.after_login'] = false
             
             # Save id into session if we have one.
             packet.session['user.id'] = packet['user.id']
             
             # If the user was supposed to be going somewhere, redirect there
-            packet.reroute(after) if after
-            packet.reroute('/')
+            packet.reroute(after)
             false
           else
             packet.session['flash.error'] = resp.status
