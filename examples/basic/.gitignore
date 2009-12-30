@@ -1,0 +1,5 @@
+db/*.sqlite3
+.yardoc
+doc/*
+coverage/*
+.DS_Store
