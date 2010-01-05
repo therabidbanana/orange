@@ -43,7 +43,6 @@ module Orange::Middleware
       @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
       @root = options[:root] || File.join(orange.app_dir, 'assets')
       @lib_urls = core.statics
-
       @file_server = Orange::Middleware::StaticFile.new(@root)
     end
 
@@ -51,7 +50,6 @@ module Orange::Middleware
       path = packet.env["PATH_INFO"]
       can_serve_lib = @lib_urls.select{ |url, server| path.index(url) == 0 }.first
       can_serve = @urls.any?{|url| path.index(url) == 0 }
-      
       if can_serve_lib
         lib_url = can_serve_lib.first
         packet['file.root'] = can_serve_lib.last
