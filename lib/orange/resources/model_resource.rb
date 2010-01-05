@@ -218,6 +218,7 @@ module Orange
       label = args[:label] || false
       show = args[:show] || false
       name = prop[:name]
+      human_readable_name = name.to_s.split('_').each{|w| w.capitalize!}.join(' ')
       unless show
         case prop[:type]
         when :title
@@ -227,11 +228,13 @@ module Orange
         when :fulltext
           ret = "<textarea name='#{model_name}[#{name}]'>#{val}</textarea>"
         when :boolean
+          human_readable_name = human_readable_name + '?'
           ret = "<input type='hidden' name='#{model_name}[#{name}]' value='0' /><input type='checkbox' name='#{model_name}[#{name}]' value='1' #{'checked="checked"' if (val && val != '')}/>"
         else
           ret = "<input type='text' value='#{val}' name='#{model_name}[#{name}]' />"
         end
-        ret = "<label for=''>#{name}</label><br />" + ret if label
+        display_name = prop[:display_name] || human_readable_name
+        ret = "<label for=''>#{display_name}</label><br />" + ret if label
       else
         case prop[:type]
         when :title

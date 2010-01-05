@@ -7,13 +7,14 @@ module Orange
     id
     admin do
       text :slug
-      boolean :show_in_nav, :default => false
+      text :link_text
+      boolean :show_in_nav, :default => false, :display_name => 'Show?'
     end
     orange do
       string :resource
       string :resource_id
     end
-    include DataMapper::Transaction::Resource
+    include DataMapper::Transaction::Resource # Make sure Transactions are included
     is :awesome_set, :scope => [:orange_site_id]
     
   end

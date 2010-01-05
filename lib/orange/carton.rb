@@ -22,6 +22,7 @@ module Orange
   # class and just include DataMapper::Resource. All carton methods are to
   # improve scaffolding capability.
   class Carton
+    SCAFFOLD_OPTIONS = [:display_name] unless defined?(SCAFFOLD_OPTIONS)
     # Declares a ModelResource subclass that scaffolds this carton
     # The Subclass will have the name of the carton followed by "_Resource"
     def self.as_resource
@@ -78,32 +79,34 @@ module Orange
       @levels = false
     end
     
+    def self.add_scaffold(name, type, dm_type, opts)
+      scaffold_properties << {:name => name, :type => type, :levels => @levels}.merge(opts) if @levels
+      opts = opts.delete_if{|k,v| SCAFFOLD_OPTIONS.include?(k)} # DataMapper doesn't like arbitrary opts
+      self.property(name, dm_type, opts)
+    end
+    
     # Define a helper for title type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.title(name, opts = {})
-      scaffold_properties << {:name => name, :type => :title, :levels => @levels}.merge(opts) if @levels
-      self.property(name, String, opts)
+      add_scaffold(name, :title, String, opts)
     end
     
     # Define a helper for fulltext type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.fulltext(name, opts = {})
-      scaffold_properties << {:name => name, :type => :fulltext, :levels => @levels, :opts => opts} if @levels
-      self.property(name, Text, opts)
+      add_scaffold(name, :fulltext, Text, opts)
     end
     
     # Define a helper for boolean type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.boolean(name, opts = {})
-      scaffold_properties << {:name => name, :type => :boolean, :levels => @levels, :opts => opts} if @levels
-      self.property(name, Boolean, opts)
+      add_scaffold(name, :boolean, Boolean, opts)
     end
     
     # Define a helper for input type="text" type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.text(name, opts = {})
-      scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
-      self.property(name, String, opts)
+      add_scaffold(name, :text, String, opts)
     end
     
     # Define a helper for type database stuff
@@ -121,8 +124,7 @@ module Orange
     # Override DataMapper to include context sensitivity (as set by helpers)
     def self.scaffold_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      scaffold_properties << {:name => name, :type => my_type, :levels => @levels}.merge(opts) if @levels
-      self.property(name, type, opts)
+      add_scaffold(name, my_type, type, opts)
     end
       
     
@@ -130,24 +132,24 @@ module Orange
     # The difference is that this will make it an admin property.
     def self.admin_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      scaffold_properties << {:name => name, :type => my_type, :levels => [:admin, :orange]}.merge(opts)
-      property(name, type, opts)
+      opts[:levels] = [:admin, :orange]
+      add_scaffold(name, my_type, type, opts)
     end
     
     # For more generic cases, use same syntax as DataMapper does.
     # The difference is that this will make it a front property.
     def self.front_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      scaffold_properties << {:name => name, :type => my_type, :levels => [:live, :admin, :orange]}.merge(opts)
-      property(name, type, opts)
+      opts[:levels] = [:live, :admin, :orange]
+      add_scaffold(name, my_type, type, opts)
     end
     
     # For more generic cases, use same syntax as DataMapper does.
     # The difference is that this will make it an orange property.
     def self.orange_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      scaffold_properties << {:name => name, :type => my_type, :levels => [:orange]}.merge(opts)
-      property(name, type, opts)
+      opts[:levels] = [:orange]
+      add_scaffold(name, my_type, type, opts)
     end
     
   end
