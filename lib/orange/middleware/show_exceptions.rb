@@ -11,7 +11,9 @@ module Orange::Middleware
   #
   # Be careful when you use this on public-facing sites as it could
   # reveal information helpful to attackers.
-
+  #
+  # Orange::Middleware::ShowExceptions is a slightly modified
+  # version of Rack::ShowExceptions
   class ShowExceptions < Base
     CONTEXT = 7
 

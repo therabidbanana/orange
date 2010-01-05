@@ -12,7 +12,7 @@
       .container
         #inner-body
           .sidebar
-            - part[:admin_sidebar, {}].each do |k, section|
+            - orange[:admin].links(packet).each do |k, section|
               .sidebar_section
                 %h3= k
                 %ul

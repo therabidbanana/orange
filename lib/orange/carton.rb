@@ -44,13 +44,17 @@ module Orange
       init
     end
     
+    def self.scaffold_properties
+      @scaffold_properties ||= []
+    end
+    
     # Stub init method
     def self.init
     end
     
     # Return properties that should be shown for a given context
     def self.form_props(context = :live)
-      @scaffold_properties.select{|p| p[:levels].include?(context)  }
+      scaffold_properties.select{|p| p[:levels].include?(context)  }
     end
     
     # Helper to wrap properties into admin level
@@ -77,22 +81,35 @@ module Orange
     # Define a helper for title type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.title(name, opts = {})
-      @scaffold_properties << {:name => name, :type => :title, :levels => @levels}.merge(opts) if @levels
+      scaffold_properties << {:name => name, :type => :title, :levels => @levels}.merge(opts) if @levels
       self.property(name, String, opts)
     end
     
     # Define a helper for fulltext type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.fulltext(name, opts = {})
-      @scaffold_properties << {:name => name, :type => :fulltext, :levels => @levels, :opts => opts} if @levels
+      scaffold_properties << {:name => name, :type => :fulltext, :levels => @levels, :opts => opts} if @levels
       self.property(name, Text, opts)
+    end
+    
+    # Define a helper for boolean type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.boolean(name, opts = {})
+      scaffold_properties << {:name => name, :type => :boolean, :levels => @levels, :opts => opts} if @levels
+      self.property(name, Boolean, opts)
     end
     
     # Define a helper for input type="text" type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.text(name, opts = {})
-      @scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
+      scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
       self.property(name, String, opts)
+    end
+    
+    # Define a helper for type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.expose(name, opts = {})
+      scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
     end
     
     # Define a helper for input type="text" type database stuff
@@ -104,7 +121,7 @@ module Orange
     # Override DataMapper to include context sensitivity (as set by helpers)
     def self.scaffold_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      @scaffold_properties << {:name => name, :type => my_type, :levels => @levels}.merge(opts) if @levels
+      scaffold_properties << {:name => name, :type => my_type, :levels => @levels}.merge(opts) if @levels
       self.property(name, type, opts)
     end
       
@@ -113,7 +130,7 @@ module Orange
     # The difference is that this will make it an admin property.
     def self.admin_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      @scaffold_properties << {:name => name, :type => my_type, :levels => [:admin, :orange]}.merge(opts)
+      scaffold_properties << {:name => name, :type => my_type, :levels => [:admin, :orange]}.merge(opts)
       property(name, type, opts)
     end
     
@@ -121,7 +138,7 @@ module Orange
     # The difference is that this will make it a front property.
     def self.front_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      @scaffold_properties << {:name => name, :type => my_type, :levels => [:live, :admin, :orange]}.merge(opts)
+      scaffold_properties << {:name => name, :type => my_type, :levels => [:live, :admin, :orange]}.merge(opts)
       property(name, type, opts)
     end
     
@@ -129,7 +146,7 @@ module Orange
     # The difference is that this will make it an orange property.
     def self.orange_property(name, type, opts = {})
       my_type = type.to_s.downcase.to_sym
-      @scaffold_properties << {:name => name, :type => my_type, :levels => [:orange]}.merge(opts)
+      scaffold_properties << {:name => name, :type => my_type, :levels => [:orange]}.merge(opts)
       property(name, type, opts)
     end
     

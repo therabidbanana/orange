@@ -37,3 +37,15 @@ end
 def empty_packet(c = Orange::Core.new)
   Orange::Packet.new(c, {})
 end
+
+def packet_finish_app
+  lambda { |env|
+    Orange::Packet.new(env).finish
+  }
+end
+
+def return_env_app
+  lambda { |env|
+    env
+  }
+end

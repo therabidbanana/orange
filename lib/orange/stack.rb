@@ -24,7 +24,7 @@ module Orange
     # other stacks that can be used.
     #
     # @param [Orange::Application] app_class the class of the main application
-    # @param [prebuilt] prebuilt the optional prebuilt stack, if one isn't passed as block
+    # @param [Symbol] prebuilt the optional prebuilt stack, if one isn't passed as block
     def initialize(app_class = nil, prebuilt = :none, &block)
       @build = Rack::Builder.new
       @core = Orange::Core.new

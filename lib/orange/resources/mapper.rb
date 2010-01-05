@@ -8,6 +8,7 @@ module Orange
     end
     
     def route_to(packet, resource, *args)
+      packet = DefaultHash.new unless packet 
       context = packet['route.context', nil]
       site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil
       args.unshift(resource)
@@ -44,6 +45,8 @@ module Orange
       # Parsing for orange urls or something
       when :orange
         packet.route_to(packet['reroute.to'])
+      else
+        packet['reroute.to']
       end
     end
     

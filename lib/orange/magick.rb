@@ -64,6 +64,17 @@ module Orange
     end
   end
   
+  # This class acts as a simple sink for ignoring messages, it will return itself
+  # for any message call. Orange::Core can optionally return this when trying 
+  # to access resources so that you can make method calls to a resource that 
+  # might not be really there. It will silently swallow any errors that might arrise,
+  # so this should be used with caution.
+  class Ignore
+    def method_missing(name, *args, &block)
+      return self
+    end
+  end
+  
   # Simple class for evaluating options and allowing us to access them.
   class Options
     

@@ -1,2 +1,2 @@
-database: "sqlite3://__ORANGE__/db/orangerb.sqlite3"
+database: "mysql://root:banana@localhost/orange_test"
 main_user: "http://www.davidhaslem.com/"

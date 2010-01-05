@@ -17,7 +17,7 @@ class Main < Orange::Application
     
     load Tester.new
     load Page_Resource.new, :pages
-
+    load Orange::SitemapResource.new, :sitemap
     run Main.new(orange)
   end
 end

@@ -5,7 +5,7 @@ require 'stack'
 class Main < Orange::Application
   def stack_init
     @core.template_chooser do |packet|
-      if packet['route.context'] == :admin
+      if [:admin, :orange].include?(packet['route.context'])
         packet.add_css('admin.css', :module => '_orange_')
         packet.add_js('admin.js', :module => '_orange_')
         orange.fire(:view_admin, packet)
@@ -54,9 +54,7 @@ end
 class Page_Resource < Orange::ModelResource
   use Page
   def afterLoad
-    orange.register(:view_admin) do |packet|
-      packet.admin_sidebar_link("CONTENT", :text => "Pages", :link => packet.route_to(@my_orange_name, 'list'))
-    end
+    orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
   end
 end
 

@@ -228,4 +228,14 @@ describe Orange::Core do
     c[:mock].should be_an_kind_of(Orange::Resource)
     c[:mock].mock_method.should eql 'MockResource#mock_method'
   end
+  
+  it "should have option to silently ignore resource calls" do
+    c= Orange::Core.new
+    lambda {
+      c[:mock].test
+    }.should raise_error
+    lambda {
+      c[:mock, true].test
+    }.should_not raise_error
+  end
 end

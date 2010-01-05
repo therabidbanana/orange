@@ -21,6 +21,17 @@ describe Orange::DefaultHash do
   end
 end
 
+describe Orange::Ignore do
+  it "should silently accept method" do
+    o = Orange::Ignore.new 
+    lambda {
+      o.banana
+      o.args
+      o.foo.bar('banana').baz
+    }.should_not raise_error
+  end
+end
+
 describe "Orange::Options" do
   it "should give a hash on hash" do
     Orange::Options.new.hash.should be_an_instance_of(Hash)

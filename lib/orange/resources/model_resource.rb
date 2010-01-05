@@ -125,7 +125,7 @@ module Orange
     def delete(packet, *opts)
       if packet.request.delete?
         m = model_class.get(packet['route.resource_id'])
-        m.destroy! if m
+        m.destroy if m
       end
       packet.reroute(@my_orange_name, :orange)
     end
@@ -226,6 +226,8 @@ module Orange
           ret = "<input type='text' value='#{val}' name='#{model_name}[#{name}]' />"
         when :fulltext
           ret = "<textarea name='#{model_name}[#{name}]'>#{val}</textarea>"
+        when :boolean
+          ret = "<input type='hidden' name='#{model_name}[#{name}]' value='0' /><input type='checkbox' name='#{model_name}[#{name}]' value='1' #{'checked="checked"' if (val && val != '')}/>"
         else
           ret = "<input type='text' value='#{val}' name='#{model_name}[#{name}]' />"
         end

@@ -1,7 +1,7 @@
 require 'orange/middleware/base'
 
 module Orange::Middleware
-  # This middleware handles setting orange.env[:context] 
+  # This middleware handles setting orange.env['route.context'] 
   # to a value based on the route, if any. The route is then 
   # trimmed before continuing on.
   class RouteContext < Base
@@ -33,7 +33,7 @@ module Orange::Middleware
           packet['route.context'] = @default
         end
       end
-      @app.call(packet.env)
+      pass packet
     end
   end
 end

@@ -57,6 +57,7 @@ module Orange
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
       load(Orange::PageParts.new, :page_parts)
+      load(Orange::AdminResource.new, :admin)
       afterLoad
       self
     end
@@ -165,9 +166,16 @@ module Orange
     # Accesses resources array, stored as a hash {:short_name => Resource instance,...}
     # 
     # @param [Symbol] name the short name for the requested resource
+    # @param [optional, Boolean] ignore Whether to ignore any calls to resource if not found 
+    #   (false is default). This will allow method calls to non-existent resources. Should be
+    #   used with caution.
     # @return [Orange::Resource] the resource for the given short name
-    def [](name)
-      @resources[name]
+    def [](name, ignore = false)
+      if ignore && !loaded?(name)
+        Ignore.new
+      else
+        @resources[name]
+      end 
     end
     
     # Includes module in the Packet class

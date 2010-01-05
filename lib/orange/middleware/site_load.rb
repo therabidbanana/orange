@@ -11,7 +11,16 @@ module Orange::Middleware
     def packet_call(packet)
       url =  packet['route.site_url']
       site = Orange::Site.first(:url.like => url)
-      packet['site'] = site if site
+      if site
+        packet['site'] = site
+      elsif
+        nil
+      else
+        s = Orange::Site.new({:url => packet['route.site_url'], 
+                              :name => 'An Orange Site'})
+        s.save
+        packet['site'] = s
+      end
       pass packet
     end
   end
@@ -29,5 +38,9 @@ module Orange
   
   class SiteResource < ModelResource
     use Orange::Site
+    def afterLoad
+      orange[:admin, true].add_link('Settings', :resource => @my_orange_name, 
+                                                :text => 'Site')
+    end
   end
 end

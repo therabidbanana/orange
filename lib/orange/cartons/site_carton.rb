@@ -1,4 +1,4 @@
-require 'dm-core'
+require 'orange/carton'
 
 module Orange
   # Defines a carton that belongs to a specific site.
