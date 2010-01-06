@@ -166,4 +166,107 @@ body{
 	padding: 10px;
 	font-size: x-small;
 }
+.sitemap_item{
+	border: 1px solid #bbb;
+	clear: both;
+	padding: 3px;
+}
 
+.sitemap_item h4{
+	float: left;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-left: 15px;
+	width: 200px;
+}
+
+.sitemap_item .actions{
+	float: right;
+	width: 200px;
+}
+
+
+.sitemap_item .move_actions{
+	width: 20px;
+	margin-right: 4px;
+	float: left;
+}
+
+
+.move_actions .up{
+	background: url(/assets/_orange_/img/sitemap_up.png);
+}
+.move_actions .arrow{
+	display: block;
+	font-size: 1%;
+	color: white;
+	height: 16px;
+	width: 16px;
+	margin: 5px;
+}
+.move_actions .indent{
+	margin-top: 15px;
+	background: url(/assets/_orange_/img/sitemap_indent.png);
+}
+.move_actions .outdent{
+	margin-top: 15px;
+	background: url(/assets/_orange_/img/sitemap_outdent.png);
+}
+
+.move_actions .down{
+	background: url(/assets/_orange_/img/sitemap_down.png);
+}
+
+.move_actions .disabled_down{
+	background: url(/assets/_orange_/img/sitemap_down_d.png);
+}
+
+
+
+.move_actions .disabled_up{
+	background: url(/assets/_orange_/img/sitemap_up_d.png);
+}
+
+
+.sitemap_level_1 {
+	font-size: .9em;
+	margin-left: 20px;
+}
+
+.sitemap_level_2 {
+	font-size: .8em;
+	margin-left: 40px;
+}
+
+
+.sitemap_level_3 {
+	font-size: .8em;
+	margin-left: 60px;
+}
+
+
+.sitemap_level_4 {
+	font-size: .8em;
+	margin-left: 80px;
+}
+
+button.link_button {
+	display: block;
+	background: none;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+form.mini {
+	display: inline-block;
+}
+
+.dent_actions form.mini{
+	margin-top: 10px;
+}
+
+br.clear {
+	height: 1px;
+	clear:both;
+}

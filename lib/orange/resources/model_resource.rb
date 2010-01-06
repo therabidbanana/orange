@@ -72,7 +72,7 @@ module Orange
       opts = args.extract_options!.with_defaults({:path => ''})
       props = model_class.form_props(packet['route.context'])
       resource_id = opts[:id] || packet['route.resource_id'] || false
-      all_opts = {:props => props, :resource => self.class.to_s, :model_name => @my_orange_name}.merge!(opts)
+      all_opts = {:props => props, :resource => self, :model_name => @my_orange_name}.merge!(opts)
       all_opts.with_defaults! :model => find_one(packet, mode, resource_id) unless is_list
       all_opts.with_defaults! :list => find_list(packet, mode) if is_list
       all_opts.with_defaults! find_extras(packet, mode)
@@ -196,13 +196,14 @@ module Orange
     # @param [String, false] confirm text of the javascript confirm (false for none [default])
     # @param [optional, Array] args array of optional arguments, only opts[:method] defined
     # @option opts [String] method method name (Should be 'DELETE', 'PUT' or 'POST')
-    def form_link(text, link, confirm = false, *args)
-      opts = args.extract_options!
+    def form_link(text, link, confirm = false, opts = {})
+      text = "<img src='#{opts[:img]}' alt='#{text}' />" if opts[:img]
+      css = opts[:class]? opts[:class] : 'form_button_link'
       meth = (opts[:method]? "<input type='hidden' name='_method' value='#{opts[:method]}' />" : '')
       if confirm
-        "<form action='#{link}' method='post' class='mini' onsubmit='return confirm(\"#{confirm}\")'><button class='link_button'><a href='#'>#{text}</a></button>#{meth}</form>"
+        "<form action='#{link}' method='post' class='mini' onsubmit='return confirm(\"#{confirm}\")'><button class='link_button'><a href='#' class='#{css}'>#{text}</a></button>#{meth}</form>"
       else
-        "<form action='#{link}' method='post' class='mini'><button class='link_button'><a href='#'>#{text}</a></button>#{meth}</form>"
+        "<form action='#{link}' method='post' class='mini'><button class='link_button'><a href='#' class='#{css}'>#{text}</a></button>#{meth}</form>"
       end
     end
     

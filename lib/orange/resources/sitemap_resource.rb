@@ -37,6 +37,38 @@ module Orange
       packet.reroute(@my_orange_name, :orange)
     end
     
+    def higher(packet, opts = {})
+      if packet.request.post?
+        me = find_one(packet, :higher, packet['route.resource_id'])
+        me.move(:higher) if me
+      end
+      packet.reroute(@my_orange_name, :orange)
+    end
+    
+    def lower(packet, opts = {})
+      if packet.request.post?
+        me = find_one(packet, :lower, packet['route.resource_id'])
+        me.move(:lower) if me
+      end
+      packet.reroute(@my_orange_name, :orange)
+    end
+    
+    def outdent(packet, opts = {})
+      if packet.request.post?
+        me = find_one(packet, :outdent, packet['route.resource_id'])
+        me.move(:outdent) if me
+      end
+      packet.reroute(@my_orange_name, :orange)
+    end
+    
+    def indent(packet, opts = {})
+      if packet.request.post?
+        me = find_one(packet, :indent, packet['route.resource_id'])
+        me.move(:indent) if me
+      end
+      packet.reroute(@my_orange_name, :orange)
+    end
+    
     def top_nav
       
     end

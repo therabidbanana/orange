@@ -18,20 +18,21 @@ module Orange
     def haml(file, packet, *vars, &block)
       opts = vars.extract_options!
       temp = opts.delete(:template)
-      resource = (opts[:resource] || '').downcase
+      opts[:resource_name] = opts[:resource].orange_name.to_s if 
+          opts[:resource] && opts[:resource].respond_to?(:orange_name)
+      resource = (opts[:resource_name] || '').downcase
       opts.merge :orange => orange
       
       templates_dir = File.join(orange.core_dir, 'templates')
       views_dir = File.join(orange.core_dir, 'views')
-      default_dir = File.join(views_dir, 'default_resource')
-      
       string = false
       string ||= read_if_exists('templates', file) if temp
       string ||= read_if_exists(templates_dir, file) if temp
       string ||= read_if_exists('views', resource, file) if resource
       string ||= read_if_exists('views', file)
-      string ||= read_if_exists(views_dir, file)
+      string ||= read_if_exists(views_dir, resource, file) if resource
       string ||= read_if_exists(views_dir, 'default_resource', file)
+      string ||= read_if_exists(views_dir, file)
       raise LoadError, "Couldn't find haml file '#{file}" unless string
       
       haml_engine = Haml::Engine.new(string)
