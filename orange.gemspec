@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2009-12-28}
+  s.date = %q{2010-01-25}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "lib/orange/middleware/access_control.rb",
      "lib/orange/middleware/base.rb",
      "lib/orange/middleware/database.rb",
+     "lib/orange/middleware/flex_router.rb",
      "lib/orange/middleware/globals.rb",
      "lib/orange/middleware/recapture.rb",
      "lib/orange/middleware/rerouter.rb",
@@ -38,12 +39,14 @@ Gem::Specification.new do |s|
      "lib/orange/middleware/template.rb",
      "lib/orange/packet.rb",
      "lib/orange/resource.rb",
-     "lib/orange/resources/flex_router.rb",
+     "lib/orange/resources/admin_resource.rb",
      "lib/orange/resources/mapper.rb",
      "lib/orange/resources/model_resource.rb",
      "lib/orange/resources/page_parts.rb",
      "lib/orange/resources/parser.rb",
      "lib/orange/resources/routable_resource.rb",
+     "lib/orange/resources/singleton_model_resource.rb",
+     "lib/orange/resources/sitemap_resource.rb",
      "lib/orange/stack.rb"
   ]
   s.homepage = %q{http://github.com/therabidbanana/orange}
@@ -52,43 +55,45 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Middle ground between Sinatra and Rails}
   s.test_files = [
-    "spec/application_spec.rb",
-     "spec/carton_spec.rb",
-     "spec/core_spec.rb",
-     "spec/magick_spec.rb",
-     "spec/middleware/access_control_spec.rb",
-     "spec/middleware/base_spec.rb",
-     "spec/middleware/database_spec.rb",
-     "spec/middleware/globals_spec.rb",
-     "spec/middleware/recapture_spec.rb",
-     "spec/middleware/rerouter_spec.rb",
-     "spec/middleware/restful_router_spec.rb",
-     "spec/middleware/route_context_spec.rb",
-     "spec/middleware/route_site_spec.rb",
-     "spec/middleware/show_exceptions_spec.rb",
-     "spec/middleware/site_load_spec.rb",
-     "spec/middleware/static_file_spec.rb",
-     "spec/middleware/static_spec.rb",
-     "spec/middleware/template_spec.rb",
-     "spec/mock/mock_app.rb",
-     "spec/mock/mock_carton.rb",
-     "spec/mock/mock_core.rb",
-     "spec/mock/mock_middleware.rb",
-     "spec/mock/mock_mixins.rb",
-     "spec/mock/mock_model_resource.rb",
-     "spec/mock/mock_pulp.rb",
-     "spec/mock/mock_resource.rb",
-     "spec/mock/mock_router.rb",
-     "spec/orange_spec.rb",
-     "spec/packet_spec.rb",
-     "spec/resource_spec.rb",
-     "spec/resources/flex_router_spec.rb",
-     "spec/resources/mapper_spec.rb",
-     "spec/resources/model_resource_spec.rb",
-     "spec/resources/parser_spec.rb",
-     "spec/resources/routable_resource_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/stack_spec.rb",
+    "spec/orange/application_spec.rb",
+     "spec/orange/carton_spec.rb",
+     "spec/orange/core_spec.rb",
+     "spec/orange/magick_spec.rb",
+     "spec/orange/middleware/access_control_spec.rb",
+     "spec/orange/middleware/base_spec.rb",
+     "spec/orange/middleware/database_spec.rb",
+     "spec/orange/middleware/globals_spec.rb",
+     "spec/orange/middleware/recapture_spec.rb",
+     "spec/orange/middleware/rerouter_spec.rb",
+     "spec/orange/middleware/restful_router_spec.rb",
+     "spec/orange/middleware/route_context_spec.rb",
+     "spec/orange/middleware/route_site_spec.rb",
+     "spec/orange/middleware/show_exceptions_spec.rb",
+     "spec/orange/middleware/site_load_spec.rb",
+     "spec/orange/middleware/static_file_spec.rb",
+     "spec/orange/middleware/static_spec.rb",
+     "spec/orange/middleware/template_spec.rb",
+     "spec/orange/mock/mock_app.rb",
+     "spec/orange/mock/mock_carton.rb",
+     "spec/orange/mock/mock_core.rb",
+     "spec/orange/mock/mock_middleware.rb",
+     "spec/orange/mock/mock_mixins.rb",
+     "spec/orange/mock/mock_model_resource.rb",
+     "spec/orange/mock/mock_pulp.rb",
+     "spec/orange/mock/mock_resource.rb",
+     "spec/orange/mock/mock_router.rb",
+     "spec/orange/orange_spec.rb",
+     "spec/orange/packet_spec.rb",
+     "spec/orange/resource_spec.rb",
+     "spec/orange/resources/admin_resource_spec.rb",
+     "spec/orange/resources/mapper_spec.rb",
+     "spec/orange/resources/model_resource_spec.rb",
+     "spec/orange/resources/parser_spec.rb",
+     "spec/orange/resources/routable_resource_spec.rb",
+     "spec/orange/resources/singleton_model_resource_spec.rb",
+     "spec/orange/resources/sitemap_resource_spec.rb",
+     "spec/orange/spec_helper.rb",
+     "spec/orange/stack_spec.rb",
      "spec/stats.rb"
   ]
 
