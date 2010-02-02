@@ -3,9 +3,9 @@ require 'orange/middleware/base'
 module Orange::Middleware
   class RestfulRouter < Base
     def init(*args)
-      opts = args.extract_options!.with_defaults(:contexts => [:admin, :orange], :root_resource => :not_found)
+      opts = args.extract_options!.with_defaults(:contexts => [:admin, :orange], :not_found => false)
       @contexts = opts[:contexts]
-      @root_resource = opts[:root_resource]
+      @not_found = opts[:not_found]
     end
     
     # sets resource, resource_id, resource_action and resource_path
@@ -40,9 +40,14 @@ module Orange::Middleware
           end # end check for loaded resource
         end # end check for nonempty route
         
-        packet['route.resource'] ||= @root_resource
-        packet['route.resource_path'] = parts.unshift(pad).join('/')
-        packet['route.router'] = self
+        if(packet['route.resource', false]) 
+          packet['route.resource_path'] = parts.unshift(pad).join('/')
+          packet['route.router'] = self
+        elsif(@not_found)
+          packet['route.resource'] = @not_found
+          packet['route.resource_path'] = parts.unshift(pad).join('/')
+          packet['route.router'] = self
+        end
       end # End context match if
       
       pass packet
