@@ -29,12 +29,11 @@ module Orange
     # Calling view is equivalent to calling a viewable method directly, view just
     # sets up safe defaults so method missing errors are less likely.
     # @param [Orange::Packet] packet the packet calling view on this resource
-    def view(packet, *args)
-      opts = args.last || {}
+    def view(packet, opts = {})
       resource_id = opts[:id] || packet['route.resource_id', false]
       mode = opts[:mode] || packet['route.resource_action'] || 
         (resource_id ? :show : :index)
-      self.__send__(mode, packet, *args)
+      self.__send__(mode, packet, opts)
     end
     
     # Renders a view, with all options set for haml to access.

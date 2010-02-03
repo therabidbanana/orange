@@ -124,6 +124,10 @@ The following are useful rake tasks for testing purposes:
     * rake doc    =>  runs yardoc (no, not really necessary)
     * rake clean  =>  clear out the temporary files not included in the repo
     * rake rcov   =>  runs rspec with rcov
+
+For my own reference - jeweler rake task for deploying the new gem:
+
+    * rake version:bump:patch release
     
 Programming Info
 ================
