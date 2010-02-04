@@ -6,7 +6,7 @@ module Orange::Middleware
   # it uses the Orange::SitemapResource. 
   # 
   # The resource is automatically loaded into the core as 
-  # :sitemap. The resource must respond to "does_route?(path)" 
+  # :sitemap. The resource must respond to "route?(path)" 
   # and "route(packet)".  
   # 
   # Pass a different routing resource using the :resource arg
@@ -22,7 +22,7 @@ module Orange::Middleware
       return (pass packet) if packet['route.router']  # Don't route if other middleware
                                                       # already has
       path = packet['route.path'] || packet.request.path_info
-      packet['route.router'] = orange[:sitemap] if orange[:sitemap].does_route?(packet, path)
+      packet['route.router'] = orange[:sitemap] if orange[:sitemap].route?(packet, path)
       pass packet
     end
     

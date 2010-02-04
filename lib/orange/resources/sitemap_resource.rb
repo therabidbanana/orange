@@ -37,10 +37,16 @@ module Orange
     end
     
     def route(packet)
-      packet[:content] = 'Routed: ' + packet['route.route'].full_path + ' With Extras: ' + packet['route.resource_path']
+      resource = packet['route.resource']
+      raise 'resource not found' unless orange.loaded? resource
+      unless (packet['route.resource_action'])
+        packet['route.resource_action'] = (packet['route.resource_id'] ? :show : :index)
+      end
+      
+      packet[:content] = (orange[resource].view packet)
     end
     
-    def does_route?(packet, path)
+    def route?(packet, path)
       parts = path.split('/')
       pad = parts.shift
       matched = home(packet)
@@ -58,9 +64,9 @@ module Orange
       return false if(extras.length > 0 && !matched.accept_args)
       packet['route.path'] = path
       packet['route.route'] = matched
-      packet['route.resource'] = matched.resource
-      packet['route.resource_id'] = matched.resource_id
-      packet['route.resource_action'] = matched.resource_action
+      packet['route.resource'] = matched.resource.to_sym
+      packet['route.resource_id'] = matched.resource_id.to_i unless matched.resource_id.empty?
+      packet['route.resource_action'] = matched.resource_action.to_sym unless matched.resource_action.empty? 
       # allow "resource_paths" - extra arguments added as path parts
       packet['route.resource_path'] = extras
       return true
