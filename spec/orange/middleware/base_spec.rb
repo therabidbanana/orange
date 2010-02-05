@@ -21,7 +21,7 @@ describe Orange::Middleware::Base do
     app = mock("downstream")
     app2 = mock("downstream_orange")
     my_hash = {:foo => :bar}
-    app.should_receive(:call).with(my_hash)
+    app.should_receive(:call).with(my_hash).and_return([{},200,[]])
     app2.should_receive(:packet_call).with(an_instance_of(Orange::Packet))
     mid = MockOrangeBasedMiddlewareTwo.new(app, nil)
     mid2 = MockOrangeBasedMiddlewareTwo.new(app2, nil)
@@ -34,4 +34,5 @@ describe Orange::Middleware::Base do
     mid = MockOrangeBasedMiddlewareTwo.new(nil, c)
     mid.orange.should equal c
   end
+
 end

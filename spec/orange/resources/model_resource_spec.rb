@@ -170,7 +170,7 @@ describe Orange::ModelResource do
   it "should call carton's destroy! on DELETE delete and reroute" do
     a= MockModelResourceTwo.new
     m= mock("carton", :null_object => true)
-    m.should_receive(:destroy!)
+    m.should_receive(:destroy)
     a.stub!(:model_class).and_return(m)
     p2 = mock("packet", :null_object => true)
     p2.should_receive(:reroute)

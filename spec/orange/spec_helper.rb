@@ -46,6 +46,6 @@ end
 
 def return_env_app
   lambda { |env|
-    env
+    [env, 200, ["ok"]]
   }
 end

@@ -89,9 +89,23 @@
             %th Value
         %tbody
           - env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
-            %tr
-              %td #{h key}
-              %td.code
-                %div #{h val}
+            - if(![:request, :headers, :content].include?(key)) 
+              %tr
+                %td #{h key}
+                %td.code
+                  %div #{h val}
+      %h3#orange-info= 'Orange<br /> Response'
+      %table.req
+        %thead
+          %tr
+            %th Variable
+            %th Value
+        %tbody
+          - env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
+            - if([:request, :headers, :content].include?(key)) 
+              %tr
+                %td #{h key}
+                %td.code
+                  %div #{h val}
     #explanation
       %p= "You're seeing this error because you use <code>Orange::Middleware::ShowExceptions</code>."

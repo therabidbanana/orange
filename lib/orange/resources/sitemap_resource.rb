@@ -66,7 +66,7 @@ module Orange
       packet['route.route'] = matched
       packet['route.resource'] = matched.resource.to_sym unless matched.resource.blank?
       packet['route.resource_id'] = matched.resource_id.to_i unless matched.resource_id.blank?
-      packet['route.resource_action'] = matched.resource_action.to_sym unless  matched.resource_id.blank?
+      packet['route.resource_action'] = matched.resource_action.to_sym unless  matched.resource_action.blank?
       # allow "resource_paths" - extra arguments added as path parts
       packet['route.resource_path'] = extras
       return true

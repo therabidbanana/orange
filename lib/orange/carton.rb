@@ -22,7 +22,7 @@ module Orange
   # class and just include DataMapper::Resource. All carton methods are to
   # improve scaffolding capability.
   class Carton
-    SCAFFOLD_OPTIONS = [:display_name] unless defined?(SCAFFOLD_OPTIONS)
+    SCAFFOLD_OPTIONS = [:display_name, :levels] unless defined?(SCAFFOLD_OPTIONS)
     # Declares a ModelResource subclass that scaffolds this carton
     # The Subclass will have the name of the carton followed by "_Resource"
     def self.as_resource
@@ -80,7 +80,7 @@ module Orange
     end
     
     def self.add_scaffold(name, type, dm_type, opts)
-      scaffold_properties << {:name => name, :type => type, :levels => @levels}.merge(opts) if @levels
+      scaffold_properties << {:name => name, :type => type, :levels => @levels}.merge(opts) if @levels || opts.has_key?(:levels)
       opts = opts.delete_if{|k,v| SCAFFOLD_OPTIONS.include?(k)} # DataMapper doesn't like arbitrary opts
       self.property(name, dm_type, opts)
     end

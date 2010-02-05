@@ -10,8 +10,8 @@ describe Orange::Middleware::SiteLoad do
     Orange::Site.should_receive(:first).with(an_instance_of(Hash)).and_return('foo')
     app = Orange::Middleware::SiteLoad.new(return_env_app, Orange::Core.new)
     ret = app.call({})
-    ret['orange.env'].should have_key('site')
-    ret['orange.env']['site'].should == 'foo'
+    ret[0]['orange.env'].should have_key('site')
+    ret[0]['orange.env']['site'].should == 'foo'
   end
   
   it "should create a new site object, if one doesn't exist" do
@@ -21,6 +21,6 @@ describe Orange::Middleware::SiteLoad do
     m.should_receive(:save).and_return(true)
     app = Orange::Middleware::SiteLoad.new(return_env_app, Orange::Core.new)
     ret = app.call({})
-    ret['orange.env'].should have_key('site')
+    ret[0]['orange.env'].should have_key('site')
   end
 end

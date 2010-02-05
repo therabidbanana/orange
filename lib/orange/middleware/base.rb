@@ -63,8 +63,20 @@ module Orange::Middleware
       if @app.respond_to?(:packet_call)
         @app.packet_call(packet)
       else
-        @app.call(packet.env) 
+        recapture(@app.call(packet.env), packet)
       end
+    end
+    
+    # After the pass has been completed, we should recapture the contents and make
+    # sure they are placed in the packet, in case the downstream app is not Orange aware.
+    # @param [Array] the standard Rack striplet of status, headers and content
+    # @param [Orange::Packet] packet the packet to pass to downstream apps
+    # @return [Array] the standard Rack striplet of status, headers and content
+    def recapture(response, packet)
+      packet[:status]  = response[0]
+      packet[:headers] = response[1]
+      packet[:content] = response[2].first
+      response
     end
     
     # Accessor for @core, which is the stack's instance of Orange::Core
