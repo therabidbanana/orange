@@ -46,10 +46,8 @@ module Orange
     def prebuild(choice)
       case choice
       when :none
-        no_recapture
         run @main_app
       else
-        no_recapture
         run @main_app
       end
     end
@@ -150,15 +148,10 @@ module Orange
       orange.add_pulp(mod)
     end
     
-    # The exit point for the middleware stack, 
-    # this method will add the Orange::Middleware::Recapture if applicable
+    # The exit point for the middleware stack,
     # add the app to @main_app and then call Rack::Builder#run with the main app
     def run(app, *args)
       opts = args.extract_options!
-      if @recapture
-        stack Orange::Middleware::Recapture
-        @recapture = false
-      end
       @main_app = app
       @build.run(app)
     end

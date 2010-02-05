@@ -104,6 +104,7 @@ describe Orange::Stack do
   it "should rebuild stack if auto_reload! set" do
     x= Orange::Stack.new do
       auto_reload!
+      use MockMiddleware
       run MockExitware.new
     end
     x.app.should_not eql(x.app)
@@ -157,18 +158,11 @@ describe Orange::Stack do
     restfuls.should have(1).items
   end
   
-  it "should have not have recapture middleware for a default stack" do
+  it "should have not have extra middleware for a default stack" do
     x= Orange::Stack.new MockApplication
     x.middlewarez.should have(1).middlewares
   end
-  
-  it "should have recapture middleware by default if stack created with block" do
-    x= Orange::Stack.new do
-      run MockExitware.new
-    end
-    x.middlewarez.should have(2).middlewares
-  end
-  
+    
   it "should not include Rack::OpenID unless openid_access_control enabled" do
     defined?(Rack::OpenID).should be_nil
     x= Orange::Stack.new do
