@@ -1,5 +1,5 @@
 # Monkey Patch the extract_options! stolen from ActiveSupport
-class ::Array
+class ::Array #:nodoc:
   def extract_options!
     last.is_a?(::Hash) ? pop : {}
   end
@@ -9,7 +9,7 @@ class ::Array
 end
 
 # Monkey Patch for merging defaults into a hash 
-class ::Hash
+class ::Hash #:nodoc:
   def with_defaults(defaults)
     self.merge(defaults){ |key, old, new| old.nil? ? new : old } 
   end
@@ -28,13 +28,13 @@ end
 #   end
 #
 #   # => {:x => 32, :y => 63, :z => 91}
-module Enumerable
+module Enumerable #:nodoc:
   def inject_hash(hash = {}) 
     inject(hash) {|(h,item)| yield(h,item); h}
   end 
 end
 
-module ClassInheritableAttributes
+module ClassInheritableAttributes #:nodoc:
   def cattr_inheritable(*args)
     @cattr_inheritable_attrs ||= [:cattr_inheritable_attrs]
     @cattr_inheritable_attrs += args
@@ -101,7 +101,7 @@ module Orange
   end
 end
 
-class Object
+class Object #:nodoc:
   # An object is blank if it's false, empty, or a whitespace string.
   # For example, "", "   ", +nil+, [], and {} are blank.
   #
