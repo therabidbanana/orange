@@ -16,12 +16,13 @@ module Orange::Middleware
     # @option opts [Boolean] :config_id Whether to use the id set in a config file
     
     def init(opts = {})
-      defs = {:locked => [:admin, :orange], :login => '/login', 
+      defs = {:locked => [:admin, :orange], :login => '/login', :logout => '/logout',
               :handle_login => true, :openid => true, :config_id => true}
       opts = opts.with_defaults!(defs)
       @openid = opts[:openid]
       @locked = opts[:locked]
       @login = opts[:login]
+      @logout = opts[:logout]
       @handle = opts[:handle_login]
       @single = opts[:config_id]
     end
@@ -59,11 +60,20 @@ module Orange::Middleware
     end
     
     def need_to_handle?(packet)
-      @handle && (packet.env['REQUEST_PATH'] == @login)
+      @handle && ([@login, @logout].include? packet.env['REQUEST_PATH'])
     end
     
     def handle_openid(packet)
+      if packet.env['REQUEST_PATH'] == @logout
+        packet.session['user.id'] = nil
+        packet['user.id'] = nil
+        after = packet.session['user.after_login'].blank? ? 
+                '/' : packet.session['user.after_login'] 
+        packet.reroute(after)
+        false
+      end
       packet.reroute('/') if packet['user.id'] # Reroute to index if we're logged in.
+      
       # If login set
       if packet.request.post?
         packet['template.disable'] = true
@@ -73,7 +83,7 @@ module Orange::Middleware
             packet['user.id'] = resp.identity_url
             packet['user.openid.url'] = resp.identity_url
             packet['user.openid.response'] = resp
-            
+            raise 'foo'
             after = packet.session.has_key?('user.after_login') ?
                         packet.session['user.after_login'] : '/'
             packet.session['user.after_login'] = false
