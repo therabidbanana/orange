@@ -1,4 +1,5 @@
 - if model
+  = orange[:sitemap, true].sitemap_links(packet)
   %form{:action => "#{packet.route_to(model_name, model[:id], 'save')}", :method => 'post'}
     - for prop in props
       %p= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))

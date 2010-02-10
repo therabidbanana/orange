@@ -28,6 +28,18 @@ module Orange
         end
       end
     end
+    
+    def self.home_for_site(site_id)
+      root(:orange_site_id => site_id) 
+    end
+    
+    
+    def self.create_home_for_site(site_id)
+      home = self.new({:orange_site_id => site_id, :slug => '_index_', :accept_args => false, :link_text => 'Home'})
+      home.move(:root)
+      home.save
+      home
+    end
   end
   
   class SitemapResource < ModelResource
@@ -122,22 +134,24 @@ module Orange
     
     def home(packet)
       site_id = packet['site'].id
-      home_for_site(site_id) || create_home_for_site(site_id)
+      model_class.home_for_site(site_id) || model_class.create_home_for_site(site_id)
     end
     
-    def home_for_site(site_id)
-      model_class.root(:orange_site_id => site_id) 
+    def routes_for(resource, id, site)
+      keys = {}
+      keys[:resource] = resource unless resource.blank?
+      keys[:resource_id] = id unless id.blank?
+      keys[:orange_site_id] = site unless site.blank?
+      model_class.all(keys)
     end
     
-    def create_home_for_site(site_id)
-      home = model_class.new({:orange_site_id => site_id, :slug => '_index_', :accept_args => false, :link_text => 'Home'})
-      home.move(:root)
-      home.save
-      home
-    end
-    
-    def find_list(packet, mode)
+    def find_list(packet, mode, *args)
       home(packet).self_and_descendants
+    end
+    
+    def sitemap_links(packet, opts = {})
+      opts.with_defaults!({:list => routes_for(packet['route.resource'], packet['route.resource_id'], packet['site'].id) })
+      do_list_view(packet, :sitemap_links, opts)
     end
   end
 end

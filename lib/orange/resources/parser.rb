@@ -52,9 +52,11 @@ module Orange
   module Pulp::ParserPulp
     def html(&block)
       if block_given?
-        doc = orange[:parser].hpricot(packet[:content])
-        yield doc
-        packet[:content] = doc.to_s
+        unless(packet[:content].blank?)
+          doc = orange[:parser].hpricot(packet[:content])
+          yield doc
+          packet[:content] = doc.to_s
+        end
       end
     end
   end
