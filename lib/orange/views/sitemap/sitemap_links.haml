@@ -6,7 +6,7 @@
 - else
   .sitemap_links_info.success
     %h4 Current Route: #{list.first.full_path} #{list.size > 1 ? '(and ' + (list.size - 1).to_s + ' others)' : ''}
-    %a{:href=>'#'} More Info
+    %a.more_info{:href=>'#'} More Info
     .sitemap_links{:style => 'display:none'}
       - for obj in list
         .sitemap_link
