@@ -9,6 +9,8 @@ module Orange
     def add_link(section, *args)
       opts = args.extract_with_defaults(:position => 0)
       @links[section] = [] unless @links.has_key?(section)
+      matches = @links[section].select{|i| i[:resource] == opts[:resource] && i[:text] == opts[:text]}
+      return @links[section] unless matches.empty?
       @links[section].insert(opts.delete(:position), opts)
       @links[section].compact!
       @links[section].uniq!
