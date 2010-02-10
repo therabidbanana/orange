@@ -7,6 +7,7 @@ class Main < Orange::Application
     @core.template_chooser do |packet|
       if [:admin, :orange].include?(packet['route.context'])
         packet.add_css('admin.css', :module => '_orange_')
+        packet.add_js('jquery.js', :module => '_orange_')
         packet.add_js('admin.js', :module => '_orange_')
         orange.fire(:view_admin, packet)
         'admin.haml'
@@ -55,6 +56,7 @@ class Page_Resource < Orange::ModelResource
   use Page
   def afterLoad
     orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
+    options[:sitemappable] = true
   end
 end
 

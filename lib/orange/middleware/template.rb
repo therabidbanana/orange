@@ -12,6 +12,8 @@ module Orange::Middleware
       @core.template_chooser do |packet|
         if packet['route.context'] == :admin
           packet.add_css('admin.css', :module => '_orange_')
+          packet.add_js('jquery.js', :module => '_orange_')
+          packet.add_js('admin.js', :module => '_orange_')
           'admin.haml'
         else
           false

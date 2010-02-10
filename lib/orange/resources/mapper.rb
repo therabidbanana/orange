@@ -23,9 +23,10 @@ module Orange
       orange[:mapper].route_to(self, resource, *args)
     end
     
-    def reroute(url, type = :real)
+    def reroute(url, type = :real, *args)
       packet['reroute.to'] = url
       packet['reroute.type'] = type
+      packet['reroute.args'] = *args if args
       raise Reroute.new(self), 'Unhandled reroute'
     end
     
@@ -44,7 +45,7 @@ module Orange
         packet['reroute.to']
       # Parsing for orange urls or something
       when :orange
-        packet.route_to(packet['reroute.to'])
+        packet.route_to(packet['reroute.to'], packet['reroute.args', []])
       else
         packet['reroute.to']
       end
