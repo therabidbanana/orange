@@ -1,10 +1,10 @@
 # Monkey Patch the extract_options! stolen from ActiveSupport
 # @private
 class ::Array #:nodoc:
-  def extract_options! #:nodoc:
+  def extract_options! 
     last.is_a?(::Hash) ? pop : {}
   end
-  def extract_with_defaults(defaults) #:nodoc:
+  def extract_with_defaults(defaults) 
     extract_options!.with_defaults(defaults)
   end
 end
@@ -12,10 +12,10 @@ end
 # Monkey Patch for merging defaults into a hash 
 # @private
 class ::Hash #:nodoc:
-  def with_defaults(defaults) #:nodoc:
+  def with_defaults(defaults) 
     self.merge(defaults){ |key, old, new| old.nil? ? new : old } 
   end
-  def with_defaults!(defaults) #:nodoc:
+  def with_defaults!(defaults) 
     self.merge!(defaults){ |key, old, new| old.nil? ? new : old } 
   end
 end
