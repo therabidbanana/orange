@@ -83,7 +83,15 @@ module Orange::Middleware
             packet['user.id'] = resp.identity_url
             packet['user.openid.url'] = resp.identity_url
             packet['user.openid.response'] = resp
-            raise 'foo'
+            # Load in any registration data gathered
+            profile_data = {}
+            # merge the SReg data and the AX data into a single hash of profile data
+            [ OpenID::SReg::Response, OpenID::AX::FetchResponse ].each do |data_response|
+              if data_response.from_success_response( resp )
+                profile_data.merge! data_response.from_success_response( resp ).data
+              end
+            end
+            
             after = packet.session.has_key?('user.after_login') ?
                         packet.session['user.after_login'] : '/'
             packet.session['user.after_login'] = false
@@ -104,8 +112,10 @@ module Orange::Middleware
           packet[:status] = 401
           packet[:headers] = {}
           packet.add_header('WWW-Authenticate', Rack::OpenID.build_header(
-                :identifier => packet.request.params["openid_identifier"]
-              ))
+                :identifier => packet.request.params["openid_identifier"],
+                :required => [:email, "http://axschema.org/contact/email"]
+                ) 
+          )
           packet[:content] = 'Got openID?'
           packet.finish
         end
