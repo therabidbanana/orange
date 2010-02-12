@@ -250,7 +250,7 @@ module Orange
           ret = "<div class='#{model_name}-#{name}'>#{val}</div>"
         end
       end
-      ret
+      return ret
     end
   end
 end

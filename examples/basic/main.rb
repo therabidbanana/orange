@@ -18,6 +18,7 @@ class Main < Orange::Application
     orange[:radius, true].context.define_tag "hello" do |tag|
       "Hello #{tag.attr['name'] || 'World'}!"
     end
+    
   end
   
 end
@@ -25,7 +26,7 @@ end
 class Tester < Orange::Resource
   def afterLoad
     orange.register(:wrapped, 100) do |packet|
-      appendHah(packet)
+      # appendHah(packet)
     end
   end
   

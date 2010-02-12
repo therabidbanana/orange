@@ -105,6 +105,7 @@ Make sure github gems can be downloaded:
 * ruby-openid
 * rack-openid
 * meekish-openid_dm_store
+* radius
 
 Also, you'll need a web server of some kind and need to set it up for rack.
 

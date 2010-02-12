@@ -5,12 +5,6 @@ require 'rubygems'
 require 'rack'
 require 'rack/bug'
 
-use Rack::CommonLogger
-use Rack::Reloader
-use Rack::MethodOverride
-use Rack::Bug
-use Rack::Session::Cookie, :secret => 'orange_secret'
-
 # app = Orange::Stack.new do
 #   stack Orange::Middleware::Static
 #   stack Orange::Middleware::RouteSite, :multi => false
