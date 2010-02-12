@@ -81,6 +81,7 @@ module Orange::Middleware
         if resp = packet.env["rack.openid.response"]
           if resp.status == :success
             packet['user.id'] = resp.identity_url
+            
             packet['user.openid.url'] = resp.identity_url
             packet['user.openid.response'] = resp
             # Load in any registration data gathered
@@ -91,6 +92,17 @@ module Orange::Middleware
                 profile_data.merge! data_response.from_success_response( resp ).data
               end
             end
+            
+            if packet['user.id'] =~ /^https?:\/\/(www.)?google.com\/accounts/
+              packet['user.id'] = profile_data["http://axschema.org/contact/email"]
+              packet['user.id'] = packet['user.id'].first if packet['user.id'].kind_of?(Array)
+            end
+            
+            if packet['user.id'] =~ /^https?:\/\/(www.)?yahoo.com/
+              packet['user.id'] = profile_data["http://axschema.org/contact/email"]
+              packet['user.id'] = packet['user.id'].first if packet['user.id'].kind_of?(Array)
+            end
+            
             
             after = packet.session.has_key?('user.after_login') ?
                         packet.session['user.after_login'] : '/'

@@ -10,6 +10,7 @@ class Main < Orange::Application
     prerouting :multi => false
     stack Orange::Middleware::Database
     stack Orange::Middleware::SiteLoad
+    stack Orange::Middleware::RadiusParser
     stack Orange::Middleware::Template
     
     openid_access_control

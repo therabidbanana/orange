@@ -15,8 +15,10 @@ class Main < Orange::Application
         false
       end
     end # end do
+    orange[:radius, true].context.define_tag "hello" do |tag|
+      "Hello #{tag.attr['name'] || 'World'}!"
+    end
   end
-  
   
 end
 
