@@ -14,6 +14,7 @@ class Main < Orange::Application
     auto_reload!
     use_exceptions
     stack Orange::Middleware::Globals
+    stack Orange::Middleware::Loader
     prerouting :multi => false
     stack Orange::Middleware::Database
     stack Orange::Middleware::SiteLoad
@@ -25,7 +26,6 @@ class Main < Orange::Application
     stack Orange::Middleware::FlexRouter
     
     load Tester.new
-    load Page_Resource.new, :pages
     run Main.new(orange)
   end
 end

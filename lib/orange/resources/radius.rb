@@ -13,9 +13,11 @@ module Orange
     end
     
     def parse(packet)
-      content = packet[:content]
-      parser = ::Radius::Parser.new(context, :tag_prefix => 'o')
-      packet[:content] = parser.parse(content)
+      content = packet[:content, false]
+      unless content.blank? 
+        parser = ::Radius::Parser.new(context, :tag_prefix => 'o')
+        packet[:content] = parser.parse(content)
+      end
     end
   end
 end

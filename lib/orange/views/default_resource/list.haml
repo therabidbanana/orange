@@ -3,6 +3,7 @@
     %tr
       - for prop in props
         %th= prop[:name]
+      %th
   %tbody
     - for obj in list
       = view_table_row(model_name, :model => obj)

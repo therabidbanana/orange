@@ -55,13 +55,6 @@ class Page < Orange::Carton
   end
 end
 
-class Page_Resource < Orange::ModelResource
-  use Page
-  def afterLoad
-    orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
-    options[:sitemappable] = true
-  end
-end
 
 class Orange::Site
   admin do

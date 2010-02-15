@@ -2,7 +2,6 @@ require 'orange/resources/routable_resource'
 
 module Orange
   class ModelResource < RoutableResource
-    extend ClassInheritableAttributes
     # Defines a model class as an inheritable class attribute and also an instance
     # attribute
     cattr_inheritable :model_class
