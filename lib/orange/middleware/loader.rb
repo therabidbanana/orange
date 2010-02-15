@@ -6,11 +6,8 @@ module Orange::Middleware
         require f 
         orange.load Orange::Inflector.constantize(Orange::Inflector.camelize(File.basename(f, '.rb'))).new
       end
-      
-    end
-    
-    def packet_call(packet)
-      pass packet
+      Dir.glob(File.join(orange.app_dir, 'cartons', '*.rb')).each { |f|  require f }
+      Dir.glob(File.join(orange.app_dir, 'middleware', '*.rb')).each { |f|  require f }
     end
   end  
 end
