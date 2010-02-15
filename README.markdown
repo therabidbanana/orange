@@ -99,6 +99,7 @@ Make sure github gems can be downloaded:
 
 * dm-core (+ do_[sqlite3|mysql|...] )
 * dm-more
+* dm-is-awesome_set
 * rack
 * haml
 * mynyml-rack-abstract-format (github)
