@@ -1,11 +1,16 @@
 module Orange
+  module Pulp::PageHelpers
+    def fuzzy_time(t)
+      "foo"
+    end
+  end
   class PageResource < Orange::ModelResource
     use Orange::Page
     call_me :pages
     def afterLoad
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
       options[:sitemappable] = true
-      
+      orange.add_pulp(Orange::Pulp::PageHelpers)
     end
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed

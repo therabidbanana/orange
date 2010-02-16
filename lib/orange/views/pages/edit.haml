@@ -12,7 +12,7 @@
         %span.version_info
           %strong Version #{version.version} 
         %span.version_info  
-          Last Updated: #{version.updated_at}
+          Last Updated: #{fuzzy_time('foo')}
         %span.version_info
           %a{:href => route_to(model_name, model[:id], 'edit', "version", version.version)}Edit
 - else
