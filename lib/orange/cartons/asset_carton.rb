@@ -6,10 +6,10 @@ module Orange
       text :caption
     end
     orange do
-      string :mime_type
-      string :secondary_mime_type
       string :path, :length => 255
+      string :mime_type
       string :secondary_path, :length => 255, :required => false
+      string :secondary_mime_type
     end
     
     def file_path
