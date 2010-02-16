@@ -122,6 +122,13 @@ describe Orange::Core do
     c.app_dir.should == "/non/existent/dir"
   end
   
+  it "should return assigned app_dir with extra path if args passed" do
+    c= Orange::Core.new
+    c.options[:app_dir] = "/non/existent/dir"
+    c.app_dir('foo', 'bar').should_not == c.app_dir
+    c.app_dir('foo', 'bar').should == "/non/existent/dir/foo/bar"
+  end
+  
   it "should allow options" do
     c= Orange::Core.new(:opt_1 => true){ opt_2 true }
     c.options[:opt_1].should == true

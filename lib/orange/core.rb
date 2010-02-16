@@ -65,16 +65,24 @@ module Orange
     # Returns the orange library directory
     # @return [String] the directory name indicating where the core file is
     #   located
-    def core_dir
-      options[:core_dir] ||= File.dirname(__FILE__)
+    def core_dir(*args)
+      if args
+        File.join((options[:core_dir] ||= File.dirname(__FILE__)), *args)
+      else
+        options[:core_dir] ||= File.dirname(__FILE__)
+      end
     end
     
     # Returns the directory of the currently executing file (using Dir.pwd),
     # can be overriden using the option :app_dir in initialization
     # 
     # @return [String] the directory name of the currently running application
-    def app_dir
-      options[:app_dir] ||= Dir.pwd
+    def app_dir(*args)
+      if args
+        File.join((options[:app_dir] ||= Dir.pwd), *args)
+      else
+        options[:app_dir] ||= Dir.pwd
+      end
     end
     
     # Called by initialize after finished loading
