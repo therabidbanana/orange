@@ -1,7 +1,7 @@
 - if model
   - if resource.options[:sitemappable, false] 
     = orange[:sitemap, true].sitemap_links(packet, {:slug_me => orange[:sitemap, true].slug_for(model, props)})
-  %form{:action => "#{packet.route_to(model_name, model[:id], 'save')}", :method => 'post'}
+  %form{:action => packet.route_to(model_name, model[:id], 'save'), :method => 'post'}
     - for prop in props
       %p!= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
     %input{:type => 'submit', :value => 'Save Changes'}

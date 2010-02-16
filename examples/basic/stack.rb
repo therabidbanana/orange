@@ -8,7 +8,6 @@ class Main < Orange::Application
     use Rack::CommonLogger
     use Rack::Reloader
     use Rack::MethodOverride
-    use Rack::Bug
     use Rack::Session::Cookie, :secret => 'orange_secret'
 
     auto_reload!
@@ -24,7 +23,7 @@ class Main < Orange::Application
     openid_access_control
     restful_routing
     stack Orange::Middleware::FlexRouter
-    
+    load Orange::PageResource.new
     load Tester.new
     run Main.new(orange)
   end
