@@ -24,6 +24,7 @@ class Main < Orange::Application
     restful_routing
     stack Orange::Middleware::FlexRouter
     load Orange::PageResource.new
+    load Orange::AssetResource.new
     load Tester.new
     run Main.new(orange)
   end

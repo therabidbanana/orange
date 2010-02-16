@@ -40,7 +40,7 @@ module Orange::Middleware
       @core = core
       @libs = options[:libs] || [Orange::Core]
       
-      @urls = options[:urls] || ["/favicon.ico", "/assets/public"]
+      @urls = options[:urls] || ["/favicon.ico", "/assets/public", "/assets/uploaded"]
       @root = options[:root] || File.join(orange.app_dir, 'assets')
       @lib_urls = core.statics
       @file_server = Orange::Middleware::StaticFile.new(@root)
@@ -56,7 +56,7 @@ module Orange::Middleware
         packet['route.path'] = path.split(lib_url, 2).last        
         @file_server.call(packet.env)
       elsif can_serve
-        packet['route.path'] = path
+        packet['route.path'] = path.gsub(/^\/assets/, '')
         @file_server.call(packet.env)
       else
         pass packet
