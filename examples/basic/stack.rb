@@ -20,7 +20,7 @@ class Main < Orange::Application
     stack Orange::Middleware::RadiusParser
     stack Orange::Middleware::Template
     
-    openid_access_control
+    openid_access_control :single_user => false
     restful_routing
     stack Orange::Middleware::FlexRouter
     load Orange::PageResource.new

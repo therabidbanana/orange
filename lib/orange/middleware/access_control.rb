@@ -17,14 +17,17 @@ module Orange::Middleware
     
     def init(opts = {})
       defs = {:locked => [:admin, :orange], :login => '/login', :logout => '/logout',
-              :handle_login => true, :openid => true, :config_id => true}
+              :handle_login => true, :openid => true, :single_user => true}
       opts = opts.with_defaults!(defs)
       @openid = opts[:openid]
       @locked = opts[:locked]
       @login = opts[:login]
       @logout = opts[:logout]
       @handle = opts[:handle_login]
-      @single = opts[:config_id]
+      @single = opts[:single_user]
+      unless @single
+        orange.load(Orange::UserResource.new, :users)
+      end
     end
       
     def packet_call(packet)
@@ -51,8 +54,11 @@ module Orange::Middleware
           packet['user.id'] = false
           packet.session['user.id'] = false
           false
-        else
+        # Main_user can always log in (root access)
+        elsif packet['user.id'] == packet['orange.globals']['main_user']
           true
+        else
+          orange[:users].access_allowed?(packet, packet['user.id'])
         end
       else
         false

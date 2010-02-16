@@ -132,7 +132,7 @@ module Orange
     # A shortcut to enable Rack::OpenID and Orange::Middleware::AccessControl
     # 
     # Args will be passed on to Orange::Middleware::AccessControl
-    # @todo Make it so this is not dependent on the openid_dm_store gem
+    # @todo Make it so this is not dependent on the openid_dm_store gem (outdated)
     def openid_access_control(*args)
       opts = args.extract_options!
       require 'rack/openid'
