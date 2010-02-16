@@ -8,7 +8,6 @@ class Main < Orange::Application
     use Rack::CommonLogger
     use Rack::Reloader
     use Rack::MethodOverride
-    use Rack::Bug
     use Rack::Session::Cookie, :secret => 'orange_secret'
 
     auto_reload!
