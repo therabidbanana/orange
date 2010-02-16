@@ -39,23 +39,6 @@ class Tester < Orange::Resource
   end
 end
 
-
-class Page < Orange::Carton
-  id
-  front do
-    title :title
-    fulltext :body
-    fulltext :summary
-  end
-  admin do
-    text :admin_only
-  end
-  orange do
-    text :other_admin
-  end
-end
-
-
 class Orange::Site
   admin do
     text :extra
