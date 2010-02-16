@@ -13,8 +13,6 @@ module Orange::Middleware
       site = Orange::Site.first(:url.like => url)
       if site
         packet['site'] = site
-      elsif
-        nil
       else
         s = Orange::Site.new({:url => packet['route.site_url'], 
                               :name => 'An Orange Site'})

@@ -16,12 +16,13 @@ module Orange::Middleware
     # @option opts [Boolean] :config_id Whether to use the id set in a config file
     
     def init(opts = {})
-      defs = {:locked => [:admin, :orange], :login => '/login', 
+      defs = {:locked => [:admin, :orange], :login => '/login', :logout => '/logout',
               :handle_login => true, :openid => true, :config_id => true}
       opts = opts.with_defaults!(defs)
       @openid = opts[:openid]
       @locked = opts[:locked]
       @login = opts[:login]
+      @logout = opts[:logout]
       @handle = opts[:handle_login]
       @single = opts[:config_id]
     end
@@ -59,11 +60,20 @@ module Orange::Middleware
     end
     
     def need_to_handle?(packet)
-      @handle && (packet.env['REQUEST_PATH'] == @login)
+      @handle && ([@login, @logout].include? packet.env['REQUEST_PATH'])
     end
     
     def handle_openid(packet)
+      if packet.env['REQUEST_PATH'] == @logout
+        packet.session['user.id'] = nil
+        packet['user.id'] = nil
+        after = packet.session['user.after_login'].blank? ? 
+                '/' : packet.session['user.after_login'] 
+        packet.reroute(after)
+        false
+      end
       packet.reroute('/') if packet['user.id'] # Reroute to index if we're logged in.
+      
       # If login set
       if packet.request.post?
         packet['template.disable'] = true
@@ -71,8 +81,28 @@ module Orange::Middleware
         if resp = packet.env["rack.openid.response"]
           if resp.status == :success
             packet['user.id'] = resp.identity_url
+            
             packet['user.openid.url'] = resp.identity_url
             packet['user.openid.response'] = resp
+            # Load in any registration data gathered
+            profile_data = {}
+            # merge the SReg data and the AX data into a single hash of profile data
+            [ OpenID::SReg::Response, OpenID::AX::FetchResponse ].each do |data_response|
+              if data_response.from_success_response( resp )
+                profile_data.merge! data_response.from_success_response( resp ).data
+              end
+            end
+            
+            if packet['user.id'] =~ /^https?:\/\/(www.)?google.com\/accounts/
+              packet['user.id'] = profile_data["http://axschema.org/contact/email"]
+              packet['user.id'] = packet['user.id'].first if packet['user.id'].kind_of?(Array)
+            end
+            
+            if packet['user.id'] =~ /^https?:\/\/(www.)?yahoo.com/
+              packet['user.id'] = profile_data["http://axschema.org/contact/email"]
+              packet['user.id'] = packet['user.id'].first if packet['user.id'].kind_of?(Array)
+            end
+            
             
             after = packet.session.has_key?('user.after_login') ?
                         packet.session['user.after_login'] : '/'
@@ -94,8 +124,10 @@ module Orange::Middleware
           packet[:status] = 401
           packet[:headers] = {}
           packet.add_header('WWW-Authenticate', Rack::OpenID.build_header(
-                :identifier => packet.request.params["openid_identifier"]
-              ))
+                :identifier => packet.request.params["openid_identifier"],
+                :required => [:email, "http://axschema.org/contact/email"]
+                ) 
+          )
           packet[:content] = 'Got openID?'
           packet.finish
         end

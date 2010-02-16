@@ -106,6 +106,7 @@ module Orange
     #   Doesn't necessarily need to be a symbol, but generally is.
     #   Set to the class name lowercase as a symbol by default.
     def load(resource, name = false)
+      name = resource.orange_name if(!name)
       name = resource.class.to_s.gsub(/::/, '_').downcase.to_sym if(!name) 
       @resources[name] = resource.set_orange(self, name)
     end

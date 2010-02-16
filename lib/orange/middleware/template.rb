@@ -12,6 +12,8 @@ module Orange::Middleware
       @core.template_chooser do |packet|
         if packet['route.context'] == :admin
           packet.add_css('admin.css', :module => '_orange_')
+          packet.add_js('jquery.js', :module => '_orange_')
+          packet.add_js('admin.js', :module => '_orange_')
           'admin.haml'
         else
           false
@@ -25,9 +27,10 @@ module Orange::Middleware
       if needs_wrapped?(packet)
         content = wrap(packet, content)
         packet[:content] = content.first
-      end
-      orange.fire(:wrapped, packet)
-      [status, headers, packet.content]
+        orange.fire(:wrapped, packet)
+      end  
+      orange.fire(:after_wrap, packet)
+      packet.finish
     end
     
     def needs_wrapped?(packet)

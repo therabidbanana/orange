@@ -2,7 +2,6 @@ require 'orange/resources/routable_resource'
 
 module Orange
   class ModelResource < RoutableResource
-    extend ClassInheritableAttributes
     # Defines a model class as an inheritable class attribute and also an instance
     # attribute
     cattr_inheritable :model_class
@@ -214,7 +213,7 @@ module Orange
     # Returns a scaffolded attribute
     def view_attribute(prop, model_name, *args)
       args = args.extract_options!
-      val = args[:value] || ''
+      val = (args[:value] || '')
       label = args[:label] || false
       show = args[:show] || false
       name = prop[:name]
@@ -222,16 +221,19 @@ module Orange
       unless show
         case prop[:type]
         when :title
-          ret = "<input class='title' type='text' value='#{val}' name='#{model_name}[#{name}]' />"
+          val.gsub!('"', '&quot;')
+          ret = "<input class=\"title\" type=\"text\" value=\"#{val}\" name=\"#{model_name}[#{name}]\" />"
         when :text
-          ret = "<input type='text' value='#{val}' name='#{model_name}[#{name}]' />"
+          val.gsub!('"', '&quot;')
+          ret = "<input type=\"text\" value=\"#{val}\" name=\"#{model_name}[#{name}]\" />"
         when :fulltext
           ret = "<textarea name='#{model_name}[#{name}]'>#{val}</textarea>"
         when :boolean
           human_readable_name = human_readable_name + '?'
           ret = "<input type='hidden' name='#{model_name}[#{name}]' value='0' /><input type='checkbox' name='#{model_name}[#{name}]' value='1' #{'checked="checked"' if (val && val != '')}/>"
         else
-          ret = "<input type='text' value='#{val}' name='#{model_name}[#{name}]' />"
+          val.gsub!('"', '&quot;')
+          ret = "<input type=\"text\" value=\"#{val}\" name=\"#{model_name}[#{name}]\" />"
         end
         display_name = prop[:display_name] || human_readable_name
         ret = "<label for=''>#{display_name}</label><br />" + ret if label
@@ -247,7 +249,7 @@ module Orange
           ret = "<div class='#{model_name}-#{name}'>#{val}</div>"
         end
       end
-      ret
+      return ret
     end
   end
 end
