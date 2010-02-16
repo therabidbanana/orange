@@ -3,7 +3,6 @@ require 'main'
 require '../../lib/orange'
 require 'rubygems'
 require 'rack'
-require 'rack/bug'
 
 # app = Orange::Stack.new do
 #   stack Orange::Middleware::Static
