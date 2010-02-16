@@ -8,7 +8,7 @@ module Orange
       orange.register(:stack_loaded) do
         orange[:radius].context.define_tag "asset" do |tag|
           if tag.attr['id']
-            (m = model_class.first(:id => tag.attr['id'])) ? m.to_asset_tag : ''
+            (m = model_class.first(:id => tag.attr['id'])) ? m.to_asset_tag : 'Invalid Asset'
           else
             ''
           end
@@ -47,19 +47,13 @@ module Orange
     def delete(packet, *opts)
       if packet.request.delete?
         m = model_class.get(packet['route.resource_id'])
-        FileUtils.rm(orange.app_dir('assets','uploaded', m.path)) if m.path
-        FileUtils.rm(orange.app_dir('assets','uploaded', m.secondary_path)) if m.secondary_path
-        m.destroy if m
-      end
-      packet.reroute(@my_orange_name, :orange)
-    end
-    
-    def save(packet, *opts)
-      if packet.request.post?
-        m = model_class.get(packet['route.resource_id'])
-        if m
-          m.update(packet.request.params[@my_orange_name.to_s])
+        begin
+          FileUtils.rm(orange.app_dir('assets','uploaded', m.path)) if m.path
+          FileUtils.rm(orange.app_dir('assets','uploaded', m.secondary_path)) if m.secondary_path
+        rescue
+          # Problem deleting file
         end
+        m.destroy if m
       end
       packet.reroute(@my_orange_name, :orange)
     end
