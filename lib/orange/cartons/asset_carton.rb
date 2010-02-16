@@ -6,6 +6,8 @@ module Orange
       text :caption
     end
     orange do
+      string :mime_type
+      string :secondary_mime_type
       string :path, :length => 255
       string :secondary_path, :length => 255, :required => false
     end

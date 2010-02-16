@@ -33,7 +33,8 @@ module Orange
           
           params['path'] = params['file'][:filename] if file_path
           params['secondary_path'] = params['file2'][:filename] if secondary_path
-          
+          params['mime_type'] = params['file'][:type] if file_path
+          params['secondary_mime_type'] = params['file2'][:type] if secondary_path
           params.delete('file')
           params.delete('file2')
           
