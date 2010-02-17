@@ -130,13 +130,13 @@ module Orange
       packet.reroute(@my_orange_name, :orange)
     end
     
-    def top_nav
-      
-    end
-    
     def home(packet)
       site_id = packet['site'].id
       model_class.home_for_site(site_id) || model_class.create_home_for_site(site_id)
+    end
+    
+    def two_level(packet)
+      do_view(packet, :two_level, :model => home(packet))
     end
     
     def routes_for(packet)

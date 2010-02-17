@@ -1,0 +1,15 @@
+!!! xml
+!!!
+%html
+  %head
+    %title= part[:title, 'Orange Site'] 
+    = part[:css]
+    = part[:js]
+  %body
+    .container
+      #header
+        %h1 Demo Orange Site
+        #nav= orange[:sitemap].two_level(packet)
+      #inner-body
+        = yield
+      

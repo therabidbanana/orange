@@ -12,7 +12,8 @@ class Main < Orange::Application
         orange.fire(:view_admin, packet)
         'admin.haml'
       else 
-        false
+        packet.add_css('main.css')
+        'main.haml'
       end
     end # end do
     orange[:radius, true].context.define_tag "hello" do |tag|
