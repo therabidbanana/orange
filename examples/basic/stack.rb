@@ -25,6 +25,7 @@ class Main < Orange::Application
     stack Orange::Middleware::FlexRouter
     load Orange::PageResource.new
     load Orange::AssetResource.new
+    load Orange::Slices.new
     load Tester.new
     run Main.new(orange)
   end
