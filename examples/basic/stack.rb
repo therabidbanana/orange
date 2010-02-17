@@ -23,6 +23,7 @@ class Main < Orange::Application
     openid_access_control :single_user => false
     restful_routing
     stack Orange::Middleware::FlexRouter
+    stack Orange::Middleware::FourOhFour
     load Orange::PageResource.new
     load Orange::AssetResource.new
     load Orange::Slices.new

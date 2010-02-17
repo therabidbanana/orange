@@ -8,8 +8,9 @@ module Orange
     end
     
     def route_to(packet, resource, *args)
+      opts = args.extract_options!
       packet = DefaultHash.new unless packet 
-      context = packet['route.context', nil]
+      context = opts[:context] || packet['route.context', nil]
       site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil
       args.unshift(resource)
       args.unshift(context)
