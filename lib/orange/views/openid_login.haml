@@ -3,7 +3,9 @@
     %title Woah.
   %body
     %h2 Wait a minute... 
-    %p You'll need to log in before you can continue. Use your OpenID.
+    %p 
+      You'll need to log in before you can continue. Use your OpenID.
+      (You can use a Google account to log in. Put https://www.google.com/accounts/o8/id in the box below.)
     - if(session['flash.error'])
       .error= session['flash.error']
     %form{:action => '', :method => 'POST'}
