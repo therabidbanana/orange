@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-02-16}
+  s.date = %q{2010-02-17}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -19,18 +19,21 @@ Gem::Specification.new do |s|
     "lib/orange.rb",
      "lib/orange/application.rb",
      "lib/orange/carton.rb",
+     "lib/orange/cartons/asset_carton.rb",
      "lib/orange/cartons/page_carton.rb",
      "lib/orange/cartons/page_version_carton.rb",
      "lib/orange/cartons/site_carton.rb",
+     "lib/orange/cartons/user_carton.rb",
      "lib/orange/core.rb",
      "lib/orange/magick.rb",
      "lib/orange/middleware/access_control.rb",
      "lib/orange/middleware/base.rb",
      "lib/orange/middleware/database.rb",
      "lib/orange/middleware/flex_router.rb",
+     "lib/orange/middleware/four_oh_four.rb",
      "lib/orange/middleware/globals.rb",
      "lib/orange/middleware/loader.rb",
-     "lib/orange/middleware/radius.rb",
+     "lib/orange/middleware/radius_parser.rb",
      "lib/orange/middleware/rerouter.rb",
      "lib/orange/middleware/restful_router.rb",
      "lib/orange/middleware/route_context.rb",
@@ -43,8 +46,10 @@ Gem::Specification.new do |s|
      "lib/orange/packet.rb",
      "lib/orange/resource.rb",
      "lib/orange/resources/admin_resource.rb",
+     "lib/orange/resources/asset_resource.rb",
      "lib/orange/resources/mapper.rb",
      "lib/orange/resources/model_resource.rb",
+     "lib/orange/resources/not_found.rb",
      "lib/orange/resources/page_parts.rb",
      "lib/orange/resources/page_resource.rb",
      "lib/orange/resources/parser.rb",
@@ -52,6 +57,8 @@ Gem::Specification.new do |s|
      "lib/orange/resources/routable_resource.rb",
      "lib/orange/resources/singleton_model_resource.rb",
      "lib/orange/resources/sitemap_resource.rb",
+     "lib/orange/resources/slices.rb",
+     "lib/orange/resources/user_resource.rb",
      "lib/orange/stack.rb"
   ]
   s.homepage = %q{http://github.com/therabidbanana/orange}
@@ -110,9 +117,9 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<dm-more>, [">= 0.10.2"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0.1"])
       s.add_runtime_dependency(%q<haml>, [">= 2.2.13"])
-      s.add_runtime_dependency(%q<mynyml-rack-abstract-format>, [">= 0.9.7"])
+      s.add_runtime_dependency(%q<rack-abstract-format>, [">= 0.9.9"])
       s.add_runtime_dependency(%q<rack-openid>, [">= 0.2.2"])
-      s.add_runtime_dependency(%q<meekish-openid_dm_store>, [">= 0.1.2"])
+      s.add_runtime_dependency(%q<openid_dm_store>, [">= 0.1.3"])
       s.add_runtime_dependency(%q<dm-is-awesome_set>, [">= 0.11.0"])
       s.add_runtime_dependency(%q<radius>, [">= 0.6.1"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -122,9 +129,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<dm-more>, [">= 0.10.2"])
       s.add_dependency(%q<rack>, [">= 1.0.1"])
       s.add_dependency(%q<haml>, [">= 2.2.13"])
-      s.add_dependency(%q<mynyml-rack-abstract-format>, [">= 0.9.7"])
+      s.add_dependency(%q<rack-abstract-format>, [">= 0.9.9"])
       s.add_dependency(%q<rack-openid>, [">= 0.2.2"])
-      s.add_dependency(%q<meekish-openid_dm_store>, [">= 0.1.2"])
+      s.add_dependency(%q<openid_dm_store>, [">= 0.1.3"])
       s.add_dependency(%q<dm-is-awesome_set>, [">= 0.11.0"])
       s.add_dependency(%q<radius>, [">= 0.6.1"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -135,9 +142,9 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<dm-more>, [">= 0.10.2"])
     s.add_dependency(%q<rack>, [">= 1.0.1"])
     s.add_dependency(%q<haml>, [">= 2.2.13"])
-    s.add_dependency(%q<mynyml-rack-abstract-format>, [">= 0.9.7"])
+    s.add_dependency(%q<rack-abstract-format>, [">= 0.9.9"])
     s.add_dependency(%q<rack-openid>, [">= 0.2.2"])
-    s.add_dependency(%q<meekish-openid_dm_store>, [">= 0.1.2"])
+    s.add_dependency(%q<openid_dm_store>, [">= 0.1.3"])
     s.add_dependency(%q<dm-is-awesome_set>, [">= 0.11.0"])
     s.add_dependency(%q<radius>, [">= 0.6.1"])
     s.add_dependency(%q<rspec>, [">= 0"])
