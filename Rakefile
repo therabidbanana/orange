@@ -28,9 +28,9 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.add_dependency('dm-more', '>= 0.10.2')
   gemspec.add_dependency('rack', '>= 1.0.1')
   gemspec.add_dependency('haml', '>= 2.2.13')
-  gemspec.add_dependency('mynyml-rack-abstract-format', '>= 0.9.7')
+  gemspec.add_dependency('rack-abstract-format', '>= 0.9.9')
   gemspec.add_dependency('rack-openid', '>= 0.2.2')
-  gemspec.add_dependency('meekish-openid_dm_store', '>= 0.1.2')
+  gemspec.add_dependency('openid_dm_store', '>= 0.1.3')
   gemspec.add_dependency('dm-is-awesome_set', '>= 0.11.0')
   gemspec.add_dependency('radius', '>= 0.6.1')
   gemspec.add_development_dependency "rspec", ">= 0"
