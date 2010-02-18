@@ -1,7 +1,6 @@
 require 'orange/core'
 require 'haml'
 require 'yaml'
-require 'hpricot'
 
 module Orange
   class Parser < Resource
@@ -45,6 +44,7 @@ module Orange
     end
     
     def hpricot(text)
+      require 'hpricot'
       Hpricot(text)
     end
   end 
