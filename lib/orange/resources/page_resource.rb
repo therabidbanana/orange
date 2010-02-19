@@ -7,12 +7,33 @@ module Orange
       options[:sitemappable] = true
       
     end
+    
+    def publish(packet, *opts)
+      if packet.request.post?
+        m = model_class.get(packet['route.resource_id'])
+        if m
+          params = {}
+          params[:published] = true
+          m.update(params)
+          params = m.attributes.merge(params)
+          params.delete(:id)
+          max = m.versions.max(:version) || 0
+          m.versions.new(params.merge(:version => max + 1))
+          m.save
+        end
+      end
+      packet.reroute(@my_orange_name, :orange)
+    end
+    
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
     def new(packet, *opts)
       if packet.request.post?
-        m = model_class.new(packet.request.params[@my_orange_name.to_s])
-        m.versions.new(packet.request.params[@my_orange_name.to_s].merge(:version => 1))
+        params = packet.request.params[@my_orange_name.to_s]
+        params[:published] = false
+        m = model_class.new(params)
+        m.orange_site = packet['site']
+        # m.versions.new(params.merge(:version => 1))
         m.save
       end
       packet.reroute(@my_orange_name, :orange)
@@ -24,9 +45,10 @@ module Orange
       if packet.request.post?
         m = model_class.get(packet['route.resource_id'])
         if m
-          m.update(packet.request.params[@my_orange_name.to_s])
-          max = m.versions.max(:version)
-          m.versions.new(packet.request.params[@my_orange_name.to_s].merge(:version => max + 1))
+          params = packet.request.params[@my_orange_name.to_s]
+          params[:published] = false
+          m.update(params)
+          m.orange_site = packet['site']
           m.save
         end
       end
