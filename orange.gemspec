@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.0.8"
+  s.version = "0.0.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-02-17}
+  s.date = %q{2010-02-19}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -59,7 +59,11 @@ Gem::Specification.new do |s|
      "lib/orange/resources/sitemap_resource.rb",
      "lib/orange/resources/slices.rb",
      "lib/orange/resources/user_resource.rb",
-     "lib/orange/stack.rb"
+     "lib/orange/stack.rb",
+     "lib/orange/templates/admin.haml",
+     "lib/orange/templates/exceptions.haml",
+     "lib/orange/views/assets/create.haml",
+     "lib/orange/views/openid_login.haml"
   ]
   s.homepage = %q{http://github.com/therabidbanana/orange}
   s.rdoc_options = ["--charset=UTF-8"]
