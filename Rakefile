@@ -22,7 +22,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.email = "therabidbanana@gmail.com"
   gemspec.homepage = "http://github.com/therabidbanana/orange"
   gemspec.authors = ["David Haslem"]
-  gemspec.files = FileList['lib/**/*.rb']
+  gemspec.files = FileList['lib/**/*.rb', 'lib/**/assets/**', 'lib/**/templates/**', 'lib/**/views/**']
   gemspec.test_files = FileList['spec/**/*.rb']
   gemspec.add_dependency('dm-core', '>= 0.10.2')
   gemspec.add_dependency('dm-more', '>= 0.10.2')

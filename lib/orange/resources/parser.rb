@@ -32,7 +32,7 @@ module Orange
       string ||= read_if_exists(views_dir, resource, file) if resource
       string ||= read_if_exists(views_dir, 'default_resource', file)
       string ||= read_if_exists(views_dir, file)
-      raise LoadError, "Couldn't find haml file '#{file}" unless string
+      raise LoadError, "Couldn't find haml file '#{file}'" unless string
       
       haml_engine = Haml::Engine.new(string)
       out = haml_engine.render(packet, opts, &block)
