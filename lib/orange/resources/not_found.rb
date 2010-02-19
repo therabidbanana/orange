@@ -3,6 +3,7 @@ module Orange
     call_me :not_found
     def route(packet)
       packet[:content] = orange[:parser].haml("404.haml", packet, :resource => self)
+      packet[:status] = 404
     end
   end
 end
