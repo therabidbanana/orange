@@ -76,7 +76,7 @@ module Orange::Middleware
         after = packet.session['user.after_login'].blank? ? 
                 '/' : packet.session['user.after_login'] 
         packet.reroute(after)
-        false
+        return false
       end
       packet.reroute('/') if packet['user.id'] # Reroute to index if we're logged in.
       
@@ -135,12 +135,12 @@ module Orange::Middleware
                 ) 
           )
           packet[:content] = 'Got openID?'
-          packet.finish
+          return packet.finish
         end
       # Show login form, if necessary
       else
         packet[:content] = orange[:parser].haml('openid_login.haml', packet)
-        packet.finish
+        return packet.finish
       end
     end # end handle_openid
   end
