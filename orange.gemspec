@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.0.10"
+  s.version = "0.0.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
@@ -18,6 +18,22 @@ Gem::Specification.new do |s|
   s.files = [
     "lib/orange.rb",
      "lib/orange/application.rb",
+     "lib/orange/assets/css/admin.css",
+     "lib/orange/assets/css/blueprint-ie.css",
+     "lib/orange/assets/css/blueprint-print.css",
+     "lib/orange/assets/css/blueprint.css",
+     "lib/orange/assets/css/exceptions.css",
+     "lib/orange/assets/img/sitemap_down.png",
+     "lib/orange/assets/img/sitemap_down_d.png",
+     "lib/orange/assets/img/sitemap_indent.png",
+     "lib/orange/assets/img/sitemap_indent_d.png",
+     "lib/orange/assets/img/sitemap_outdent.png",
+     "lib/orange/assets/img/sitemap_outdent_d.png",
+     "lib/orange/assets/img/sitemap_up.png",
+     "lib/orange/assets/img/sitemap_up_d.png",
+     "lib/orange/assets/js/exceptions.js",
+     "lib/orange/assets/js/jquery.js",
+     "lib/orange/assets/js/sitemap.js",
      "lib/orange/carton.rb",
      "lib/orange/cartons/asset_carton.rb",
      "lib/orange/cartons/page_carton.rb",
@@ -63,7 +79,18 @@ Gem::Specification.new do |s|
      "lib/orange/templates/admin.haml",
      "lib/orange/templates/exceptions.haml",
      "lib/orange/views/assets/create.haml",
-     "lib/orange/views/openid_login.haml"
+     "lib/orange/views/default_resource/create.haml",
+     "lib/orange/views/default_resource/edit.haml",
+     "lib/orange/views/default_resource/list.haml",
+     "lib/orange/views/default_resource/show.haml",
+     "lib/orange/views/default_resource/table_row.haml",
+     "lib/orange/views/not_found/404.haml",
+     "lib/orange/views/openid_login.haml",
+     "lib/orange/views/pages/edit.haml",
+     "lib/orange/views/sitemap/list.haml",
+     "lib/orange/views/sitemap/sitemap_links.haml",
+     "lib/orange/views/sitemap/table_row.haml",
+     "lib/orange/views/sitemap/two_level.haml"
   ]
   s.homepage = %q{http://github.com/therabidbanana/orange}
   s.rdoc_options = ["--charset=UTF-8"]
