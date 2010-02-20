@@ -1,0 +1,7 @@
+- if model
+  %tr
+    - for prop in props
+      %td= model.attribute_get(prop[:name])
+    %td.actions
+      = form_link('Delete', route_to(model_name, model.id, 'delete'), 'Are you sure you want to delete this?', {:method => 'delete'})
+      %a{:href => route_to(model_name, model.id, 'edit')} Edit

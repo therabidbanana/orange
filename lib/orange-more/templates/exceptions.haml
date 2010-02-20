@@ -1,0 +1,111 @@
+-# adapted from Django <djangoproject.com>
+-# Copyright (c) 2005, the Lawrence Journal-World
+-# Used under the modified BSD license:
+-# http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5
+!!! 
+%html
+  %head
+    %meta{:name=>"robots", :content=>"NONE,NOARCHIVE"}
+    %title Orange rasied #{h exception.class} at #{h path}
+    %link{:rel=>"stylesheet", :href=>"/assets/_orange_/css/exceptions.css", :type=>"text/css"}
+    %script{:type=>"text/javascript", :src=>"/assets/_orange_/js/exceptions.js"}
+  %body
+    #summary
+      %h1 #{h exception.class} at #{h path}
+      %h2 #{h exception.message}
+      %table
+        %tr
+          %th Ruby
+          %td= "<code>#{h frames.first.filename}</code>: in <code>#{h frames.first.function}</code>, line #{h frames.first.lineno }"
+        %tr
+          %th Web
+          %td= "<code>#{h req.request_method} #{h(req.host + path)}</code>"
+      %h3= "Jump to:"
+      %ul#quicklinks
+        %li
+          %a{:href=>"#get-info"} GET
+        %li
+          %a{:href=>"#post-info"} POST
+        %li
+          %a{:href=>"#cookie-info"} Cookies
+        %li
+          %a{:href=>"#env-info"} ENV
+        %li
+          %a{:href=>"#orange-info"} Orange
+    #traceback
+      %h2= "Traceback <span>(innermost first)</span>"
+      %ul.traceback
+        - frames.each do |frame|
+          %li.frame
+            = "<code>#{h frame.filename}</code>: in <code>#{h frame.function}</code>"
+            - if frame.context_line
+              .context{:id => "c#{frame.object_id}"}
+                - if frame.pre_context
+                  %ol.pre-context{:start=>"#{h frame.pre_context_lineno+1}", :id=>"pre#{h frame.object_id }"}
+                    - frame.pre_context.each do |line|
+                      %li{:onclick=>"toggle('pre#{h frame.object_id}', 'post#{h frame.object_id }')"} #{h line}
+                %ol.context-line{:start=>"#{h frame.lineno}"}
+                  %li{ :onclick=>"toggle('pre#{h frame.object_id}', 'post#{h frame.object_id }')"}= "#{h frame.context_line} <span>...</span>"
+                - if frame.post_context
+                  %ol.post-context{ :start=>"#{h frame.lineno+1 }", :id=>"post#{h frame.object_id}"}
+                    - frame.post_context.each do |line|
+                      %li{:onclick=>"toggle('pre#{h frame.object_id}', 'post#{h frame.object_id }')"} #{h line}
+    #requestinfo
+      %h2 Request information
+      - for var in [:GET, :POST, :cookies]
+        %h3{:id => "#{var.to_s.downcase}-info"}= "#{var.to_s}"
+        - unless req.__send__(var).empty?
+          %table.req
+            %thead
+              %tr
+                %th Variable
+                %th Value
+            %tbody
+              - req.__send__(var).sort_by { |k, v| k.to_s }.each do |key, val|
+                %tr
+                  %td #{h key}
+                  %td.code
+                    %div #{h val.inspect}
+        - else
+          %p No #{var.to_s} data.
+      %h3#env-info Rack ENV
+      %table.req
+        %thead
+          %tr
+            %th Variable
+            %th Value
+        %tbody
+          - env.sort_by { |k, v| k.to_s }.each do |key, val|
+            - unless key =~ /^orange\./ 
+              %tr
+                %td #{h key}
+                %td.code
+                  %div #{h val}
+      %h3#orange-info Orange ENV
+      %table.req
+        %thead
+          %tr
+            %th Variable
+            %th Value
+        %tbody
+          - env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
+            - if(![:request, :headers, :content].include?(key)) 
+              %tr
+                %td #{h key}
+                %td.code
+                  %div #{h val}
+      %h3#orange-info= 'Orange<br /> Response'
+      %table.req
+        %thead
+          %tr
+            %th Variable
+            %th Value
+        %tbody
+          - env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
+            - if([:request, :headers, :content].include?(key)) 
+              %tr
+                %td #{h key}
+                %td.code
+                  %div #{h val}
+    #explanation
+      %p= "You're seeing this error because you use <code>Orange::Middleware::ShowExceptions</code>."

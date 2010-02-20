@@ -16,7 +16,7 @@ end
 
 
 Jeweler::Tasks.new do |gemspec|
-  gemspec.name = "orange"
+  gemspec.name = "orange-core"
   gemspec.summary = "Middle ground between Sinatra and Rails"
   gemspec.description = "Orange is a Ruby framework for building managed websites with code as simple as Sinatra"
   gemspec.email = "therabidbanana@gmail.com"
@@ -24,15 +24,8 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.authors = ["David Haslem"]
   gemspec.files = FileList['lib/**/*']
   gemspec.test_files = FileList['spec/**/*.rb']
-  gemspec.add_dependency('dm-core', '>= 0.10.2')
-  gemspec.add_dependency('dm-more', '>= 0.10.2')
   gemspec.add_dependency('rack', '>= 1.0.1')
   gemspec.add_dependency('haml', '>= 2.2.13')
-  gemspec.add_dependency('rack-abstract-format', '>= 0.9.9')
-  gemspec.add_dependency('rack-openid', '>= 0.2.2')
-  gemspec.add_dependency('openid_dm_store', '>= 0.1.3')
-  gemspec.add_dependency('dm-is-awesome_set', '>= 0.11.0')
-  gemspec.add_dependency('radius', '>= 0.6.1')
   gemspec.add_development_dependency "rspec", ">= 0"
   gemspec.add_development_dependency "rack-test", ">= 0"
 end

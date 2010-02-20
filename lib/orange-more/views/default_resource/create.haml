@@ -1,0 +1,4 @@
+%form{:action => "#{packet.route_to(model_name, 'new')}", :method => 'post'}
+  - for prop in props
+    %p= view_attribute(prop, model_name, :label => true)
+  %input{:type => 'submit', :value => 'Save New Item'}
