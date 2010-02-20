@@ -1,5 +1,5 @@
 require 'dm-timestamps'
-require 'orange/cartons/site_carton'
+require 'orange-more/administration/cartons/site_carton'
 module Orange
   class PageVersion < Orange::SiteCarton
     id

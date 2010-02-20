@@ -139,11 +139,7 @@ module Orange
     #     # Args will be passed on to Orange::Middleware::AccessControl
     #     def openid_access_control(*args)
     #       opts = args.extract_options!
-    #       require 'rack/openid'
-    #       require 'openid_dm_store'
-    # 
-    #       use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-    #       stack Orange::Middleware::AccessControl, opts
+    #       
     #     end
     
     # Adds pulp to the core via the Orange::Core#add_pulp method

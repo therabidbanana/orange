@@ -6,6 +6,19 @@ module Orange
   # Declare submodules for later use
   module Pulp; end
   module Mixins; end
+  module Plugins; end
+  
+  attr_accessor :plugins
+  
+  # Support for plugins
+  def self.plugins
+    @plugins ||= []
+  end
+  
+  # Allows adding plugins
+  def self.plugin(plugin)
+    self.plugins << plugin if plugin.kind_of?(Orange::Plugins::Base)
+  end
   
   # Allow mixins directly from Orange
   def self.mixin(inc)
@@ -57,6 +70,7 @@ module Orange
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
       load(Orange::PageParts.new, :page_parts)
+      Orange.plugins.each{|p| p.resources.each{|k,v| load(v, k)} if p.has_resources?}
       # load(Orange::AdminResource.new, :admin)
       afterLoad
       self

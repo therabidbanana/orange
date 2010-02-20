@@ -1,4 +1,4 @@
-require 'orange/middleware/base'
+require 'orange-core/middleware/base'
 
 
 

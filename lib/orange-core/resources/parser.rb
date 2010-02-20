@@ -6,6 +6,10 @@ module Orange
   class Parser < Resource
     def afterLoad
       orange.add_pulp Orange::Pulp::ParserPulp
+      @template_dirs = [File.join(orange.core_dir, 'templates')]
+      @view_dirs = [File.join(orange.core_dir, 'views')]
+      Orange.plugins.each{|p| @template_dirs << p.templates if p.has_templates? }
+      Orange.plugins.each{|p| @view_dirs << p.views if p.has_views? }
     end
     
     def yaml(file)
@@ -22,16 +26,20 @@ module Orange
       resource = (opts[:resource_name] || '').downcase
       opts.merge :orange => orange
       
-      templates_dir = File.join(orange.core_dir, 'templates')
-      views_dir = File.join(orange.core_dir, 'views')
       string = false
-      string ||= read_if_exists('templates', file) if temp
-      string ||= read_if_exists(templates_dir, file) if temp
+      if temp
+        string ||= read_if_exists('templates', file) 
+        @template_dirs.each do |templates_dir|
+          string ||= read_if_exists(templates_dir, file)
+        end
+      end
       string ||= read_if_exists('views', resource, file) if resource
       string ||= read_if_exists('views', file)
-      string ||= read_if_exists(views_dir, resource, file) if resource
-      string ||= read_if_exists(views_dir, 'default_resource', file)
-      string ||= read_if_exists(views_dir, file)
+      @view_dirs.each do |views_dir|
+        string ||= read_if_exists(views_dir, resource, file) if resource
+        string ||= read_if_exists(views_dir, 'default_resource', file)
+        string ||= read_if_exists(views_dir, file)
+      end
       raise LoadError, "Couldn't find haml file '#{file}'" unless string
       
       haml_engine = Haml::Engine.new(string)

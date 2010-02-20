@@ -1,4 +1,4 @@
-require 'orange/carton'
+require 'orange-core/carton'
 
 module Orange
   # Defines a carton that belongs to a specific site.

@@ -1,3 +1,5 @@
+require 'orange-core/carton'
+
 module Orange
   class User < Orange::Carton
     id

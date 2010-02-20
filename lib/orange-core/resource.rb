@@ -6,7 +6,7 @@ module Orange
     extend ClassInheritableAttributes
     # Defines a model class as an inheritable class attribute and also an instance
     # attribute
-    cattr_inheritable :called
+    cattr_accessor :called
     
     def initialize(*args, &block)
       @options = DefaultHash.new.merge!(Options.new(*args, &block).hash)

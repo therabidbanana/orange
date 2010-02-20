@@ -1,8 +1,8 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'rubygems'
 require 'orange-core'
+require 'rubygems'
 
 require 'mock/mock_app'
 require 'mock/mock_pulp'

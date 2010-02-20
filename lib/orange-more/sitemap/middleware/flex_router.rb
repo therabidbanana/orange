@@ -1,4 +1,4 @@
-require 'orange/middleware/base'
+require 'orange-core/middleware/base'
 
 module Orange::Middleware
   # The FlexRouter middleware takes a resource that can route paths and
@@ -10,12 +10,7 @@ module Orange::Middleware
   # and "route(packet)".  
   # 
   # Pass a different routing resource using the :resource arg
-  class FlexRouter < Base
-    def init(opts = {})
-      @resource = opts[:resource] || Orange::SitemapResource
-      orange.load @resource.new, :sitemap
-    end
-    
+  class FlexRouter < Base    
     # Sets the sitemap resource as the router if the resource can accept 
     # the path.
     def packet_call(packet)

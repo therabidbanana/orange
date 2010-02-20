@@ -1,5 +1,5 @@
-require 'orange/core'
-require 'orange/middleware/base'
+require 'orange-core/core'
+require 'orange-core/middleware/base'
 
 module Orange::Middleware
   
@@ -10,14 +10,7 @@ module Orange::Middleware
       
       # Establish a default template chooser
       @core.template_chooser do |packet|
-        if packet['route.context'] == :admin
-          packet.add_css('admin.css', :module => '_orange_')
-          packet.add_js('jquery.js', :module => '_orange_')
-          packet.add_js('admin.js', :module => '_orange_')
-          'admin.haml'
-        else
-          false
-        end
+        false
       end
     end
     

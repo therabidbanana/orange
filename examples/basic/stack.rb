@@ -2,6 +2,9 @@ require 'rack/builder'
 require 'rack/abstract_format'
 require '../../lib/orange'
 
+require 'rack/openid'
+require 'openid_dm_store'
+
 class Main < Orange::Application
   stack do
     
@@ -20,7 +23,10 @@ class Main < Orange::Application
     stack Orange::Middleware::RadiusParser
     stack Orange::Middleware::Template
     
-    openid_access_control :single_user => false
+
+    use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
+    stack Orange::Middleware::AccessControl, :single_user => false
+    
     restful_routing
     stack Orange::Middleware::FlexRouter
     stack Orange::Middleware::FourOhFour

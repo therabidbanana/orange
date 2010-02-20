@@ -35,14 +35,13 @@ module Orange::Middleware
 
     def initialize(app, core, options={})
       core.mixin Orange::Mixins::Static
-      core.add_static('_orange_', File.join(core.core_dir, 'assets'))
-      @app = app
-      @core = core
-      @libs = options[:libs] || [Orange::Core]
+      @lib_urls = {'_orange_' => File.join(core.core_dir, 'assets') }
+      Orange.plugins.each{|p| @lib_urls[p.assets_name] = p.assets if p.has_assets?}
       
+      @app = app
+      @core = core      
       @urls = options[:urls] || ["/favicon.ico", "/assets/public", "/assets/uploaded"]
       @root = options[:root] || File.join(orange.app_dir, 'assets')
-      @lib_urls = core.statics
       @file_server = Orange::Middleware::StaticFile.new(@root)
     end
 

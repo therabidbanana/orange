@@ -4,7 +4,7 @@ module Orange
   class ModelResource < RoutableResource
     # Defines a model class as an inheritable class attribute and also an instance
     # attribute
-    cattr_inheritable :model_class
+    cattr_accessor :model_class
     attr_accessor :model_class
     
     # Tells the Model resource which Carton class to scaffold
