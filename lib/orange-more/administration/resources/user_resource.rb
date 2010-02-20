@@ -3,7 +3,7 @@ module Orange
     use Orange::User
     call_me :users
     def afterLoad
-      orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Users')
+      orange[:admin].add_link("Settings", :resource => @my_orange_name, :text => 'Users')
     end
     
     def access_allowed?(packet, user)

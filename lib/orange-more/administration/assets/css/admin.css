@@ -194,7 +194,7 @@ body{
 
 
 .move_actions .up{
-	background: url(/assets/_orange_/img/sitemap_up.png);
+	background: url(/assets/_sitemap_/img/sitemap_up.png);
 }
 .move_actions .arrow{
 	display: block;
@@ -206,25 +206,25 @@ body{
 }
 .move_actions .indent{
 	margin-top: 15px;
-	background: url(/assets/_orange_/img/sitemap_indent.png);
+	background: url(/assets/_sitemap_/img/sitemap_indent.png);
 }
 .move_actions .outdent{
 	margin-top: 15px;
-	background: url(/assets/_orange_/img/sitemap_outdent.png);
+	background: url(/assets/_sitemap_/img/sitemap_outdent.png);
 }
 
 .move_actions .down{
-	background: url(/assets/_orange_/img/sitemap_down.png);
+	background: url(/assets/_sitemap_/img/sitemap_down.png);
 }
 
 .move_actions .disabled_down{
-	background: url(/assets/_orange_/img/sitemap_down_d.png);
+	background: url(/assets/_sitemap_/img/sitemap_down_d.png);
 }
 
 
 
 .move_actions .disabled_up{
-	background: url(/assets/_orange_/img/sitemap_up_d.png);
+	background: url(/assets/_sitemap_/img/sitemap_up_d.png);
 }
 
 

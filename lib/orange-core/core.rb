@@ -70,7 +70,7 @@ module Orange
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
       load(Orange::PageParts.new, :page_parts)
-      Orange.plugins.each{|p| p.resources.each{|k,v| load(v, k)} if p.has_resources?}
+      Orange.plugins.each{|p| p.resources.each{|args| load(*args)} if p.has_resources?}
       # load(Orange::AdminResource.new, :admin)
       afterLoad
       self

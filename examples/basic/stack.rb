@@ -15,21 +15,12 @@ class Main < Orange::Application
 
     auto_reload!
     use_exceptions
-    stack Orange::Middleware::Globals
-    stack Orange::Middleware::Loader
-    prerouting :multi => false
-    stack Orange::Middleware::Database
-    stack Orange::Middleware::SiteLoad
-    stack Orange::Middleware::RadiusParser
-    stack Orange::Middleware::Template
-    
+    prerouting :multi => false    
 
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-    stack Orange::Middleware::AccessControl, :single_user => false
+    routing :single_user => false
     
-    restful_routing
-    stack Orange::Middleware::FlexRouter
-    stack Orange::Middleware::FourOhFour
+    postrouting
     load Tester.new
     run Main.new(orange)
   end

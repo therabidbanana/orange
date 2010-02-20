@@ -5,7 +5,7 @@ module Orange::Plugins
   class Pages < Base
     views_dir       File.join(File.dirname(__FILE__), 'views')
     
-    resource    :pages, Orange::PageResource.new    
+    resource    Orange::PageResource.new    
   end
 end
 

@@ -6,9 +6,9 @@ class Main < Orange::Application
   def stack_init
     @core.template_chooser do |packet|
       if [:admin, :orange].include?(packet['route.context'])
-        packet.add_css('admin.css', :module => '_orange_')
-        packet.add_js('jquery.js', :module => '_orange_')
-        packet.add_js('admin.js', :module => '_orange_')
+        packet.add_css('admin.css', :module => '_administration_')
+        packet.add_js('jquery.js', :module => '_administration_')
+        packet.add_js('admin.js', :module => '_administration_')
         orange.fire(:view_admin, packet)
         'admin.haml'
       else 

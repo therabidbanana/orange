@@ -105,12 +105,12 @@ module Orange::Plugins
       self.assets = arg
     end
     
-    def self.resource(name, instance)
-      self.resources[name] = instance
+    def self.resource(instance, name = false)
+      self.resources << [instance, name]
     end
     
     def self.resources
-      super || self.resources = {}
+      super || self.resources = []
     end
     
     # Returns the assigned asset dir name,

@@ -8,12 +8,12 @@ module Orange::Plugins
     views_dir       File.join(File.dirname(__FILE__), 'views')
     templates_dir   File.join(File.dirname(__FILE__), 'templates')
     
-    resource    :admin, Orange::AdminResource.new
-    resource    :user, Orange::UserResource.new
-    resource    :orange_sites, Orange::SiteResource.new
+    resource    Orange::AdminResource.new, :admin
+    resource    Orange::UserResource.new
+    resource    Orange::SiteResource.new
     
     prerouter   Orange::Middleware::AccessControl
-    postrouter  Orange::Middleware::SiteLoad
+    prerouter  Orange::Middleware::SiteLoad
     
   end
 end

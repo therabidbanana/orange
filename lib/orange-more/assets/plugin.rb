@@ -5,7 +5,7 @@ module Orange::Plugins
   class Assets < Base
     views_dir   File.join(File.dirname(__FILE__), 'views')
     
-    resource    :assets, Orange::AssetResource.new
+    resource    Orange::AssetResource.new
   end
 end
 

@@ -117,6 +117,8 @@ module Orange
     # 
     def prerouting(*args)
       opts = args.extract_options!
+      stack Orange::Middleware::Globals
+      stack Orange::Middleware::Loader
       stack Orange::Middleware::Rerouter, opts.dup
       stack Orange::Middleware::Static, opts.dup
       use Rack::AbstractFormat unless opts[:no_abstract_format] 
@@ -124,14 +126,26 @@ module Orange
           # since all orange stuff is non-destructive
       stack Orange::Middleware::RouteSite, opts.dup
       stack Orange::Middleware::RouteContext, opts.dup
+      stack Orange::Middleware::Database
+      Orange.plugins.each{|p| p.middleware(:prerouting).each{|m| stack m, opts.dup} if p.has_middleware?}
     end
     
-    # A shortcut for enabling restful routing via Orange::Middleware::RestfulRouter
+    # A shortcut for routing via Orange::Middleware::RestfulRouter and any plugins
     #
     # Any args are passed on to the middleware
-    def restful_routing(*args)
-      opts = args.extract_options!
-      stack Orange::Middleware::RestfulRouter, opts
+    def routing(opts ={})
+      stack Orange::Middleware::RestfulRouter, opts.dup
+      Orange.plugins.each{|p| p.middleware(:routing).each{|m| stack m, opts.dup} if p.has_middleware?}
+      stack Orange::Middleware::FourOhFour, opts.dup
+    end
+    
+    def postrouting(opts ={})
+      Orange.plugins.each{|p| p.middleware(:postrouting).each{|m| stack m, opts.dup} if p.has_middleware?}
+      stack Orange::Middleware::Template
+    end
+    
+    def responders(opts ={})
+      Orange.plugins.each{|p| p.middleware(:responders).each{|m| stack m, opts.dup} if p.has_middleware?}
     end
     
     # # A shortcut to enable Rack::OpenID and Orange::Middleware::AccessControl

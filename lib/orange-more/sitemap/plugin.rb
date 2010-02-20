@@ -7,8 +7,8 @@ module Orange::Plugins
     assets_dir      File.join(File.dirname(__FILE__), 'assets')
     views_dir       File.join(File.dirname(__FILE__), 'views')
     
-    resource    :sitemap, Orange::SitemapResource.new
-    router  Orange::Middleware::FlexRouter
+    resource    Orange::SitemapResource.new
+    router      Orange::Middleware::FlexRouter
     
   end
 end

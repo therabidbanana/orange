@@ -3,8 +3,8 @@ Dir.glob(File.join(File.dirname(__FILE__), 'middleware', '*.rb')).each {|f| requ
 
 module Orange::Plugins
   class Slices < Base    
-    resource    :radius, Orange::Radius.new
-    resource    :slices, Orange::Slices.new
+    resource    Orange::Radius.new
+    resource    Orange::Slices.new
     
     postrouter  Orange::Middleware::RadiusParser
     

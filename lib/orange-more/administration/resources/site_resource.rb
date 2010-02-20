@@ -1,8 +1,9 @@
 module Orange
   class SiteResource < ModelResource
     use Orange::Site
+    call_me :orange_sites
     def afterLoad
-      orange[:admin, true].add_link('Settings', :resource => @my_orange_name, 
+      orange[:admin].add_link('Settings', :resource => @my_orange_name, 
                                                 :text => 'Site')
     end
   end
