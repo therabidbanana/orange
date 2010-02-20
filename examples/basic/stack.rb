@@ -30,9 +30,6 @@ class Main < Orange::Application
     restful_routing
     stack Orange::Middleware::FlexRouter
     stack Orange::Middleware::FourOhFour
-    load Orange::PageResource.new
-    load Orange::AssetResource.new
-    load Orange::Slices.new
     load Tester.new
     run Main.new(orange)
   end

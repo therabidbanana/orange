@@ -34,7 +34,6 @@ module Orange::Middleware
   class Static < Base
 
     def initialize(app, core, options={})
-      core.mixin Orange::Mixins::Static
       @lib_urls = {'_orange_' => File.join(core.core_dir, 'assets') }
       Orange.plugins.each{|p| @lib_urls[p.assets_name] = p.assets if p.has_assets?}
       
@@ -47,7 +46,9 @@ module Orange::Middleware
 
     def packet_call(packet)
       path = packet.env["PATH_INFO"]
-      can_serve_lib = @lib_urls.select{ |url, server| path.index(url) == 0 }.first
+      can_serve_lib = @lib_urls.select { |url, server| 
+        path.index(File.join('', 'assets', url)) == 0 
+      }.first
       can_serve = @urls.any?{|url| path.index(url) == 0 }
       if can_serve_lib
         lib_url = can_serve_lib.first
@@ -62,17 +63,5 @@ module Orange::Middleware
       end
     end
 
-  end
-end
-
-module Orange::Mixins::Static
-  def add_static(lib_name, path)
-    @statics ||= {}
-    key = File.join('', 'assets', lib_name)
-    @statics.merge!(key => path)
-  end
-  
-  def statics
-    @statics ||= {}
   end
 end
