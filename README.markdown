@@ -93,20 +93,21 @@ is a bit overkill. We designed this to replace ModX in our web builds for client
 Required Gems
 -------------
 
-Make sure github gems can be downloaded:
-
-    $ gem sources -a http://gems.github.com
-
 * dm-core (+ do_[sqlite3|mysql|...] )
 * dm-more
 * dm-is-awesome_set
 * rack
 * haml
-* mynyml-rack-abstract-format (github)
+* rack-abstract-format (github)
 * ruby-openid
 * rack-openid
-* meekish-openid_dm_store
+* openid_dm_store
 * radius
+
+All dependencies should be loaded if you install the gem except for the datamapper
+adapter relevant to your set up. If, for example, you want to use a mysql database,
+you'll need to install do_mysql, and for an sqlite3 database, you'll need do_sqlite3
+
 
 Also, you'll need a web server of some kind and need to set it up for rack.
 
