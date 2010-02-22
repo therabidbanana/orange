@@ -15,7 +15,7 @@ class Main < Orange::Application
 
     auto_reload!
     use_exceptions
-    prerouting :multi => false    
+    prerouting :multi => false
 
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
     routing :single_user => false

@@ -13,7 +13,7 @@ module Orange::Plugins
     resource    Orange::SiteResource.new
     
     prerouter   Orange::Middleware::AccessControl
-    prerouter  Orange::Middleware::SiteLoad
+    prerouter   Orange::Middleware::SiteLoad
     
   end
 end
