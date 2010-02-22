@@ -1,11 +1,11 @@
 %ul.nav
   %li.first
     %a{:href => model.full_path} Home
-  - for item in model.descendants
+  - for item in model.children
     %li
       %a{:href => item.full_path}= item.link_text
       - unless item.descendants.empty?
         %ul.subnav
-          - for x in item.descendants
+          - for x in item.children
             %li
               %a{:href => x.full_path}= x.link_text

@@ -6,6 +6,7 @@ module Orange
   class Radius < Resource
     def afterLoad
       @context = ::Radius::Context.new
+      orange.fire(:radius_loaded, self)
     end
     
     def context

@@ -90,8 +90,8 @@ module Orange
       packet.reroute(@my_orange_name, :orange)
     end
     
-    def home(packet)
-      site_id = packet['site'].id
+    def home(packet, opts = {})
+      site_id = opts[:orange_site_id] || packet['site'].id
       model_class.home_for_site(site_id) || model_class.create_home_for_site(site_id)
     end
     
@@ -113,6 +113,14 @@ module Orange
       linky << (packet['route.resource'].blank? ? '0' : packet['route.resource'])
       linky << (packet['route.resource_id'].blank? ? '0' : packet['route.resource_id'])
       packet.route_to(:sitemap, linky.join('/') )
+    end
+    
+    def add_route_for(packet, opts = {})
+      unless opts.blank?
+        me = model_class.new(opts)
+        me.save
+        me.move(:into => home(packet, opts))
+      end
     end
     
     def add_route(packet, opts = {})

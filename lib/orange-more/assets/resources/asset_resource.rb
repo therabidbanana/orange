@@ -6,7 +6,7 @@ module Orange
     def afterLoad
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Assets')
       orange.register(:stack_loaded) do
-        orange[:radius].context.define_tag "asset" do |tag|
+        orange[:radius, true].context.define_tag "asset" do |tag|
           if tag.attr['id']
             (m = model_class.first(:id => tag.attr['id'])) ? m.to_asset_tag : 'Invalid Asset'
           else
