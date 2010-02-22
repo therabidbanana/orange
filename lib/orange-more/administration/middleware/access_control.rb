@@ -34,7 +34,7 @@ module Orange::Middleware
       packet['user.id'] ||= (packet.session['user.id'] || false)
       if @openid && need_to_handle?(packet)
         ret = handle_openid(packet)
-        return ret if ret # unless handle_openid returns false, exit immediately
+        return ret unless ret.blank? # unless handle_openid returns false, exit immediately
       end
       unless access_allowed?(packet)
         packet.session['user.after_login'] = packet.request.path
