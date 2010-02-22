@@ -66,7 +66,7 @@ module Orange::Middleware
     end
     
     def need_to_handle?(packet)
-      @handle && ([@login, @logout].include? packet.env['REQUEST_PATH'])
+      @handle && ([@login, @logout].include? packet.request.path)
     end
     
     def handle_openid(packet)
@@ -134,7 +134,7 @@ module Orange::Middleware
                 :required => [:email, "http://axschema.org/contact/email"]
                 ) 
           )
-          packet[:content] = 'Got openID?'
+          packet[:content] = 'Got openID?'          
           return packet.finish
         end
       # Show login form, if necessary
