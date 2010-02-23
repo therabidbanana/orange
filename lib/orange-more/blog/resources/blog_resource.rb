@@ -6,6 +6,10 @@ module Orange
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Blog')      
     end
     
+    def sitemap_row(packet, opts = {})
+      do_view(packet, :sitemap_row, opts)
+    end
+    
     def blog_view(packet, opts = {})
       resource_path = packet['route.resource_path']
       if resource_path.blank?
@@ -21,6 +25,7 @@ module Orange
     
     def blog_post_view(packet, opts = {})
       resource_path = packet['route.resource_path']
+      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
       opts.merge!( :blog_url => blog_url_for(packet))
       parts = resource_path.split('/')
       unless parts.size < 4

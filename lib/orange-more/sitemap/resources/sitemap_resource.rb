@@ -9,6 +9,9 @@ module Orange
       orange[:admin, true].add_link('Content', :resource => @my_orange_name, :text => 'Sitemap')
       
     end
+    def route_actions(packet, opts = {})
+      do_view(packet, :route_actions, opts)
+    end
     
     def route(packet)
       resource = packet['route.resource']
@@ -154,6 +157,18 @@ module Orange
     
     def find_list(packet, mode, *args)
       home(packet).self_and_descendants
+    end
+    
+    def table_row(packet, opts ={})
+      opts[:route] = opts[:model] || find_one(packet, :table_row, opts[:id])
+      resource = opts[:route].resource
+      resource = resource.to_sym if resource
+      if resource && orange[resource].respond_to?(:sitemap_row)
+        opts.delete(:model)
+        orange[resource].sitemap_row(packet, opts.merge(:resource_name => resource, :id => opts[:route].resource_id))
+      else
+        do_view(packet, :table_row, opts)
+      end
     end
     
     def sitemap_links(packet, opts = {})

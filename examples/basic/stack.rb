@@ -7,6 +7,7 @@ require 'openid_dm_store'
 
 class Main < Orange::Application
   stack do
+    orange.options[:development_mode] = true
     
     use Rack::CommonLogger
     use Rack::Reloader
