@@ -32,6 +32,7 @@ module Orange::Middleware
       
     def packet_call(packet)
       packet['user.id'] ||= (packet.session['user.id'] || false)
+      packet['user'] = orange[:users].user_for(packet) unless packet['user.id'].blank?
       if @openid && need_to_handle?(packet)
         ret = handle_openid(packet)
         return ret unless ret.blank? # unless handle_openid returns false, exit immediately

@@ -11,5 +11,9 @@ module Orange
       return false unless u
       u.allowed?(packet)
     end
+    
+    def user_for(packet)
+      model_class.first(:open_id => packet['user.id'])
+    end
   end
 end
