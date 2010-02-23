@@ -167,6 +167,40 @@ module Orange
       router.route(self)
     end
     
+    # Pulls options set out of the packet and places them into
+    # a hash. Options are retrieved from POST, GET, and route.resource_path
+    # and take that order of precedence (POST overrides GET, etc)
+    # @param [Array] key_list an array of keys to retrieve and merge together
+    #   in order of precedence. :GET and :POST for request vars, the rest
+    #   are keys directly available on packet
+    # @return [Hash] A hash of options set in the packet
+    def extract_opts(key_list = [:POST, :GET, 'route.resource_path'])
+      opts = {}
+      key_list.reverse.each do |key|
+        case key
+        when :GET then opts.merge! packet.request.GET
+        when :POST then opts.merge! packet.request.POST
+        else 
+          opts.merge!(packet[key, {}].kind_of?(String) ? url_to_hash(packet[key]) : packet[key, {}])
+        end
+      end
+      opts
+    end
+    
+    # Converts a url path to a hash with symbol keys. URL must
+    # be in /key/val/key/val/etc format
+    def url_to_hash(url)
+      parts = url.split('/')
+      hash = {}
+      while !parts.blank?
+        key = parts.shift
+        key = parts.shift if key.blank?
+        val = parts.shift
+        hash[key.to_sym] = val unless key.blank? or val.blank?
+      end
+      hash
+    end
+    
     # Method Missing allows defining custom methods
     def method_missing(id, *args)
       matched = false

@@ -5,5 +5,7 @@
         %a{:href => "#{blog_url}/#{post.created_at.year}/#{post.created_at.month}/#{post.slug}"}= post.title
       .blog_post_body= post.summary.blank? ? post.body : post.summary
 .blog_nav
+  - if page > 1
+    %a{:href => "#{blog_url}/page/#{page-1}"} Newer Posts
   - if page < pages
     %a{:href => "#{blog_url}/page/#{page+1}"} Older Posts
