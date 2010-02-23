@@ -12,6 +12,7 @@ module Orange
     orange do
       boolean :published, :default => false
       text :slug
+      text :author
     end
     
     property :created_at, DateTime

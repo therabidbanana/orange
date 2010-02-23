@@ -23,9 +23,11 @@ module Orange
       if packet.request.post?
         params = packet.request.params[@my_orange_name.to_s]
         params[:published] = false
-        m = model_class.new(params)
-        m.blog = Orange::Blog.first(:orange_site => packet['site'])
-        m.save
+        params[:author] = packet['user', false] ? packet['user'].name : "Author"
+        
+        blog = Orange::Blog.first(:orange_site => packet['site'])
+        blog.posts.new(params)
+        blog.save
       end
       packet.reroute(@my_orange_name, :orange)
     end
