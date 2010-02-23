@@ -123,6 +123,11 @@ module Orange
       end
     end
     
+    def url_for(packet, opts = {})
+      m = model_class.first(opts)
+      m ? m.full_path : '#not_found'
+    end
+    
     def add_route(packet, opts = {})
       args = packet['route.resource_path'].split('/')
       args.shift
