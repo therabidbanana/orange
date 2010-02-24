@@ -83,6 +83,7 @@ module Orange
           :link_text => 'Orange Blog'
         )
       end
+      blog
     end
     
     def find_list(packet, mode, id =false)
