@@ -16,7 +16,7 @@ module Orange
         blog_list_view(packet, opts)
       elsif resource_path =~ /^\/page/
         blog_offset_list_view(packet, opts)
-      elsif resource_path =~ /^\/archives/
+      elsif resource_path =~ /^\/archives?/
         blog_archive_view(packet, opts)
       else
         blog_post_view(packet, opts)
