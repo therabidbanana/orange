@@ -11,6 +11,7 @@ module Orange
       if packet.request.post?
         m = model_class.get(packet['route.resource_id'])
         if m
+          # orange[:cloud, true].microblog(packet, "I just posted a test blog post.")
           m.publish!
         end
       end
