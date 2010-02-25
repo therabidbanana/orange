@@ -14,7 +14,8 @@ module Orange::Middleware
       path = packet['route.path'] || packet.request.path_info
       if @options[:migration_url] && @options[:migration_url] == path
         orange.migrate_db!
-        packet.reroute('/')
+        after = packet.session['flash.redirect_to'] ? packet.session['flash.redirect_to'] : '/'
+        packet.reroute(after)
       end
       pass packet
     end
