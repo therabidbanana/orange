@@ -6,7 +6,7 @@ and the power of Rails. Orange is being developed by Orange Sparkle Ball, inc
 for our own use. Our main focus is on creating a super-extensible CMS
 with Orange, but we're trying to make the components as reusable as possible. Our
 intention is to be ready to use Orange for most client website builds by
-March 2010. 
+May 2010. 
 
 **Note**: Orange is still in the alpha stage. Test coverage is lack-luster at best. 
 Tread carefully.
