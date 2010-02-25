@@ -11,7 +11,6 @@ class Main < Orange::Application
     orange.options[:ping_fm_key] = "2267dc099645616acfc8d8f8373e5703-1257559701"
     
     use Rack::CommonLogger
-    use Rack::Reloader
     use Rack::MethodOverride
     use Rack::Session::Cookie, :secret => 'orange_secret'
 

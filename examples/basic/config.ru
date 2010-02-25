@@ -13,6 +13,7 @@ require 'rack'
 #   run Main.new
 # end
 
-run Main.app
+use Rack::Reloader
+run Proc.new{|env| Main.app.call(env) }
 # From commandline - 
 # rackup [config.ru] [-s thin -p 4321]
