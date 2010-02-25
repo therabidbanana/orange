@@ -11,7 +11,6 @@ module Orange::Middleware
       if orange.options[:development_mode]
         packet.session['flash.redirect_to'] = packet.request.path
         packet.add_css('debug_bar.css', :module => '_debugger_')
-        packet.add_js('debug_bar.js', :module => '_debugger_') 
       end
       pass packet
       if orange.options[:development_mode]
