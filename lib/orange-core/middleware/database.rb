@@ -5,9 +5,11 @@ module Orange::Middleware
     def init(opts = {})
       opts = opts.with_defaults(:migration_url => (orange.options[:development_mode] ? '/__ORANGE_DB__/migrate' : false))
       orange.mixin Orange::Mixins::DBLoader
-      db = orange.options['database'] || 'sqlite3::memory:'
-      orange.load_db!(db)
-      orange.upgrade_db!
+      orange.register(:stack_loaded) do |stack|
+        db = orange.options['database'] || 'sqlite3::memory:'
+        orange.load_db!(db)
+        orange.upgrade_db!
+      end
       @options = opts
     end
     def packet_call(packet)

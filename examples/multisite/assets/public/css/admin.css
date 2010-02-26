@@ -1,0 +1,4 @@
+/* Observe that this file is not loaded: */
+body{
+	color: red;
+}
