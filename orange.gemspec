@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.1.0"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-02-22}
+  s.date = %q{2010-02-26}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -76,6 +76,29 @@ Gem::Specification.new do |s|
      "lib/orange-more/assets/plugin.rb",
      "lib/orange-more/assets/resources/asset_resource.rb",
      "lib/orange-more/assets/views/assets/create.haml",
+     "lib/orange-more/blog.rb",
+     "lib/orange-more/blog/cartons/blog.rb",
+     "lib/orange-more/blog/cartons/blog_post.rb",
+     "lib/orange-more/blog/plugin.rb",
+     "lib/orange-more/blog/resources/blog_post_resource.rb",
+     "lib/orange-more/blog/resources/blog_resource.rb",
+     "lib/orange-more/blog/views/blog/blog_archive_view.haml",
+     "lib/orange-more/blog/views/blog/blog_offset_list_view.haml",
+     "lib/orange-more/blog/views/blog/blog_post_view.haml",
+     "lib/orange-more/blog/views/blog/sitemap_row.haml",
+     "lib/orange-more/blog/views/blog_posts/edit.haml",
+     "lib/orange-more/cloud.rb",
+     "lib/orange-more/cloud/plugin.rb",
+     "lib/orange-more/cloud/resources/cloud_resource.rb",
+     "lib/orange-more/debugger.rb",
+     "lib/orange-more/debugger/assets/css/debug_bar.css",
+     "lib/orange-more/debugger/middleware/debugger.rb",
+     "lib/orange-more/debugger/plugin.rb",
+     "lib/orange-more/debugger/views/debug_bar.haml",
+     "lib/orange-more/disqus.rb",
+     "lib/orange-more/disqus/plugin.rb",
+     "lib/orange-more/disqus/resources/disqus_resource.rb",
+     "lib/orange-more/disqus/views/disqus/comment_thread.haml",
      "lib/orange-more/pages.rb",
      "lib/orange-more/pages/cartons/page_carton.rb",
      "lib/orange-more/pages/cartons/page_version_carton.rb",
@@ -97,6 +120,7 @@ Gem::Specification.new do |s|
      "lib/orange-more/sitemap/plugin.rb",
      "lib/orange-more/sitemap/resources/sitemap_resource.rb",
      "lib/orange-more/sitemap/views/sitemap/list.haml",
+     "lib/orange-more/sitemap/views/sitemap/route_actions.haml",
      "lib/orange-more/sitemap/views/sitemap/sitemap_links.haml",
      "lib/orange-more/sitemap/views/sitemap/table_row.haml",
      "lib/orange-more/sitemap/views/sitemap/two_level.haml",
