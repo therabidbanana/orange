@@ -5,8 +5,8 @@ module Orange
       title :name
       text :position
       text :company
-      text :blurb
       text :tags
+      fulltext :blurb
     end
     
     def self.with_tag(tag)
