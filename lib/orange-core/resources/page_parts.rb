@@ -27,7 +27,7 @@ module Orange
           part(packet)[:css] = part(packet)[:css] + "<link rel=\"stylesheet\" href=\"#{file}\" type=\"text/css\" media=\"screen\" charset=\"utf-8\" />"
         end
         packet[:css_files] ||= []
-        packet[:css_files] << file
+        packet[:css_files].insert((opts[:position] ? opts[:position] : -1), file)
       end
     end
     
@@ -43,7 +43,7 @@ module Orange
           part(packet)[:js] = part(packet)[:js] + "<script src=\"#{file}\" type=\"text/javascript\"></script>"
         end
         packet[:js_files] ||= []
-        packet[:js_files] << file
+        packet[:js_files].insert((opts[:position] ? opts[:position] : -1), file)
       end
     end
   end

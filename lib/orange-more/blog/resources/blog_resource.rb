@@ -16,7 +16,7 @@ module Orange
         blog_list_view(packet, opts)
       elsif resource_path =~ /^\/page/
         blog_offset_list_view(packet, opts)
-      elsif resource_path =~ /^\/archives/
+      elsif resource_path =~ /^\/archives?/
         blog_archive_view(packet, opts)
       else
         blog_post_view(packet, opts)
@@ -67,7 +67,7 @@ module Orange
       do_list_view(packet, :blog_archive_view, opts)
     end
     
-    def find_list(packet, mode, id =false)
+    def blog_for_site(packet, site_id)
       blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
       unless blog
         blog = Orange::Blog.new
@@ -83,6 +83,11 @@ module Orange
           :link_text => 'Orange Blog'
         )
       end
+      blog
+    end
+    
+    def find_list(packet, mode, id =false)
+      blog = orange[:blog].blog_for_site(packet, packet['site'].id)
       case mode
       when :blog_list_view then blog.posts.published.all(:order => :published_at.desc, :limit => 5)
       when :blog_archive_view then blog.posts.published

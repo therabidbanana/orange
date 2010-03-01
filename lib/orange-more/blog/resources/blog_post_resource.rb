@@ -11,6 +11,7 @@ module Orange
       if packet.request.post?
         m = model_class.get(packet['route.resource_id'])
         if m
+          # orange[:cloud, true].microblog(packet, "I just posted a test blog post.")
           m.publish!
         end
       end
@@ -48,21 +49,7 @@ module Orange
     end
     
     def find_list(packet, mode, id =false)
-      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
-      unless blog
-        blog = Orange::Blog.new
-        blog.title = 'An Orange Hosted Blog'
-        blog.orange_site = packet['site']
-        blog.save
-        orange[:sitemap, true].add_route_for(packet,
-          :orange_site_id => packet['site'].id, 
-          :resource => :blog, 
-          :resource_id => blog.id,
-          :action => 'blog_view',
-          :slug => 'blog', 
-          :link_text => 'Orange Blog'
-        )
-      end
+      blog = orange[:blog].blog_for_site(packet, packet['site'].id)
       blog.posts
     end
     

@@ -18,7 +18,7 @@ class Main < Orange::Application
     use_exceptions
     
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-    prerouting :multi => false
+    prerouting :multi => true
 
     routing :single_user => false
     

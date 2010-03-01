@@ -6,11 +6,10 @@ module Orange::Middleware
       opts = args.extract_options!.with_defaults(:file => "__ORANGE__/config.yml")
       @file = opts[:file].gsub('__ORANGE__', orange.app_dir)
       @globals = orange[:parser].yaml(@file)
+      @globals.each{|k,v| orange.options[k] = v }
     end
     def packet_call(packet)
-      globs = packet['orange.globals'] || {}
-      globs.merge! orange.options
-      packet['orange.globals'] = globs.merge @globals
+      packet['orange.globals'] ||= orange.options
       pass packet
     end
     
