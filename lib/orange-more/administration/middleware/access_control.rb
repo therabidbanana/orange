@@ -48,7 +48,7 @@ module Orange::Middleware
     def access_allowed?(packet)
       return true unless @locked.include?(packet['route.context'])
       if packet['user.id'] || packet['orange.globals']['main_user'] == false
-        if @single && (packet['user.id'] == packet['orange.globals']['main_user'])
+        if @single && (packet['user.id'] == packet['orange.globals']['main_user'] )
           true
         elsif @single
           # Current id no good. 

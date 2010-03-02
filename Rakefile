@@ -73,3 +73,9 @@ Spec::Rake::SpecTask.new('specs_with_rcov') do |t|
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec,1.8/gems,1.9/gems']
 end
+
+desc "Runs basic example"
+task :serve do
+  cd "./examples/basic"
+  sh "rackup"
+end
