@@ -24,8 +24,7 @@ module Orange
     end
     
     def url_for(packet)
-      url = orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => packet['subsite'].id})
-      url.gsub(/^\//, '').gsub(/\/$/, '')
+      orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => packet['subsite'].id})
     end
   end
   
@@ -36,7 +35,7 @@ module Orange
       context = opts[:context] || packet['route.context', nil]
       site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil
       args.unshift(resource)
-      args.unshift(orange[:subsites].url_for(packet)) if(packet['subsite'])
+      args.unshift(orange[:subsites].url_for(packet).gsub(/^\//, '').gsub(/\/$/, '')) if(packet['subsite'])
       args.unshift(context)
       args.unshift(site)
       '/'+args.compact.join('/')

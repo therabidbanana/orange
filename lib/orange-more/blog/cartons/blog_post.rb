@@ -22,7 +22,7 @@ module Orange
     
     def title=(t)
       self.attribute_set('title', t)
-      self.attribute_set('slug', t.downcase.gsub(/[^a-z0-9-]+$/, ''))
+      self.attribute_set('slug', str.downcase.gsub(/[']+/, "").gsub(/[^a-z0-9]+/, "_"))
     end
     
     def publish

@@ -138,8 +138,13 @@ module Orange
     end
     
     def url_for(packet, opts = {})
+      include_subsite = opts.delete(:include_subsite) || false
       m = model_class.first(opts)
-      m ? m.full_path : '#not_found'
+      if !packet['subsite'].blank? && include_subsite
+        return orange[:subsites].url_for(packet).gsub(/\/$/, '') + (m ? m.full_path : '#not_found')
+      else
+        return (m ? m.full_path : '#not_found')
+      end
     end
     
     def add_route(packet, opts = {})

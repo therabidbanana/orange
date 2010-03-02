@@ -11,7 +11,8 @@ class Main < Orange::Application
         packet.add_js('admin.js', :module => '_administration_')
         orange.fire(:view_admin, packet)
         'admin.haml'
-      else 
+      else   
+        packet.add_js('jquery.js', :module => '_administration_', :position => 0)
         packet.add_css('main.css')
         'main.haml'
       end

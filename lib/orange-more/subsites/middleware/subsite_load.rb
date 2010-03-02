@@ -18,8 +18,6 @@ module Orange::Middleware
             packet['route.path'] = extras
             packet['subsite'] = m
           end
-        else
-          packet['unmatched'] = matched
         end
       end
       pass packet
