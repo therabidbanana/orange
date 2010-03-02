@@ -23,6 +23,9 @@ module Orange
   # improve scaffolding capability.
   class Carton
     SCAFFOLD_OPTIONS = [:display_name, :levels] unless defined?(SCAFFOLD_OPTIONS)
+    extend ClassInheritableAttributes
+    cattr_accessor :scaffold_properties
+    
     # Declares a ModelResource subclass that scaffolds this carton
     # The Subclass will have the name of the carton followed by "_Resource"
     def self.as_resource
@@ -41,12 +44,8 @@ module Orange
     def self.id
       include DataMapper::Resource
       property(:id, Serial)
-      @scaffold_properties = []
+      self.scaffold_properties ||= []
       init
-    end
-    
-    def self.scaffold_properties
-      @scaffold_properties ||= []
     end
     
     # Stub init method
@@ -55,7 +54,7 @@ module Orange
     
     # Return properties that should be shown for a given context
     def self.form_props(context = :live)
-      scaffold_properties.select{|p| p[:levels].include?(context)  }
+      self.scaffold_properties.select{|p| p[:levels].include?(context)  }
     end
     
     # Helper to wrap properties into admin level
@@ -80,7 +79,7 @@ module Orange
     end
     
     def self.add_scaffold(name, type, dm_type, opts)
-      scaffold_properties << {:name => name, :type => type, :levels => @levels}.merge(opts) if @levels || opts.has_key?(:levels)
+      self.scaffold_properties << {:name => name, :type => type, :levels => @levels}.merge(opts) if @levels || opts.has_key?(:levels)
       opts = opts.delete_if{|k,v| SCAFFOLD_OPTIONS.include?(k)} # DataMapper doesn't like arbitrary opts
       self.property(name, dm_type, opts)
     end
@@ -112,7 +111,7 @@ module Orange
     # Define a helper for type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.expose(name, opts = {})
-      scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
+      self.scaffold_properties << {:name => name, :type => :text, :levels => @levels, :opts => opts} if @levels
     end
     
     # Define a helper for input type="text" type database stuff

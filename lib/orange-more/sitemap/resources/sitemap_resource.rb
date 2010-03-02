@@ -23,10 +23,11 @@ module Orange
       packet[:content] = (orange[resource].view packet)
     end
     
-    def route?(packet, path)
+    # Path should be an array of path parts
+    def find_route_info(packet, path)
       parts = path.split('/')
       pad = parts.shift
-      matched = home(packet)
+      matched = home(packet, :subsite => true)
       extras = ''
       while (!parts.empty?)
         next_part = parts.shift
@@ -38,6 +39,11 @@ module Orange
           parts = []
         end
       end
+      [extras, matched]
+    end
+    
+    def route?(packet, path)
+      extras, matched = find_route_info(packet, path)
       return false if(extras.length > 0 && !matched.accept_args)
       packet['route.path'] = path
       packet['route.route'] = matched
@@ -54,7 +60,7 @@ module Orange
     def new(packet, *opts)
       if packet.request.post?
         params = packet.request.params[@my_orange_name.to_s]
-        params.merge!(:orange_site_id => packet['site'].id)
+        params.merge!(:orange_site_id => (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id))
         a = model_class.new(params)
         a.move(:into => home(packet))
       end
@@ -94,7 +100,11 @@ module Orange
     end
     
     def home(packet, opts = {})
-      site_id = opts[:orange_site_id] || packet['site'].id
+      if(opts[:subsite])
+        site_id = opts[:orange_site_id] || packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id
+      else
+        site_id = opts[:orange_site_id] || packet['site'].id 
+      end
       model_class.home_for_site(site_id) || model_class.create_home_for_site(site_id)
     end
     
@@ -102,17 +112,18 @@ module Orange
       do_view(packet, :two_level, :model => home(packet))
     end
     
-    def routes_for(packet)
+    def routes_for(packet, opts = {})
       keys = {}
-      keys[:resource] = packet['route.resource'] unless packet['route.resource'].blank?
-      keys[:resource_id] = packet['route.resource_id'] unless packet['route.resource_id'].blank?
-      keys[:orange_site_id] = packet['site'].id unless packet['site'].blank?
+      keys[:resource] = opts[:resource] || packet['route.resource'] 
+      keys[:resource_id] = opts[:resource_id] || packet['route.resource_id'] 
+      keys[:orange_site_id] = opts[:orange_site_id] || packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id
+      keys.delete_if{|k,v| v.blank? }
       model_class.all(keys)
     end
     
     def add_link_for(packet)
       linky = ['add_route']
-      linky << (packet['site'].blank? ? '0' : packet['site'].id)
+      linky << (packet['subsite'].blank? ? (packet['site'].blank? ? '0' : packet['site'].id) : packet['subsite'].id)
       linky << (packet['route.resource'].blank? ? '0' : packet['route.resource'])
       linky << (packet['route.resource_id'].blank? ? '0' : packet['route.resource_id'])
       packet.route_to(:sitemap, linky.join('/') )
@@ -156,7 +167,7 @@ module Orange
     end
     
     def find_list(packet, mode, *args)
-      home(packet).self_and_descendants
+      home(packet, :subsite => true).self_and_descendants
     end
     
     def table_row(packet, opts ={})
