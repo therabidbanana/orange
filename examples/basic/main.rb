@@ -40,10 +40,3 @@ class Tester < Orange::Resource
     end
   end
 end
-
-class Orange::Site
-  admin do
-    text :extra
-    text :extra2
-  end
-end

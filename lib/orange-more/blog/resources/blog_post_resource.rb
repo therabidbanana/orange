@@ -1,6 +1,6 @@
 module Orange
   class BlogResource < Orange::ModelResource
-    use Orange::BlogPost
+    use OrangeBlogPost
     call_me :blog_posts
     def afterLoad
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Blog')      

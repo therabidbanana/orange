@@ -1,6 +1,6 @@
 module Orange
   class SubsiteResource < Orange::ModelResource
-    use Orange::Subsite
+    use OrangeSubsite
     call_me :subsites
     def afterLoad
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Subsites')
@@ -26,6 +26,8 @@ module Orange
     def url_for(packet)
       orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => packet['subsite'].id})
     end
+    
+    
   end
   
   class Mapper < Resource

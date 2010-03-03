@@ -6,7 +6,7 @@ module Orange
   # it is what defines the relationship)
   class SiteCarton < Carton
     def self.init
-      belongs_to :orange_site, 'Orange::Site'
+      belongs_to :orange_site
     end
   end
 end

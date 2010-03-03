@@ -1,6 +1,6 @@
 module Orange
   class NewsResource < Orange::ModelResource
-    use Orange::News
+    use OrangeNews
     call_me :news
     def afterLoad
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'News')

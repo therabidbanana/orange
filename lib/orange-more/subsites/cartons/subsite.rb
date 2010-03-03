@@ -1,12 +1,8 @@
-module Orange
-  class Site < Carton
-    property :type, Discriminator
-    has n, :subsites, 'Orange::Subsite'
-  end
+class OrangeSite < Orange::Carton
+  property :type, Discriminator
+  has n, :subsites, 'OrangeSubsite'
 end
-module Orange
-  class Subsite < Site
-    belongs_to :site, 'Orange::Site'
-    
-  end
+
+class OrangeSubsite < OrangeSite
+  belongs_to :orange_site
 end

@@ -1,6 +1,6 @@
 module Orange
   class TestimonialsResource < Orange::ModelResource
-    use Orange::Testimonial
+    use OrangeTestimonial
     call_me :testimonials
     def afterLoad
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Testimonials')
