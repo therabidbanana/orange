@@ -26,7 +26,7 @@ module Orange
         params[:published] = false
         params[:author] = packet['user', false] ? packet['user'].name : "Author"
         
-        blog = Orange::Blog.first(:orange_site => (packet['subsite'].blank? ? packet['site'] : packet['subsite']))
+        blog = OrangeBlog.first(:orange_site => (packet['subsite'].blank? ? packet['site'] : packet['subsite']))
         blog.posts.new(params)
         blog.save
       end
@@ -41,7 +41,7 @@ module Orange
         if m
           params = packet.request.params[@my_orange_name.to_s]
           m.update(params)
-          m.blog = Orange::Blog.first(:orange_site => (packet['subsite'].blank? ? packet['site'] : packet['subsite']))
+          m.blog = OrangeBlog.first(:orange_site => (packet['subsite'].blank? ? packet['site'] : packet['subsite']))
           m.save
         end
       end
