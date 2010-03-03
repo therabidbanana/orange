@@ -64,7 +64,9 @@ caption {background:#eee;}
 .last {margin-right:0;padding-right:0;}
 .top {margin-top:0;padding-top:0;}
 .bottom {margin-bottom:0;padding-bottom:0;}
-
+li.nobullet {list-style-type: none;}
+div.version_container {width:300px;margin:2px 0;padding:10px;border:1px solid #CECECE;-moz-border-radius:4px;-webkit-border-radius:4px;background: #EFEFEF;}
+span.version_info {padding: 0 5px;}
 /* forms.css */
 label {font-weight:bold;}
 fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}

@@ -5,14 +5,15 @@
     - for prop in props
       %p!= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
     %input{:type => 'submit', :value => 'Save Changes'}
-  %h3 Versions
+  %p
+  %h3 Past Versions of This Page
   - for version in model.versions
-    %li 
+    %li.nobullet 
       %div.version_container
         %span.version_info
           %strong Version #{version.version} 
         %span.version_info  
-          Last Updated: #{fuzzy_time('foo')}
+          Last Edited: #{fuzzy_time(version.updated_at)}
         %span.version_info
           %a{:href => route_to(model_name, model[:id], 'edit', "version", version.version)}Edit
 - else
