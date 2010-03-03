@@ -1,0 +1,8 @@
+- list.each do |news|
+  .news_item
+    %p.news_title
+      %a{:href => news.link} #{news.title}
+    .news_description
+      = news.description
+    %p
+      %a{:href => news.link, :class => 'view_story'} View Story &raquo;

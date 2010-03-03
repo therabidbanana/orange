@@ -22,17 +22,10 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.email = "therabidbanana@gmail.com"
   gemspec.homepage = "http://github.com/therabidbanana/orange"
   gemspec.authors = ["David Haslem"]
-  gemspec.files = FileList['lib/**/*.rb']
+  gemspec.files = FileList['lib/**/*']
   gemspec.test_files = FileList['spec/**/*.rb']
-  gemspec.add_dependency('dm-core', '>= 0.10.2')
-  gemspec.add_dependency('dm-more', '>= 0.10.2')
   gemspec.add_dependency('rack', '>= 1.0.1')
   gemspec.add_dependency('haml', '>= 2.2.13')
-  gemspec.add_dependency('mynyml-rack-abstract-format', '>= 0.9.7')
-  gemspec.add_dependency('rack-openid', '>= 0.2.2')
-  gemspec.add_dependency('meekish-openid_dm_store', '>= 0.1.2')
-  gemspec.add_dependency('dm-is-awesome_set', '>= 0.11.0')
-  gemspec.add_dependency('radius', '>= 0.6.1')
   gemspec.add_development_dependency "rspec", ">= 0"
   gemspec.add_development_dependency "rack-test", ">= 0"
 end
@@ -79,4 +72,10 @@ Spec::Rake::SpecTask.new('specs_with_rcov') do |t|
   t.spec_files = FileList['spec/**/*.rb']
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec,1.8/gems,1.9/gems']
+end
+
+desc "Runs basic example"
+task :serve do
+  cd "./examples/basic"
+  sh "rackup"
 end

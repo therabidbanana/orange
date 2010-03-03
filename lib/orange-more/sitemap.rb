@@ -1,0 +1,1 @@
+require File.join('orange-more', 'sitemap', 'plugin')
