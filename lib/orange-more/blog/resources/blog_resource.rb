@@ -75,6 +75,8 @@ module Orange
         blog.title = 'An Orange Hosted Blog'
         blog.orange_site = packet['site']
         blog.save
+      end
+      unless OrangeRoute.first(:resource => 'blog', :orange_site_id => packet['site'].id)
         orange[:sitemap, true].add_route_for(packet,
           :orange_site_id => site_id, 
           :resource => :blog, 
