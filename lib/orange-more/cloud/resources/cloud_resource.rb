@@ -6,7 +6,7 @@ module Orange
     call_me :cloud
     def afterLoad
       orange.register(:stack_loaded) do |stack|
-        options[:ping_fm_key] = orange.options[:ping_fm_key] || false
+        options[:ping_fm_key] = orange.options['ping_fm_key'] || false
       end
     end
     
