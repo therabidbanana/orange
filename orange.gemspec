@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orange}
-  s.version = "0.1.2"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-02-26}
+  s.date = %q{2010-03-05}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -71,6 +71,8 @@ Gem::Specification.new do |s|
      "lib/orange-more/administration/resources/user_resource.rb",
      "lib/orange-more/administration/templates/admin.haml",
      "lib/orange-more/administration/views/openid_login.haml",
+     "lib/orange-more/administration/views/users/create.haml",
+     "lib/orange-more/administration/views/users/edit.haml",
      "lib/orange-more/assets.rb",
      "lib/orange-more/assets/cartons/asset_carton.rb",
      "lib/orange-more/assets/plugin.rb",
@@ -99,6 +101,14 @@ Gem::Specification.new do |s|
      "lib/orange-more/disqus/plugin.rb",
      "lib/orange-more/disqus/resources/disqus_resource.rb",
      "lib/orange-more/disqus/views/disqus/comment_thread.haml",
+     "lib/orange-more/news.rb",
+     "lib/orange-more/news/cartons/news.rb",
+     "lib/orange-more/news/plugin.rb",
+     "lib/orange-more/news/resources/news_resource.rb",
+     "lib/orange-more/news/views/news/archive.haml",
+     "lib/orange-more/news/views/news/edit.haml",
+     "lib/orange-more/news/views/news/latest.haml",
+     "lib/orange-more/news/views/news/sitemap_row.haml",
      "lib/orange-more/pages.rb",
      "lib/orange-more/pages/cartons/page_carton.rb",
      "lib/orange-more/pages/cartons/page_version_carton.rb",
@@ -129,6 +139,17 @@ Gem::Specification.new do |s|
      "lib/orange-more/slices/plugin.rb",
      "lib/orange-more/slices/resources/radius.rb",
      "lib/orange-more/slices/resources/slices.rb",
+     "lib/orange-more/subsites.rb",
+     "lib/orange-more/subsites/cartons/subsite.rb",
+     "lib/orange-more/subsites/middleware/subsite_load.rb",
+     "lib/orange-more/subsites/plugin.rb",
+     "lib/orange-more/subsites/resources/subsite_resource.rb",
+     "lib/orange-more/subsites/views/subsites/index.haml",
+     "lib/orange-more/testimonials.rb",
+     "lib/orange-more/testimonials/cartons/testimonials_carton.rb",
+     "lib/orange-more/testimonials/plugin.rb",
+     "lib/orange-more/testimonials/resources/testimonials_resource.rb",
+     "lib/orange-more/testimonials/views/testimonials/testimonials.haml",
      "lib/orange.rb"
   ]
   s.homepage = %q{http://github.com/therabidbanana/orange}
