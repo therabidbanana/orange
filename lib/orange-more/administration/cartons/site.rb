@@ -1,9 +1,7 @@
-module Orange
-  class Site < Carton
-    id
-    admin do
-      title :name
-      text :url
-    end
+class OrangeSite < Orange::Carton
+  id
+  admin do
+    title :name
+    text :url
   end
 end

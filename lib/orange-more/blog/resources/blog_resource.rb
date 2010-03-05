@@ -1,6 +1,6 @@
 module Orange
   class BlogPostResource < Orange::ModelResource
-    use Orange::Blog
+    use OrangeBlog
     call_me :blog
     def afterLoad
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Blog')      
@@ -25,7 +25,7 @@ module Orange
     
     def blog_post_view(packet, opts = {})
       resource_path = packet['route.resource_path']
-      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
+      blog = blog_for_site(packet)
       opts.merge!( :blog_url => blog_url_for(packet))
       parts = resource_path.split('/')
       unless parts.size < 4
@@ -39,15 +39,15 @@ module Orange
     end
     
     def blog_url_for(packet)
-      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)      
-      blog_url = orange[:sitemap, true].url_for(packet, :orange_site_id => blog.orange_site_id, :resource => :blog, :resource_id => blog.id, :resource_action => :blog_view)
+      blog = blog_for_site(packet)
+      blog_url = orange[:sitemap, true].url_for(packet, :orange_site_id => blog.orange_site_id, :resource => :blog, :resource_id => blog.id, :resource_action => :blog_view, :include_subsite => true)
       blog_url.gsub!(/\/$/, '')
     end
     
     def blog_offset_list_view(packet, opts = {})
       opts.merge!(packet.extract_opts)
       opts.merge!( :blog_url => blog_url_for(packet))
-      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
+      blog = blog_for_site(packet)
       opts[:page] = opts[:page].to_i unless opts[:page].blank?
       page = opts[:page].blank? ? 0 : opts[:page] - 1 
       opts[:list] = blog.posts.published.all(:order => :published_at.desc, 
@@ -67,15 +67,16 @@ module Orange
       do_list_view(packet, :blog_archive_view, opts)
     end
     
-    def blog_for_site(packet, site_id)
-      blog = Orange::Blog.first(:orange_site_id => packet['site'].id)
+    def blog_for_site(packet, site_id = false)
+      site_id ||= (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id)
+      blog = OrangeBlog.first(:orange_site_id => site_id)
       unless blog
-        blog = Orange::Blog.new
+        blog = OrangeBlog.new
         blog.title = 'An Orange Hosted Blog'
         blog.orange_site = packet['site']
         blog.save
         orange[:sitemap, true].add_route_for(packet,
-          :orange_site_id => packet['site'].id, 
+          :orange_site_id => site_id, 
           :resource => :blog, 
           :resource_id => blog.id,
           :resource_action => :blog_view,
@@ -87,11 +88,11 @@ module Orange
     end
     
     def find_list(packet, mode, id =false)
-      blog = orange[:blog].blog_for_site(packet, packet['site'].id)
+      blog = blog_for_site(packet)
       case mode
       when :blog_list_view then blog.posts.published.all(:order => :published_at.desc, :limit => 5)
       when :blog_archive_view then blog.posts.published
-      else Orange::Blog.all
+      else OrangeBlog.all
       end
     end
     

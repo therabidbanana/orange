@@ -6,11 +6,11 @@ module Orange::Middleware
   class SiteLoad < Base    
     def packet_call(packet)
       url =  packet['route.site_url']
-      site = Orange::Site.first(:url.like => url)
+      site = OrangeSite.first(:url.like => url)
       if site
         packet['site'] = site
       else
-        s = Orange::Site.new({:url => packet['route.site_url'], 
+        s = OrangeSite.new({:url => packet['route.site_url'], 
                               :name => 'An Orange Site'})
         s.save
         packet['site'] = s
