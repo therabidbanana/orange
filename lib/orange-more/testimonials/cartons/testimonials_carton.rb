@@ -11,5 +11,5 @@ class OrangeTestimonial < Orange::Carton
   def self.with_tag(tag)
     all(:tags.like => "%#{tag}%")
   end
-  
+
 end
