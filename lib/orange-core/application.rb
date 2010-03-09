@@ -107,8 +107,9 @@ module Orange
     #
     # Usually, you'll call this in the rackup file: `run MyApplication.app`
     def self.app
+      @core ||= Orange::Core.new
       if @app.instance_of?(Proc)
-        Orange::Stack.new self, @core &@app   # turn saved proc into a block arg
+        Orange::Stack.new self, @core, &@app   # turn saved proc into a block arg
       else
         Orange::Stack.new self, @core
       end
