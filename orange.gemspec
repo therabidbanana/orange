@@ -155,7 +155,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/therabidbanana/orange}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Middle ground between Sinatra and Rails}
   s.test_files = [
     "spec/orange-core/application_spec.rb",
