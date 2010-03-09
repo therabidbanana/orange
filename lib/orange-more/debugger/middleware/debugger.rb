@@ -24,7 +24,7 @@ module Orange::Middleware
 end
 
 module Orange::Pulp::DebuggerHelpers
-  def h(obj)                  # :nodoc:
+  def h_debug(obj)                  # :nodoc:
     case obj
     when String
       Rack::Utils.escape_html(obj)
