@@ -146,14 +146,22 @@ module Orange
       if packet.request.delete? || !opts.blank?
         id = opts.delete(:resource_id) || packet['route.resource_id']
         m = model_class.get(packet['route.resource_id'])
+        beforeDelete(packet, m, opts)
         onDelete(packet, m, opts) if m
+        afterDelete(packet, m, opts)
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def beforeDelete(packet, obj, opts = {})
     end
     
     # Delete object
     def onDelete(packet, obj, opts = {})
       obj.destroy
+    end
+    
+    def afterDelete(packet, obj, opts = {})
     end
     
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
