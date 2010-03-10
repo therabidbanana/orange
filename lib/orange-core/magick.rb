@@ -135,6 +135,7 @@ module Orange
   # might not be really there. It will silently swallow any errors that might arrise,
   # so this should be used with caution.
   class Ignore
+    def blank?; true; end
     def method_missing(name, *args, &block)
       return self
     end

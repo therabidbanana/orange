@@ -12,8 +12,7 @@ module Orange
       end
     end
     
-    def new(packet, opts = {})
-      news = OrangeNews.first()
+    def beforeNew(packet, opts = {})
       unless OrangeRoute.first(:resource => 'news', :orange_site_id => packet['site'].id)
         orange[:sitemap, true].add_route_for(packet,
           :orange_site_id => packet['site'].id, 
@@ -23,8 +22,6 @@ module Orange
           :link_text => 'Orange News Archive'
         )
       end
-      
-      super(packet, opts)
     end
     
     def sitemap_row(packet, opts = {})

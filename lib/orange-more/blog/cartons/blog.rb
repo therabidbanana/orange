@@ -4,5 +4,5 @@ class OrangeBlog < Orange::SiteCarton
   front do
     title :title
   end
-  has n, :posts, "OrangeBlogPost"
+  has n, :posts, "OrangeBlogPost", :child_key => [:blog_id]
 end

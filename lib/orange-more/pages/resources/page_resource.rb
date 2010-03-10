@@ -8,8 +8,9 @@ module Orange
       
     end
     
-    def publish(packet, *opts)
-      if packet.request.post?
+    def publish(packet, opts = {})
+      no_reroute = opts[:no_reroute]
+      if packet.request.post? || !opts.blank?
         m = model_class.get(packet['route.resource_id'])
         if m
           params = {}
@@ -22,37 +23,26 @@ module Orange
           m.save
         end
       end
-      packet.reroute(@my_orange_name, :orange)
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
     
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
-    def new(packet, *opts)
-      if packet.request.post?
-        params = packet.request.params[@my_orange_name.to_s]
-        params[:published] = false
-        m = model_class.new(params)
-        m.orange_site = packet['site']
-        # m.versions.new(params.merge(:version => 1))
-        m.save
-      end
-      packet.reroute(@my_orange_name, :orange)
+    def onNew(packet, params = {})
+      params[:published] = false
+      m = model_class.new(params)
+      m.orange_site = packet['site']
+      # m.versions.new(params.merge(:version => 1))
+      m
     end
     
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
-    def save(packet, *opts)
-      if packet.request.post?
-        m = model_class.get(packet['route.resource_id'])
-        if m
-          params = packet.request.params[@my_orange_name.to_s]
-          params[:published] = false
-          m.update(params)
-          m.orange_site = packet['site']
-          m.save
-        end
-      end
-      packet.reroute(@my_orange_name, :orange)
+    def onSave(packet, params = {})
+      params[:published] = false
+      m.update(params)
+      m.orange_site = packet['site']
+      m.save
     end
     
     # Returns a single object found by the model class, given an id. 

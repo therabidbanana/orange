@@ -24,6 +24,7 @@ def mock_post
   p= mock("request", :null_object => true)
   p.stub!(:post?).and_return(true)
   p.stub!(:params).and_return({})
+  p.stub!(:xhr?).and_return(false)
   p
 end
 
@@ -31,6 +32,7 @@ def mock_delete
   p= mock("request", :null_object => true)
   p.stub!(:delete?).and_return(true)
   p.stub!(:params).and_return({})
+  p.stub!(:xhr?).and_return(false)
   p
 end
 
