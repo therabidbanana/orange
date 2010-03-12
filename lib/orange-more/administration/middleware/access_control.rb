@@ -17,7 +17,7 @@ module Orange::Middleware
     
     def init(opts = {})
       defs = {:locked => [:admin, :orange], :login => '/login', :logout => '/logout',
-              :handle_login => true, :openid => true, :single_user => true}
+              :handle_login => true, :openid => true, :single_user => false}
       opts = opts.with_defaults!(defs)
       @openid = opts[:openid]
       @locked = opts[:locked]
@@ -57,6 +57,7 @@ module Orange::Middleware
           false
         # Main_user can always log in (root access)
         elsif packet['user.id'] == packet['orange.globals']['main_user']
+          orange[:users].new(packet, :open_id => packet['user.id'], :name => 'Main User') unless packet['user', false]
           true
         else
           orange[:users].access_allowed?(packet, packet['user.id'])
