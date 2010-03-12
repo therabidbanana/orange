@@ -75,7 +75,8 @@ Spec::Rake::SpecTask.new('specs_with_rcov') do |t|
 end
 
 desc "Runs basic example"
-task :serve do
-  cd "./examples/basic"
+task :serve, :server do |t, args|
+  opts = {:server => 'basic'}.merge args
+  cd "./examples/#{opts[:server]}"
   sh "rackup"
 end

@@ -1,5 +1,5 @@
 %div.page-listing-cell.move-controls= orange[:sitemap].route_actions(packet, :model => route)
-- if (route.children.count > 0)
+- if (route.level > 0 && route.children.count > 0)
   %div.page-listing-expand
     %a.expand{:href => "#"}
       %img{:src => "/assets/public/images/page-listing-expand.png", :border => "0"}
@@ -27,7 +27,7 @@
       Move
 %div.page-listing-cell{:style => "clear: both"}
   %div.page-listing-excerpt
-    = model.body[0..100]
+    = model.body.blank? ? "" : model.body[0..100]
 %div.page-listing-extras
   %div.page-listing-cell
     %div.page-listing-location.float-left

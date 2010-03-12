@@ -99,7 +99,7 @@ function subSliderCaption(){
 }
 
 fire_now = false;
-function changeSliderValue(el_parent, which_slider, fire_now = false){
+function changeSliderValue(el_parent, which_slider, fire_now){
 	if (fire_now === true) {
 		el = $(el_parent+" div.slider").length > 0 ? $(el_parent+" div.slider") : $(el_parent+" div.slider-off");
 		left = el.position().left;

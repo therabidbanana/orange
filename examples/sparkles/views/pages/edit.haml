@@ -1,5 +1,6 @@
-%script{:src => "/assets/public/js/popout-effects-generic.js", :type => "text/javascript"}
-%script{:src => "/assets/public/js/popout-effects-page-edit.js", :type => "text/javascript"}
+- packet["page.title"] = "Pages > Edit"
+- packet.add_js("popout-effects-generic.js")
+- packet.add_js("popout-effects-page-edit.js")
 %div#edit-box
   %form#edit
     %input{:type => "hidden", :value => model.id, :id => "page-id"}
