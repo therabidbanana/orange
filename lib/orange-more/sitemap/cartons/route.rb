@@ -33,7 +33,8 @@ class OrangeRoute < Orange::SiteCarton
 
 
   def self.create_home_for_site(site_id, opts = {})
-    home = self.new({:orange_site_id => site_id, :slug => '_index_', :accept_args => false, :link_text => 'Home'})
+    opts = opts.with_defaults({:orange_site_id => site_id, :slug => '_index_', :accept_args => false, :link_text => 'Home'})
+    home = self.new(opts)
     home.move(:root)
     home.save
     home

@@ -120,6 +120,7 @@ module Orange
         obj.save if obj
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+      obj || false
     end
     
     # A callback for the actual new item event

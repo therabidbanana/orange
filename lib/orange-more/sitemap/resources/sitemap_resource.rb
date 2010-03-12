@@ -98,11 +98,16 @@ module Orange
       else
         site_id = opts[:orange_site_id] || packet['site'].id 
       end
-      model_class.home_for_site(site_id) || create_home_for_site(site_id)
+      model_class.home_for_site(site_id) || create_home_for_site(packet, site_id)
     end
     
-    def create_home_for_site(site_id)
-      model_class.create_home_for_site(site_id)
+    def create_home_for_site(packet, site_id)
+      page = orange[:pages, true].new(packet, :title => 'Homepage', :body => 'this is an orange webpage', :no_reroute => true)
+      if page
+        model_class.create_home_for_site(site_id, :resource => 'pages', :resource_id => page.id)
+      else
+        model_class.create_home_for_site(site_id)
+      end
     end
     
     def two_level(packet)
