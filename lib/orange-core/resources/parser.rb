@@ -39,7 +39,11 @@ module Orange
         string ||= read_if_exists(views_dir, resource, file) if resource
         string ||= read_if_exists(views_dir, file)
       end
-      string ||= read_if_exists(@view_dirs.first, 'default_resource', file)
+      string ||= read_if_exists('views', 'default_resource', file)
+      @view_dirs.each do |views_dir|
+        string ||= read_if_exists(views_dir, 'default_resource', file) if resource
+        string ||= read_if_exists(views_dir, file)
+      end
       raise LoadError, "Couldn't find haml file '#{file}'" unless string
       
       haml_engine = Haml::Engine.new(string)

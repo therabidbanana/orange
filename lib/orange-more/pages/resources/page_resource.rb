@@ -100,5 +100,17 @@ module Orange
       end
       m
     end
+    
+    def find_extras(packet, mode, opts = {})
+      case mode
+      when :edit
+        return {:routes => orange[:sitemap].routes_for(packet)}
+      else {}
+      end
+    end
+    
+    def sitemap_row(packet, opts = {})
+      do_view(packet, :sitemap_row, opts)
+    end
   end
 end
