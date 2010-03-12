@@ -13,7 +13,8 @@ module Orange
     end
     
     def yaml(file)
-      string = File.read(file)
+      return nil unless File.exists?(file)
+      string = File.read(file) 
       string.gsub!('__ORANGE__', orange.app_dir)
       out = YAML::load(string)
     end

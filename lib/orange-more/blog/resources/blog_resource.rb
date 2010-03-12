@@ -69,12 +69,14 @@ module Orange
     
     def blog_for_site(packet, site_id = false)
       site_id ||= (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id)
-      blog = Orange::Blog.first(:orange_site_id => site_id)
-      unless blog
-        blog = Orange::Blog.new
+      blog = OrangeBlog.first(:orange_site_id => site_id)
+      if !blog && packet.request.post? # Only create a new blog if this is a post
+        blog = OrangeBlog.new
         blog.title = 'An Orange Hosted Blog'
         blog.orange_site = packet['site']
         blog.save
+      end
+      if packet.request.post? && !OrangeRoute.first(:resource => 'blog', :orange_site_id => packet['site'].id)
         orange[:sitemap, true].add_route_for(packet,
           :orange_site_id => site_id, 
           :resource => :blog, 
@@ -92,7 +94,7 @@ module Orange
       case mode
       when :blog_list_view then blog.posts.published.all(:order => :published_at.desc, :limit => 5)
       when :blog_archive_view then blog.posts.published
-      else Orange::Blog.all
+      else OrangeBlog.all
       end
     end
     

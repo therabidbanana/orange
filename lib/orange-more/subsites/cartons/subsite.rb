@@ -4,5 +4,5 @@ class OrangeSite < Orange::Carton
 end
 
 class OrangeSubsite < OrangeSite
-  belongs_to :orange_site
+  belongs_to :orange_site, :required => false
 end

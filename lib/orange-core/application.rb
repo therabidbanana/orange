@@ -107,10 +107,11 @@ module Orange
     #
     # Usually, you'll call this in the rackup file: `run MyApplication.app`
     def self.app
+      @core ||= Orange::Core.new
       if @app.instance_of?(Proc)
-        Orange::Stack.new &@app   # turn saved proc into a block arg
+        Orange::Stack.new self, @core, &@app   # turn saved proc into a block arg
       else
-        Orange::Stack.new self
+        Orange::Stack.new self, @core
       end
     end
     
@@ -118,7 +119,8 @@ module Orange
     # is called
     # 
     # Each call to stack overrides the previous one.
-    def self.stack(&block)
+    def self.stack(core = false, &block)
+      @core = core
       @app = Proc.new           # pulls in the block and makes it a proc
     end
   end

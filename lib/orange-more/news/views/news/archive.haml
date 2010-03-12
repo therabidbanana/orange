@@ -1,0 +1,14 @@
+.news_items
+  - list.each do |news|
+    .news_item
+      %h2.news_title
+        %a{:href => news.link} #{news.title}
+      .news_description
+        = news.description
+      %p
+        %a{:href => news.link, :class => 'view_story'} View Story &raquo;
+.news_nav
+  - if page > 1
+    %a.newer{:href => "#{archive_url}/page/#{page-1}"} Newer Posts
+  - if page < pages
+    %a.older{:href => "#{archive_url}/page/#{page+1}"} Older Posts

@@ -16,31 +16,21 @@ module Orange
       model_class.first(:open_id => packet['user.id'])
     end
     
-    def new(packet, *opts)
-      if packet.request.post?
-        params = packet.request.params[@my_orange_name.to_s]
-        sites = params.delete 'sites'
-        m = model_class.new(params)
-        m.save
-        sites.each{|k,v| s = OrangeSite.first(:id => k); m.orange_sites << s if s} if sites
-        m.save
-      end
-      packet.reroute(@my_orange_name, :orange)
+    def onNew(packet, opts = {})
+      params = opts
+      sites = params.delete 'sites'
+      m = model_class.new(params)
+      m.save
+      sites.each{|k,v| s = OrangeSite.first(:id => k); m.orange_sites << s if s} if sites
+      m
     end
     
-    def save(packet, *opts)
-      if packet.request.post?
-        m = model_class.get(packet['route.resource_id'])
-        if m
-          params = packet.request.params[@my_orange_name.to_s]
-          sites = params.delete 'sites'
-          m.update(params)
-          m.orange_sites.destroy
-          sites.each{|k,v| s = OrangeSite.first(:id => k); m.orange_sites << s if s} if sites
-          m.save
-        end
-      end
-      packet.reroute(@my_orange_name, :orange)
+    def onSave(packet, obj, params ={})
+      sites = params.delete 'sites'
+      obj.update(params)
+      obj.orange_sites.destroy
+      sites.each{|k,v| s = OrangeSite.first(:id => k); m.orange_sites << s if s} if sites
+      obj.save
     end
     
     def find_extras(packet, mode)

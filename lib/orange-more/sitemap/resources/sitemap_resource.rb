@@ -57,46 +57,39 @@ module Orange
     
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
-    def new(packet, *opts)
-      if packet.request.post?
-        params = packet.request.params[@my_orange_name.to_s]
-        params.merge!(:orange_site_id => (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id))
-        a = model_class.new(params)
-        a.move(:into => home(packet))
+    def onNew(packet, params = {})
+        params.with_defaults!(:orange_site_id => (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id))
+        model_class.new(params)
+    end
+    
+    def afterNew(packet, obj, params = {})
+      obj.move(:into => home(packet))
+    end
+    
+    def move(packet, obj, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        dir = opts[:direction]
+        obj ||= find_one(packet, :move, (opts[:id] || packet['route.resource_id']))
+        obj.move(dir) if obj
       end
-      packet.reroute(@my_orange_name, :orange)
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
     
     def higher(packet, opts = {})
-      if packet.request.post?
-        me = find_one(packet, :higher, packet['route.resource_id'])
-        me.move(:higher) if me
-      end
-      packet.reroute(@my_orange_name, :orange)
+      move(packet, false, :direction => :higher)
     end
     
     def lower(packet, opts = {})
-      if packet.request.post?
-        me = find_one(packet, :lower, packet['route.resource_id'])
-        me.move(:lower) if me
-      end
-      packet.reroute(@my_orange_name, :orange)
+      move(packet, false, :direction => :lower)
     end
     
     def outdent(packet, opts = {})
-      if packet.request.post?
-        me = find_one(packet, :outdent, packet['route.resource_id'])
-        me.move(:outdent) if me
-      end
-      packet.reroute(@my_orange_name, :orange)
+      move(packet, false, :direction => :outdent)
     end
     
     def indent(packet, opts = {})
-      if packet.request.post?
-        me = find_one(packet, :indent, packet['route.resource_id'])
-        me.move(:indent) if me
-      end
-      packet.reroute(@my_orange_name, :orange)
+      move(packet, false, :direction => :indent)
     end
     
     def home(packet, opts = {})
@@ -105,7 +98,11 @@ module Orange
       else
         site_id = opts[:orange_site_id] || packet['site'].id 
       end
-      model_class.home_for_site(site_id) || model_class.create_home_for_site(site_id)
+      model_class.home_for_site(site_id) || create_home_for_site(site_id)
+    end
+    
+    def create_home_for_site(site_id)
+      model_class.create_home_for_site(site_id)
     end
     
     def two_level(packet)
@@ -168,7 +165,7 @@ module Orange
     end
     
     def slug(str)
-      str.downcase.gsub(/[']+/, "").gsub(/[^a-z0-9]+/, "_")
+      str.downcase.gsub(/[']+/, "").gsub(/[^a-z0-9]+/, "-")
     end
     
     def find_list(packet, mode, *args)
@@ -188,7 +185,7 @@ module Orange
     end
     
     def sitemap_links(packet, opts = {})
-      packet.add_js('sitemap.js', :module => '_orange_')
+      packet.add_js('sitemap.js', :module => '_sitemap_')
       opts.with_defaults!({:list => routes_for(packet) })
       opts.merge!({:add_route_link => add_link_for(packet)})
       do_list_view(packet, :sitemap_links, opts)

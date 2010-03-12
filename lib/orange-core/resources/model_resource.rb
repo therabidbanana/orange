@@ -110,34 +110,84 @@ module Orange
     
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
-    def new(packet, *opts)
-      if packet.request.post?
-        model_class.new(packet.request.params[@my_orange_name.to_s]).save
+    def new(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        params = opts.with_defaults(packet.request.params[@my_orange_name.to_s] || {})
+        beforeNew(packet, params)
+        obj = onNew(packet, params)
+        afterNew(packet, obj, params)
+        obj.save if obj
       end
-      packet.reroute(@my_orange_name, :orange)
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    # A callback for the actual new item event
+    def onNew(packet, opts = {})
+      model_class.new(opts)
+    end
+    
+    # A callback for before a new item is created
+    # @param [Orange::Packet] packet the packet being routed
+    def beforeNew(packet, opts = {})
+    end
+    
+    # A callback for after a new item is created
+    # @param [Orange::Packet] packet the packet being routed
+    # @param [Object] obj the model class just created
+    def afterNew(packet, obj, opts = {})
     end
     
     # Deletes an object specified by packet['route.resource_id'], then reroutes to main.
     # The request must come in as a delete. Rack::MethodOverride can be used to do this.
     # @param [Orange::Packet] packet the packet being routed
-    def delete(packet, *opts)
-      if packet.request.delete?
+    def delete(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.delete? || !opts.blank?
+        id = opts.delete(:resource_id) || packet['route.resource_id']
         m = model_class.get(packet['route.resource_id'])
-        m.destroy if m
+        beforeDelete(packet, m, opts)
+        onDelete(packet, m, opts) if m
+        afterDelete(packet, m, opts)
       end
-      packet.reroute(@my_orange_name, :orange)
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def beforeDelete(packet, obj, opts = {})
+    end
+    
+    # Delete object
+    def onDelete(packet, obj, opts = {})
+      obj.destroy
+    end
+    
+    def afterDelete(packet, obj, opts = {})
     end
     
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
-    def save(packet, *opts)
-      if packet.request.post?
+    def save(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        params = opts.with_defaults(packet.request.params[@my_orange_name.to_s] || {})
         m = model_class.get(packet['route.resource_id'])
         if m
-          m.update(packet.request.params[@my_orange_name.to_s])
+          beforeSave(packet, m, params)
+          onSave(packet, m, params)
+          afterSave(packet, m, params)
         end
       end
-      packet.reroute(@my_orange_name, :orange)
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def beforeSave(packet, obj, opts = {})
+    end
+    
+    def onSave(packet, obj, opts = {})
+      obj.update(opts)
+    end
+    
+    def afterSave(packet, obj, opts = {})
     end
     
     # Calls #do_view with :show mode

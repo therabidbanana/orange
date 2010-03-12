@@ -33,9 +33,9 @@
         - packet.env.sort_by { |k, v| k.to_s }.each do |key, val|
           - unless key =~ /^orange\./ 
             %tr
-              %td #{h key}
+              %td #{h_debug key}
               %td.code
-                %div #{h val}
+                %div #{h_debug val}
     %h3#orange-info Orange ENV
     %table.req
       %thead
@@ -46,9 +46,9 @@
         - packet.env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
           - if(![:request, :headers, :content].include?(key)) 
             %tr
-              %td #{h key}
+              %td #{h_debug key}
               %td.code
-                %div #{h val}
+                %div #{h_debug val}
     %h3#orange-info= 'Orange<br /> Response'
     %table.req
       %thead
@@ -59,6 +59,6 @@
         - packet.env['orange.env'].sort_by { |k, v| k.to_s }.each do |key, val|
           - if([:headers, :content].include?(key)) 
             %tr
-              %td #{h key}
+              %td #{h_debug key}
               %td.code
-                %div #{h val}
+                %div #{h_debug val}
