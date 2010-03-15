@@ -98,16 +98,6 @@ module Orange
       model_class.all || []
     end
     
-    # Returns a hash of extra options to be set and made available by the haml parser.
-    # Overriding this method is useful for passing extra bits of info to rendering
-    # for certain view modes without rewriting all of the other scaffolding
-    # @param [Orange::Packet] packet the packet we are returning a view for
-    # @param [Symbol] mode the mode we are trying to view (used to find template name)
-    # @return [Hash] a hash of extras to be included in the rendering
-    def find_extras(packet, mode)
-      {}
-    end
-    
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
     def new(packet, opts = {})
