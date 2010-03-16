@@ -1,0 +1,22 @@
+%form{:action => "#{packet.route_to(model_name, 'new')}", :method => 'post'}
+  - for prop in props
+    %p= view_attribute(prop, model_name, :label => true)
+  %p
+    %label{:for => "#{model_name}-calendar"} Calendar
+    %br
+    %select{:id => "#{model_name}-calendar", :name => "#{model_name}[orange_calendar_id]"}
+      - for calendar in calendars
+        %option{:value => calendar.id}= calendar.name
+  %p
+    %label{:for => "#{model_name}-starts"} Starts
+    %br
+    %input{:type => 'text', :id => "#{model_name}-starts", :class => 'date', :name => "#{model_name}[starts_date]", :size => 10, :value => Time.now.strftime("%m/%d/%Y") }
+    at
+    %input{:type => 'text', :name => "#{model_name}[starts_time]", :size => 8, :value => Time.now.strftime("%I:%M %p") }
+  %p
+    %label{:for => "#{model_name}-ends"} Ends
+    %br
+    %input{:type => 'text', :id => "#{model_name}-ends", :size => 10, :class => 'date', :name => "#{model_name}[ends_date]", :value => (Time.now + 60*60).strftime("%m/%d/%Y") }
+    at
+    %input{:type => 'text', :name => "#{model_name}[ends_time]", :size => 8, :value => (Time.now + 60*60).strftime("%I:%M %p") }
+  %input{:type => 'submit', :value => 'Save New Event'}

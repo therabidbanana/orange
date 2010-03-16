@@ -1,0 +1,25 @@
+- if model
+  %form{:action => packet.route_to(model_name, model[:id], 'save'), :method => 'post'}
+    - for prop in props
+      %p!= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
+    %p
+      %label{:for => "#{model_name}-calendar"} Calendar
+      %br
+      %select{:id => "#{model_name}-calendar", :name => "#{model_name}[orange_calendar_id]"}
+        - for calendar in calendars
+          %option{:value => calendar.id}= calendar.name
+    %p
+      %label{:for => "#{model_name}-starts"} Starts
+      %br
+      %input{:type => 'text', :id => "#{model_name}-starts", :size => 10, :class => 'date', :name => "#{model_name}[starts_date]", :value => model.starts_date}
+      at
+      %input{:type => 'text', :name => "#{model_name}[starts_time]", :size => 8, :value => model.starts_time}
+    %p
+      %label{:for => "#{model_name}-ends"} Ends
+      %br
+      %input{:type => 'text', :id => "#{model_name}-ends", :size => 10, :class => 'date', :name => "#{model_name}[ends_date]", :value => model.ends_date}
+      at
+      %input{:type => 'text', :name => "#{model_name}[ends_time]", :size => 8, :value => model.ends_time}
+    %input{:type => 'submit', :value => 'Save Changes'}
+- else
+  %p Couldn't find the item you're looking for.
