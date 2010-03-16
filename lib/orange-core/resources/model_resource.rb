@@ -272,6 +272,9 @@ module Orange
         when :boolean
           human_readable_name = human_readable_name + '?'
           ret = "<input type='hidden' name='#{model_name}[#{name}]' value='0' /><input type='checkbox' name='#{model_name}[#{name}]' value='1' #{'checked="checked"' if (val && val != '')}/>"
+        when :date
+          val.gsub!('"', '&quot;')
+          ret = "<input class=\"date\" type=\"text\" value=\"#{val}\" name=\"#{model_name}[#{name}]\" />"
         else
           val.gsub!('"', '&quot;')
           ret = "<input type=\"text\" value=\"#{val}\" name=\"#{model_name}[#{name}]\" />"

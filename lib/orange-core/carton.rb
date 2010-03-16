@@ -90,6 +90,24 @@ module Orange
       add_scaffold(name, :title, String, opts)
     end
     
+    # Define a helper for title type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.datetime(name, opts = {})
+      add_scaffold(name, :datetime, DateTime, opts)
+    end
+    
+    # Define a helper for title type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.date(name, opts = {})
+      add_scaffold(name, :date, Date, opts)
+    end
+    
+    # Define a helper for title type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.time(name, opts = {})
+      add_scaffold(name, :time, Time, opts)
+    end
+    
     # Define a helper for fulltext type database stuff
     # Show in a context if wrapped in one of the helpers
     def self.fulltext(name, opts = {})
