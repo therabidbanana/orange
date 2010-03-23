@@ -24,19 +24,3 @@ class Main < Orange::Application
   end
   
 end
-
-class Tester < Orange::Resource
-  def afterLoad
-    orange.register(:wrapped, 100) do |packet|
-      # appendHah(packet)
-    end
-  end
-  
-  def appendHah(packet)
-    packet.html do |html|
-      (html / "banana").each { |item|
-        item.swap("<a href='http://www.google.com'>Orange is Awesome</a>")
-      }
-    end
-  end
-end

@@ -22,7 +22,6 @@ class Main < Orange::Application
     routing :single_user => false
     
     postrouting
-    load Tester.new
     run Main.new(orange)
   end
 end
