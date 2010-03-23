@@ -7,9 +7,9 @@ module Orange::Middleware
       orange.mixin Orange::Mixins::DBLoader
       orange.register(:stack_loaded) do |stack|
         db = orange.options['database'] || 'sqlite3::memory:'
-        orange.load_db!(db)
-        orange.upgrade_db! unless opts[:no_auto_upgrade] || orange.options['no_auto_upgrade']
-      end
+        orange.load_db!(db) 
+        orange.upgrade_db! unless opts[:no_auto_upgrade]
+      end if orange.options['database']
       @options = opts
     end
     def packet_call(packet)
