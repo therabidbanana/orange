@@ -46,6 +46,17 @@ describe Orange::Stack do
     }.should raise_error(RuntimeError, "Mock Exitware")
   end
   
+  it "should accept a core object in initialization" do
+    c = Orange::Core.new
+    c2 = Orange::Core.new
+    
+    x = Orange::Stack.new(nil, c) do
+      run MockExitware.new
+    end
+    x.orange.should equal(c)
+    x.orange.should_not equal(c2)
+  end
+  
   it "should have the use function" do
     x= Orange::Stack.new do
       use MockMiddleware
