@@ -20,8 +20,9 @@ class Main < Orange::Application
     prerouting :multi => false
 
     routing :single_user => false
-    
     postrouting
+    
+    responders
     run Main.new(orange)
   end
 end
