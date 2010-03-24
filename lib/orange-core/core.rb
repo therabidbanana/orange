@@ -66,6 +66,7 @@ module Orange
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
       @application = false
+      @stack = false
       @middleware = []
       @events = {}
       @file = __FILE__
@@ -143,13 +144,21 @@ module Orange
     # Takes an instance of Orange::Middleware::Base subclass and
     # keeps it for later. This way we can provide introspection into the 
     # middleware instances (useful for calling stack_init on them)
-    def middleware(middle)
-      @middleware << middle
+    def middleware(middle = false)
+      @middleware << middle if middle
+      @middleware
     end
     
     # Takes an instance of Orange::Application and saves it. 
-    def application(app)
-      @application = app
+    def application(app = false)
+      @application = app if app
+      @application
+    end
+    
+    # Takes an instance of Orange::Stack and saves it. 
+    def stack(stack = false)
+      @stack = stack if stack
+      @stack
     end
     
     # Convenience self for consistent naming across middleware

@@ -194,12 +194,13 @@ module Orange
     # @return [Object] a full stack of middleware and the exit application,
     #   conforming to Rack guidelines
     def app
-      if @auto_reload      
-        orange.fire(:stack_reloading, self) if @app  # Alert we are rebuilding
+      if @auto_reload
+        orange.fire(:stack_reloading, @app) if orange.stack  # Alert we are rebuilding
         @app = false                    # Rebuild no matter what if autoload
       end
       unless @app 
         @app = @build.to_app            # Build if necessary
+        orange.stack self
         orange.fire(:stack_loaded, @app)
       end
       @app

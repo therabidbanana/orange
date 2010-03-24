@@ -10,7 +10,7 @@ module Orange
   # Orange::Stack
   class Application
     extend ClassInheritableAttributes
-    cattr_accessor :core
+    cattr_accessor :core, :stack_block
     # Initialize will set the core, and additionally accept any
     # other options to be added in to the opts array
     # @param [Orange::Core] core the orange core instance that this application will use
@@ -109,8 +109,9 @@ module Orange
     def self.app(core = false)
       self.core = core if core
       self.core ||= Orange::Core.new
-      if @app.instance_of?(Proc)
-        Orange::Stack.new self, self.core, &@app   # turn saved proc into a block arg
+      return self.core.stack unless self.core.stack.blank?
+      if self.stack_block.instance_of?(Proc)
+        Orange::Stack.new self, self.core, &self.stack_block   # turn saved proc into a block arg
       else
         Orange::Stack.new self, self.core
       end
@@ -122,7 +123,7 @@ module Orange
     # Each call to stack overrides the previous one.
     def self.stack(core = false, &block)
       self.core = core if core
-      @app = Proc.new           # pulls in the block and makes it a proc
+      self.stack_block = Proc.new           # pulls in the block and makes it a proc
     end
   end
 end
