@@ -9,12 +9,14 @@ module Orange
   # the self.stack method, which will be used to create a new
   # Orange::Stack
   class Application
+    extend ClassInheritableAttributes
+    cattr_accessor :core
     # Initialize will set the core, and additionally accept any
     # other options to be added in to the opts array
     # @param [Orange::Core] core the orange core instance that this application will use
     # @param [Hash] *opts the optional arguments
     def initialize(core = false, *opts, &block)
-      @core = core
+      @core = core || self.class.core
       @options ||= {}
       @options = Orange::Options.new(*opts, &block).hash.with_defaults(self.class.opts)
       orange.register(:stack_loaded) do |s|
@@ -106,8 +108,9 @@ module Orange
     # Returns an instance of Orange::Stack to be run by Rack
     #
     # Usually, you'll call this in the rackup file: `run MyApplication.app`
-    def self.app
-      @core ||= Orange::Core.new
+    def self.app(core = false)
+      self.core = core if core
+      self.core ||= Orange::Core.new
       if @app.instance_of?(Proc)
         Orange::Stack.new self, @core, &@app   # turn saved proc into a block arg
       else
@@ -120,7 +123,7 @@ module Orange
     # 
     # Each call to stack overrides the previous one.
     def self.stack(core = false, &block)
-      @core = core
+      self.core = core if core
       @app = Proc.new           # pulls in the block and makes it a proc
     end
   end

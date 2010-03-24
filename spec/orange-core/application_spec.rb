@@ -14,6 +14,22 @@ describe Orange::Application do
         @wibble = true
       end
     end
+    # allow deep introspection into rack builder
+    class Rack::Builder 
+      attr_accessor :ins
+      # introspection into the Builder object's list of items
+      # builder uses Proc magic to chain the middleware together,
+      # so we undo it.
+      def ins_no_procs
+        @ins.map{|x| x.instance_of?(Proc)? x.call(nil) : x }
+      end
+    end
+    class Orange::Stack 
+      attr_accessor :build
+      def middlewarez
+        build.ins_no_procs
+      end
+    end
   end
   
   def app
@@ -124,6 +140,27 @@ describe Orange::Application do
     lambda {
       x.set_core(c2)
     }.should change(x, :orange)
+  end
+  
+  it "should allow setting the core via #app" do
+    c = Orange::Core.new
+    x= MockApplication.app(c)
+    x.orange.should equal(c)
+  end
+  
+  it "should allow setting the core via #stack" do
+    c = Orange::Core.new
+    MockApplication.stack(c) do
+      run MockApplication.new(orange)
+    end
+    x= MockApplication.app
+    x.orange.should equal(c)
+    x.middlewarez.first.orange.should equal(c)
+    p = Orange::Packet.new(c, {'orange.core' => c})
+    Orange::Packet.should_receive(:new).with(c, {'orange.core' => c}).and_return(p)
+    lambda{
+      x.call({}) # We don't care about the error, we care about the should_receive
+    }.should raise_error 
   end
   
   it "should respond correctly to call" do
