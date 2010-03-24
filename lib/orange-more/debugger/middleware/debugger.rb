@@ -33,3 +33,10 @@ module Orange::Pulp::DebuggerHelpers
     end
   end
 end
+
+class Rack::Builder 
+  def inspect
+    "#<Rack::Builder:#{self.id.to_s(16)} @ins=#{@ins.map{|x| x.instance_of?(Proc)? x.call(nil) : x }.inspect} >"
+  end
+end
+

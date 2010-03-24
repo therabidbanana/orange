@@ -252,5 +252,9 @@ module Orange
     def self.add_pulp(inc)
       Packet.mixin inc
     end
+    
+    def inspect
+      "#<Orange::Core:0x#{self.id.to_s(16)}>"
+    end
   end
 end

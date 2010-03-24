@@ -212,5 +212,10 @@ module Orange
       env['orange.core'] = @core
       app.call(env)
     end
+    
+    # Debug helping
+    def inspect
+      "#<Orange::Stack:0x#{self.id.to_s(16)} @build=#{@build.inspect}, @core=#{@core.inspect}>"
+    end
   end
 end

@@ -62,3 +62,22 @@
               %td #{h_debug key}
               %td.code
                 %div #{h_debug val}
+    %h3#orange-info= 'Orange Core'
+    %table.req
+      %thead
+        %tr
+          %th Variable
+          %th Value
+      %tbody
+        %tr
+          %td Middleware
+          %td.code
+            %div #{h_debug packet.env['orange.core'].middleware}
+        %tr
+          %td Application
+          %td.code
+            %div #{h_debug packet.env['orange.core'].application}
+        %tr
+          %td Stack
+          %td.code
+            %div #{h_debug packet.env['orange.core'].stack}
