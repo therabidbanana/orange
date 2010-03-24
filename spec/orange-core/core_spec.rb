@@ -60,9 +60,11 @@ describe Orange::Core do
     c.loaded?(:parser).should be_true
   end
   
-  it "should have no events by default" do
+  it "should have two events by default" do
     c= Orange::Core.new
-    c.events.should have(0).events
+    c.events.should have(2).events
+    c.events.should have_key(:stack_reloading)
+    c.events.should have_key(:stack_loaded)
   end
   
   it "should return a directory that contains core.rb when calling core_dir" do
@@ -167,7 +169,6 @@ describe Orange::Core do
   
   it "should add event to events list when register called" do
     c= Orange::Core.new
-    c.events.should be_empty
     c.register(:mock_event) {|x| x }
     c.events.should_not be_empty
     c.events.should have_key(:mock_event)
@@ -179,7 +180,6 @@ describe Orange::Core do
   
   it "should add events in specified order when registered with position" do
     c= Orange::Core.new
-    c.events.should be_empty
     c.register(:mock_event, 5) {|x| '5' }
     c.events.should_not be_empty
     c.events.should have_key(:mock_event)

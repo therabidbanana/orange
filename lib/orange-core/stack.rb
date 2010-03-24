@@ -30,6 +30,7 @@ module Orange
       @build = Rack::Builder.new
       @core = core || Orange::Core.new
       @auto_reload = false
+      @middleware = []
       @recapture = true
       @main_app = app_class
       if block_given?
@@ -193,9 +194,14 @@ module Orange
     # @return [Object] a full stack of middleware and the exit application,
     #   conforming to Rack guidelines
     def app
-      @app = false if @auto_reload      # Rebuild no matter what if autoload
-      @app ||= @build.to_app            # Build if necessary
-      orange.fire(:stack_loaded, @app)
+      if @auto_reload      
+        orange.fire(:stack_reloading, self) if @app  # Alert we are rebuilding
+        @app = false                    # Rebuild no matter what if autoload
+      end
+      unless @app 
+        @app = @build.to_app            # Build if necessary
+        orange.fire(:stack_loaded, @app)
+      end
       @app
     end
     

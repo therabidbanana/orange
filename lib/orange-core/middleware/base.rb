@@ -21,7 +21,7 @@ module Orange::Middleware
       @app = app
       @core = core
       init(*args)
-      orange.register(:stack_loaded) { |s| stack_init } if self.respond_to? :stack_init
+      core.middleware(self)
     end
     
     # A stub method that subclasses can override to handle initialization

@@ -65,12 +65,19 @@ module Orange
     def initialize(*args, &block)
       @options = Options.new(*args, &block).hash.with_defaults(DEFAULT_CORE_OPTIONS)
       @resources = {}
+      @application = false
+      @middleware = []
       @events = {}
       @file = __FILE__
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
       load(Orange::PageParts.new, :page_parts)
       Orange.plugins.each{|p| p.resources.each{|args| load(*args)} if p.has_resources?}
+      self.register(:stack_loaded) do |s| 
+        @middleware.each{|m| m.stack_init if m.respond_to?(:stack_init)}
+        @application.stack_init if @application
+      end
+      self.register(:stack_reloading){|s| @middleware = []} # Dump middleware on stack reload
       # load(Orange::AdminResource.new, :admin)
       afterLoad
       self
@@ -131,6 +138,18 @@ module Orange
       name = resource.orange_name if(!name)
       name = resource.class.to_s.gsub(/::/, '_').downcase.to_sym if(!name) 
       @resources[name] = resource.set_orange(self, name)
+    end
+    
+    # Takes an instance of Orange::Middleware::Base subclass and
+    # keeps it for later. This way we can provide introspection into the 
+    # middleware instances (useful for calling stack_init on them)
+    def middleware(middle)
+      @middleware << middle
+    end
+    
+    # Takes an instance of Orange::Application and saves it. 
+    def application(app)
+      @application = app
     end
     
     # Convenience self for consistent naming across middleware

@@ -112,6 +112,27 @@ describe Orange::Stack do
     x.app.should eql(x.app)
   end
   
+  it "should fire the stack events" do
+    c = Orange::Core.new
+    c2 = Orange::Core.new
+    x= Orange::Stack.new(nil, c) do
+      run MockExitware.new
+    end
+    x2= Orange::Stack.new(nil, c2) do
+      auto_reload!
+      run MockExitware.new
+    end
+    c.should_receive(:fire).with(:stack_loaded, anything()).once
+    c.should_receive(:fire).with(:stack_reloading, anything()).exactly(0).times
+    x.app
+    x.app
+    c2.should_receive(:fire).with(:stack_loaded, anything()).exactly(3).times
+    c2.should_receive(:fire).with(:stack_reloading, anything()).twice
+    x2.app
+    x2.app
+    x2.app
+  end
+  
   it "should rebuild stack if auto_reload! set" do
     x= Orange::Stack.new do
       auto_reload!

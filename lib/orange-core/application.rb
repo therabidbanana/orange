@@ -19,9 +19,7 @@ module Orange
       @core = core || self.class.core
       @options ||= {}
       @options = Orange::Options.new(*opts, &block).hash.with_defaults(self.class.opts)
-      orange.register(:stack_loaded) do |s|
-        stack_init
-      end
+      core.application(self) # Register self into core
       init
     end
     
