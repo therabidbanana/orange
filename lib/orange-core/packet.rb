@@ -210,7 +210,7 @@ module Orange
         break if matched
       end
       return @@matchers[matched].call(packet, matched.match(id), args) if matched
-      raise NoMethodError
+      raise NoMethodError.new("No method ##{id} found", id)
     end
   end
 end
