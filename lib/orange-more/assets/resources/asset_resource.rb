@@ -3,15 +3,14 @@ module Orange
   class AssetResource < Orange::ModelResource
     use Orange::Asset
     call_me :assets
-    def afterLoad
+    
+    def stack_init
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Assets')
-      orange.register(:stack_loaded) do
-        orange[:radius, true].context.define_tag "asset" do |tag|
-          if tag.attr['id']
-            (m = model_class.first(:id => tag.attr['id'])) ? m.to_asset_tag : 'Invalid Asset'
-          else
-            ''
-          end
+      orange[:radius, true].context.define_tag "asset" do |tag|
+        if tag.attr['id']
+          (m = model_class.first(:id => tag.attr['id'])) ? m.to_asset_tag : 'Invalid Asset'
+        else
+          ''
         end
       end
     end

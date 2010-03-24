@@ -15,7 +15,7 @@ module Orange
     def set_orange(orange, name)
       @orange = orange
       @my_orange_name = name
-      afterLoad
+      init
       orange.register(:stack_loaded) { |s| stack_init } if self.respond_to? :stack_init
       self
     end
@@ -24,8 +24,11 @@ module Orange
       raise 'instantiate the resource before calling set orange'
     end
     
+    def init
+      afterLoad
+    end
+    
     def afterLoad
-      true
     end
     
     def self.call_me(name)

@@ -2,13 +2,10 @@ module Orange
   class NewsResource < Orange::ModelResource
     use OrangeNews
     call_me :news
-    def afterLoad
+    def stack_init
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'News')
-      
-      orange.register(:stack_loaded) do
-        orange[:radius, true].context.define_tag "latest_news" do |tag|
-          orange[:news].latest(tag.locals.packet)
-        end
+      orange[:radius, true].context.define_tag "latest_news" do |tag|
+        orange[:news].latest(tag.locals.packet)
       end
     end
     

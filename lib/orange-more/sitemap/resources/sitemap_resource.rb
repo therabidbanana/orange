@@ -5,10 +5,10 @@ module Orange
   class SitemapResource < ModelResource
     use OrangeRoute
     call_me :sitemap
-    def afterLoad
+    def stack_init
       orange[:admin, true].add_link('Content', :resource => @my_orange_name, :text => 'Sitemap')
-      
     end
+    
     def route_actions(packet, opts = {})
       do_view(packet, :route_actions, opts)
     end

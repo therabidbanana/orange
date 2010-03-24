@@ -4,10 +4,8 @@ module Orange
   class CloudResource < Orange::Resource
     ORANGE_PING_KEY = "c99550a0430eb9054eb4b7ee290664cf"
     call_me :cloud
-    def afterLoad
-      orange.register(:stack_loaded) do |stack|
-        options[:ping_fm_key] = orange.options['ping_fm_key'] || false
-      end
+    def stack_init
+      options[:ping_fm_key] = orange.options['ping_fm_key'] || false
     end
     
     def microblog(packet, status, opts = {})

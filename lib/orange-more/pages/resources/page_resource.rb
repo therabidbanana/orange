@@ -24,10 +24,13 @@ module Orange
   class PageResource < Orange::ModelResource
     use OrangePage
     call_me :pages
-    def afterLoad
-      orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
+    def init
       options[:sitemappable] = true
       orange.add_pulp(Orange::Pulp::PageHelpers)
+    end
+    
+    def stack_init
+      orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Pages')
     end
     
     def publish(packet, opts = {})

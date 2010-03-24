@@ -2,7 +2,7 @@ module Orange
   class SubsiteResource < Orange::ModelResource
     use OrangeSubsite
     call_me :subsites
-    def afterLoad
+    def stack_init
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Subsites')
     end
     
