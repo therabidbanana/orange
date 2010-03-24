@@ -16,6 +16,7 @@ module Orange
       @orange = orange
       @my_orange_name = name
       afterLoad
+      orange.register(:stack_loaded) { |s| stack_init } if self.respond_to? :stack_init
       self
     end
     

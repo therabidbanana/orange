@@ -44,6 +44,13 @@ describe Orange::Resource do
     me.should equal r
   end
   
+  it "should register for stack_loaded iff stack_init method present" do
+    c = Orange::Core.new
+    c.should_receive(:register).with(:stack_loaded).once
+    mid1 = c.load MockResource.new
+    mid2 = c.load MockResourceTwo.new
+  end
+  
   it "should return an error if setting orange on a class" do
     lambda {
       Orange::Resource.set_orange(Orange::Core.new, :mock)
