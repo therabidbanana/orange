@@ -144,6 +144,22 @@ describe Orange::Stack do
     x.middlewarez.select{|y| y.instance_of?(Orange::Middleware::RouteSite)}.should_not be_empty
   end
   
+  it "should have routing, postrouting and responder middleware hooks" do
+    x = Orange::Stack.new do
+      run MockExitware.new
+    end
+    x.should respond_to(:routing)
+    x.should respond_to(:postrouting)
+    x.should respond_to(:responders)
+    q = mock(:plugins)
+    plugin = mock(:plugin)
+    Orange.should_receive(:plugins).exactly(3).times.and_return(q)
+    q.should_receive(:each).exactly(3).times.and_return([plugin])
+    x.routing
+    x.postrouting
+    x.responders
+  end
+  
   it "should add one less middleware when calling prerouting with opt :no_abstract_format" do
     x= Orange::Stack.new do
       no_recapture
