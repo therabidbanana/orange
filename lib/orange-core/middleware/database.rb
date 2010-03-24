@@ -6,7 +6,7 @@ module Orange::Middleware
       opts = opts.with_defaults(:migration_url => (orange.options[:development_mode] ? '/__ORANGE_DB__/migrate' : false), :no_auto_upgrade => false)
       orange.mixin Orange::Mixins::DBLoader
       orange.register(:stack_loaded) do |stack|
-        if !orange.options.has_key?('database') || orange.options['database']
+        if orange.options['database']
           db = orange.options['database'] || 'sqlite3::memory:'
           orange.load_db!(db) 
           orange.upgrade_db! unless opts[:no_auto_upgrade]

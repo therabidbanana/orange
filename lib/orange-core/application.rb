@@ -112,9 +112,9 @@ module Orange
       self.core = core if core
       self.core ||= Orange::Core.new
       if @app.instance_of?(Proc)
-        Orange::Stack.new self, @core, &@app   # turn saved proc into a block arg
+        Orange::Stack.new self, self.core, &@app   # turn saved proc into a block arg
       else
-        Orange::Stack.new self, @core
+        Orange::Stack.new self, self.core
       end
     end
     
