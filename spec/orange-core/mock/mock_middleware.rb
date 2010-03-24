@@ -13,6 +13,10 @@ class MockMiddleware
 end
 
 class MockOrangeBasedMiddlewareTwo < Orange::Middleware::Base; end
+class MockOrangeBasedMiddlewareThree < Orange::Middleware::Base
+  def stack_init
+  end
+end
 class MockOrangeDeathMiddleware < Orange::Middleware::Base
   def init(*args)
     opts = args.extract_options!

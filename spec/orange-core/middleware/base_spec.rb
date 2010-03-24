@@ -11,6 +11,13 @@ describe Orange::Middleware::Base do
     mid.call({})
   end
   
+  it "should register for stack_loaded iff stack_init method present" do
+    c = Orange::Core.new
+    c.should_receive(:register).with(:stack_loaded).once
+    mid1 = MockOrangeBasedMiddlewareTwo.new(nil, c)
+    mid2 = MockOrangeBasedMiddlewareThree.new(nil, c)
+  end
+  
   it "should pass the packet on by default for packet_call" do
     mid = MockOrangeBasedMiddlewareTwo.new(nil, nil)
     mid.should_receive(:pass).with(an_instance_of(Orange::Packet))

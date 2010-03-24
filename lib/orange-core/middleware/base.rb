@@ -11,7 +11,9 @@ require 'orange-core/packet'
 module Orange::Middleware
   class Base
     # Initialize will set the core and downstream app, then call init
-    # subclasses should override init instead of initialize
+    # subclasses should override init instead of initialize.
+    # If the subclass defines a stack_init, then it will be registered
+    # as a stack_loaded event.
     # @param [Object] app a downstream app 
     # @param [Orange::Core] core the orange core
     # @param [optional, Array] args any arguments
@@ -19,9 +21,11 @@ module Orange::Middleware
       @app = app
       @core = core
       init(*args)
+      orange.register(:stack_loaded) { |s| stack_init } if self.respond_to? :stack_init
     end
     
     # A stub method that subclasses can override to handle initialization
+    # For initialization
     # @return [void]
     def init(*args)
     end
