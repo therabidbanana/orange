@@ -254,7 +254,7 @@ module Orange
     end
     
     def inspect
-      "#<Orange::Core:0x#{self.id.to_s(16)}>"
+      "#<Orange::Core:0x#{self.object_id.to_s(16)}>"
     end
   end
 end

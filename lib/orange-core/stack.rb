@@ -215,7 +215,7 @@ module Orange
     
     # Debug helping
     def inspect
-      "#<Orange::Stack:0x#{self.id.to_s(16)} @build=#{@build.inspect}, @core=#{@core.inspect}>"
+      "#<Orange::Stack:0x#{self.object_id.to_s(16)} @build=#{@build.inspect}, @core=#{@core.inspect}>"
     end
   end
 end
