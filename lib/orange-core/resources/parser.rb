@@ -1,6 +1,7 @@
 require 'orange-core/core'
 require 'haml'
 require 'yaml'
+require 'crack'
 
 module Orange
   class Parser < Resource
@@ -59,6 +60,14 @@ module Orange
     def hpricot(text)
       require 'hpricot'
       Hpricot(text)
+    end
+    
+    def xml(text)
+      Crack::XML.parse(text)
+    end
+    
+    def json(text)
+      Crack::JSON.parse(text)
     end
   end 
   
