@@ -72,7 +72,7 @@ module Orange::Middleware
     end
     
     def handle_openid(packet)
-      if packet.env['REQUEST_PATH'] == @logout
+      if packet.request.path.gsub(/\/$/, '') == @logout
         packet.session['user.id'] = nil
         packet['user.id'] = nil
         after = packet.session['user.after_login'].blank? ? 
