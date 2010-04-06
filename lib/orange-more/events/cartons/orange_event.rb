@@ -2,13 +2,19 @@ class OrangeEvent < Orange::Carton
   id
   admin do
     title :name
-    text :location
+    text :location_name
+    text :location_address
+    text :location_address2
+    text :location_city
+    text :location_state
+    text :location_zip
     fulltext :description
   end
   orange do
     time :starts
     time :ends
   end
+  
   def starts_time
     self.starts.strftime("%I:%M %p")
   end
