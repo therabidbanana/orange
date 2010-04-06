@@ -68,7 +68,7 @@ module Orange::Middleware
     end
     
     def need_to_handle?(packet)
-      @handle && ([@login, @logout].include? packet.request.path)
+      @handle && ([@login, @logout].include? packet.request.path.gsub(/\/$/, ''))
     end
     
     def handle_openid(packet)
