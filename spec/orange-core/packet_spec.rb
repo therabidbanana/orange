@@ -55,8 +55,32 @@ describe Orange::Packet do
   end
   
   it "should give access to the rack.session env" do
-    p= Orange::Packet.new(Orange::Core.new, {'rack.session' => 'banana'})
-    p.session.should == 'banana'
+    p= Orange::Packet.new(Orange::Core.new, {'rack.session' => {'foo' => 'banana'}})
+    p.session.should have_key 'foo'
+    p.session.should have_key 'flash'
+  end
+  
+  it "should give always have a flash" do
+    p= Orange::Packet.new(Orange::Core.new, {'rack.session' => {}})
+    p.session.should have_key 'flash'
+    p.flash.should == {}
+  end
+  
+  it "should destruct a flash value upon reading" do    
+    p= Orange::Packet.new(Orange::Core.new, {'rack.session' => {}})
+    p.session.should have_key 'flash'
+    p.session["flash"]["foo"] = "bar"
+    p.flash("foo").should == "bar"
+    p.flash("foo").should be_nil
+    p.session["flash"].should_not have_key("foo")
+    p.flash("foo", "bar")
+    p.flash("foo").should == "bar"
+    p.flash("foo").should be_nil
+    p.session["flash"].should_not have_key("foo")
+    p.flash["foo"] = "bar"
+    p.flash("foo").should == "bar"
+    p.flash("foo").should be_nil
+    p.flash.should_not have_key("foo")
   end
   
   it "should give headers by combining :headers with defaults" do

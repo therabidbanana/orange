@@ -87,8 +87,22 @@ module Orange
     # Access to the rack session
     # @return [Hash] the session information made available by Rack
     def session
+      env['rack.session']["flash"] ||= {}
       env['rack.session']
     end
+    
+    # Access to the rack session flash
+    # @return [String] the string stored in the flash
+    def flash(key = nil, val = nil)
+      env['rack.session']["flash"] ||= {}
+      if key.nil? && val.nil?
+        env['rack.session']["flash"]
+      elsif val.nil?
+        env['rack.session']["flash"].delete(key)
+      else
+        env['rack.session']["flash"][key] = val
+      end
+    end 
     
     # Generate headers for finalization
     # @return [Hash] the header information stored in the orange.env, combined with the defaults

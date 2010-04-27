@@ -9,7 +9,7 @@ module Orange::Middleware
     # Passes packet then parses the return
     def packet_call(packet)
       if orange.options[:development_mode]
-        packet.session['flash.redirect_to'] = packet.request.path
+        packet.flash['redirect_to'] = packet.request.path
         packet.add_css('debug_bar.css', :module => '_debugger_')
       end
       pass packet

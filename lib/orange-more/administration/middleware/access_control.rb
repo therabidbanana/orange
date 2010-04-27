@@ -38,7 +38,7 @@ module Orange::Middleware
         return ret unless ret.blank? # unless handle_openid returns false, exit immediately
       end
       unless access_allowed?(packet)
-        packet.session['user.after_login'] = packet.request.path
+        packet.flash['user.after_login'] = packet.request.path
         packet.reroute(@login)
       end
       
@@ -75,8 +75,7 @@ module Orange::Middleware
       if packet.request.path.gsub(/\/$/, '') == @logout
         packet.session['user.id'] = nil
         packet['user.id'] = nil
-        after = packet.session['user.after_login'].blank? ? 
-                '/' : packet.session['user.after_login'] 
+        after = packet.flash('user.after_login') || '/'
         packet.reroute(after)
         return false
       end
@@ -112,9 +111,7 @@ module Orange::Middleware
             end
             
             
-            after = packet.session.has_key?('user.after_login') ?
-                        packet.session['user.after_login'] : '/'
-            packet.session['user.after_login'] = false
+            after = packet.flash('user.after_login') || '/'
             
             # Save id into session if we have one.
             packet.session['user.id'] = packet['user.id']
@@ -123,7 +120,7 @@ module Orange::Middleware
             packet.reroute(after)
             false
           else
-            packet.session['flash.error'] = resp.status
+            packet.flash['error'] = resp.status
             packet.reroute(@login)
             false
           end
@@ -131,8 +128,10 @@ module Orange::Middleware
         else
           packet[:status] = 401
           packet[:headers] = {}
+          id = packet.request.params["openid_identifier"]
+          id = "http://#{id}" unless id =~ /^http:\/\//
           packet.add_header('WWW-Authenticate', Rack::OpenID.build_header(
-                :identifier => packet.request.params["openid_identifier"],
+                :identifier => id,
                 :required => [:email, "http://axschema.org/contact/email"]
                 ) 
           )
