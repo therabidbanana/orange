@@ -129,7 +129,7 @@ module Orange::Middleware
           packet[:status] = 401
           packet[:headers] = {}
           id = packet.request.params["openid_identifier"]
-          id = "http://#{id}" unless id =~ /^http:\/\//
+          id = "http://#{id}" unless id =~ /^https?:\/\//
           packet.add_header('WWW-Authenticate', Rack::OpenID.build_header(
                 :identifier => id,
                 :required => [:email, "http://axschema.org/contact/email"]
