@@ -20,8 +20,11 @@ module Orange
       out = YAML::load(string)
     end
     
-    def haml(file, packet, *vars, &block)
+    def haml(file, packet_binding, *vars, &block)
       opts = vars.extract_options!
+      if packet_binding.is_a? Orange::Packet
+        context = packet_binding['route.context'].to_s 
+      end
       temp = opts.delete(:template)
       opts[:resource_name] = opts[:resource].orange_name.to_s if 
           opts[:resource] && opts[:resource].respond_to?(:orange_name)
@@ -33,23 +36,36 @@ module Orange
         string ||= read_if_exists('templates', file) 
         @template_dirs.each do |templates_dir|
           string ||= read_if_exists(templates_dir, file)
-        end
+        end unless string
       end
+      
+      if context
+        #Check for context specific overrides
+        string ||= read_if_exists('views', resource, context+"."+file) if resource
+        string ||= read_if_exists('views', context+"."+file)
+        @view_dirs.each do |views_dir|
+          string ||= read_if_exists(views_dir, resource, context+"."+file) if resource
+          string ||= read_if_exists(views_dir, context+"."+file)
+        end unless string
+      end
+      
+      # Check for standard views
       string ||= read_if_exists('views', resource, file) if resource
       string ||= read_if_exists('views', file)
       @view_dirs.each do |views_dir|
         string ||= read_if_exists(views_dir, resource, file) if resource
         string ||= read_if_exists(views_dir, file)
-      end
+      end unless string
+      
+      # Check for default resource views
       string ||= read_if_exists('views', 'default_resource', file)
       @view_dirs.each do |views_dir|
         string ||= read_if_exists(views_dir, 'default_resource', file) if resource
-        string ||= read_if_exists(views_dir, file)
-      end
+      end unless string
       raise LoadError, "Couldn't find haml file '#{file}'" unless string
       
       haml_engine = Haml::Engine.new(string)
-      out = haml_engine.render(packet, opts, &block)
+      out = haml_engine.render(packet_binding, opts, &block)
     end
     
     def read_if_exists(*args)
