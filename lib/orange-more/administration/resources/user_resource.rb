@@ -29,7 +29,7 @@ module Orange
       sites = params.delete 'sites'
       obj.update(params)
       obj.orange_sites.destroy
-      sites.each{|k,v| s = OrangeSite.first(:id => k); m.orange_sites << s if s} if sites
+      sites.each{|k,v| s = OrangeSite.first(:id => k); obj.orange_sites << s if s} if sites
       obj.save
     end
     
