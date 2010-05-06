@@ -30,6 +30,7 @@ module Orange
       @build = Rack::Builder.new
       @core = core || Orange::Core.new
       @auto_reload = false
+      @app = false
       @middleware = []
       @recapture = true
       @main_app = app_class
