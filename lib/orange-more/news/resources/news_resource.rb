@@ -4,7 +4,7 @@ module Orange
     call_me :news
     def stack_init
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'News')
-      orange[:radius, true].context.define_tag "latest_news" do |tag|
+      orange[:radius, true].define_tag "latest_news" do |tag|
         orange[:news].latest(tag.locals.packet)
       end
     end

@@ -10,7 +10,7 @@ module Orange::Middleware
   class RadiusParser < Base
     def init(opts = {})
       @contexts = opts[:contexts] || [:live]
-      orange.load Orange::Radius.new, :radius
+      # orange.load Orange::Radius.new, :radius
     end
     
     # Passes packet then parses the return

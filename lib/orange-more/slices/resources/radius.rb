@@ -4,6 +4,7 @@ module Orange
   # Radius resource is for exposing the Radius context
   # and allowing parsing.
   class Radius < Resource
+    call_me :radius
     def afterLoad
       @context = ::Radius::Context.new
       orange.fire(:radius_loaded, self)
@@ -11,6 +12,10 @@ module Orange
     
     def context
       @context
+    end
+    
+    def define_tag(*args, &block)
+      @context.define_tag(*args, &block)
     end
     
     def parse(packet)
