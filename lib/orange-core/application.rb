@@ -19,7 +19,7 @@ module Orange
       @core = core || self.class.core
       @options ||= {}
       @options = Orange::Options.new(*opts, &block).hash.with_defaults(self.class.opts)
-      core.application(self) # Register self into core
+      @core.application(self) # Register self into core
       init
     end
     
@@ -106,9 +106,12 @@ module Orange
     # Returns an instance of Orange::Stack to be run by Rack
     #
     # Usually, you'll call this in the rackup file: `run MyApplication.app`
-    def self.app(core = false)
-      self.core = core if core
-      self.core ||= Orange::Core.new
+    def self.app(c = false)
+      if c
+        self.core = c 
+      else
+        self.core ||= Orange::Core.new
+      end
       return self.core.stack unless self.core.stack.blank?
       if self.stack_block.instance_of?(Proc)
         Orange::Stack.new self, self.core, &self.stack_block   # turn saved proc into a block arg

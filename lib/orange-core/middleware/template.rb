@@ -8,10 +8,6 @@ module Orange::Middleware
       @core.add_pulp(Orange::Pulp::Template)
       @core.mixin(Orange::Mixins::Template)
       
-      # Establish a default template chooser
-      @core.template_chooser do |packet|
-        false
-      end
     end
     
     def packet_call(packet)
@@ -51,9 +47,13 @@ end
 
 module Orange::Mixins::Template
   def template_for(packet)
-    @template_chooser.call(packet)
+    template_chooser.call(packet)
   end
   def template_chooser(&block)
-    @template_chooser = Proc.new
+    if block_given?
+      @template_chooser = Proc.new
+    else
+      @template_chooser ||= Proc.new {|packet| false}
+    end
   end
 end

@@ -29,6 +29,7 @@ module Orange
     def initialize(app_class = nil, core = false, prebuilt = :none, &block)
       @build = Rack::Builder.new
       @core = core || Orange::Core.new
+      @core.stack = self # Set a back reference in the core.
       @auto_reload = false
       @app = false
       @middleware = []
@@ -200,11 +201,14 @@ module Orange
         @app = false                    # Rebuild no matter what if autoload
       end
       unless @app 
-        @app = @build.to_app            # Build if necessary
-        orange.stack self
+        @app = do_build            # Build if necessary
         orange.fire(:stack_loaded, @app)
       end
       @app
+    end
+    
+    def do_build
+      @build.to_app
     end
     
     # Sets the core and then passes on to the stack, according to standard 
