@@ -6,7 +6,7 @@ module Orange
   class Radius < Resource
     call_me :radius
     def afterLoad
-      @context = ::Radius::Context.new
+      @context = ::Radius::PacketContext.new
       orange.fire(:radius_loaded, self)
     end
     
@@ -18,10 +18,18 @@ module Orange
       @context.define_tag(*args, &block)
     end
     
+    def parse_text(packet, text = false)
+      content = text
+      unless content.blank? 
+        parser = ::Radius::PacketParser.new(context, :tag_prefix => 'o')
+        parser.parse(content, packet)
+      end
+    end
+    
     def parse(packet)
       content = packet[:content, false]
       unless content.blank? 
-        parser = ::Radius::Parser.new(context, :tag_prefix => 'o')
+        parser = ::Radius::PacketParser.new(context, :tag_prefix => 'o')
         packet[:content] = parser.parse(content, packet)
       end
     end
@@ -34,7 +42,7 @@ module Radius
   # defines how tags should be expanded. See the QUICKSTART[link:files/QUICKSTART.html]
   # for a detailed explaination of its usage.
   #
-  class Parser
+  class PacketParser < Parser
     def parse(string, packet = false)
       @stack = [ParseContainerTag.new { |t| t.contents.to_s }]
       tokenize(string)
@@ -69,7 +77,7 @@ module Radius
       raise MissingEndTagError.new(@stack.last.name, @stack) if @stack.length != 1
     end
   end
-  class Context
+  class PacketContext < Context
 
     # Returns the value of a rendered tag. Used internally by Parser#parse.
     def render_tag(name, attributes = {}, packet = false, &block)
