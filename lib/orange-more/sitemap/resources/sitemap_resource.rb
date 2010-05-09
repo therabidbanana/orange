@@ -180,7 +180,7 @@ module Orange
     def table_row(packet, opts ={})
       opts[:route] = opts[:model] || find_one(packet, :table_row, opts[:id])
       resource = opts[:route].resource
-      resource = resource.to_sym if resource
+      resource = resource.to_sym unless resource.blank?
       if resource && orange[resource].respond_to?(:sitemap_row)
         opts.delete(:model)
         orange[resource].sitemap_row(packet, opts.merge(:resource_name => resource, :id => opts[:route].resource_id))
