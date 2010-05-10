@@ -36,9 +36,10 @@ module Orange
       end
     end
     
-    def latest(packet)
+    def latest(packet, opts = {})
+      limit = packet['news.latest_news_limit', 3]
       do_list_view(packet, :latest, {
-        :list => model_class.all(:order => :created_at.desc, :limit => 3)
+        :list => model_class.all(:order => :created_at.desc, :limit => limit)
       })
     end
     
