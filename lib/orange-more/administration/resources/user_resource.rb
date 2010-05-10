@@ -28,7 +28,7 @@ module Orange
     def onSave(packet, obj, params ={})
       sites = params.delete 'sites'
       obj.update(params)
-      obj.orange_sites.destroy
+      obj.orange_sites.delete_if{|i| true }
       sites.each{|k,v| s = OrangeSite.first(:id => k); obj.orange_sites << s if s} if sites
       obj.save
     end
