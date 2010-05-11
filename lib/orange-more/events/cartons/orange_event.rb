@@ -8,6 +8,8 @@ class OrangeEvent < Orange::Carton
     text :location_city
     text :location_state
     text :location_zip
+    boolean :link_to_eventbrite, :default => false
+    text :eventbrite_id
     fulltext :description
   end
   orange do
@@ -31,9 +33,12 @@ class OrangeEvent < Orange::Carton
     time_attr(attribute, false, datestr)
   end
   
+  def attribute_time_get(attribute)
+    attribute_get(attribute) || Time.now
+  end
   def time_attr(attribute, timestr = false, datestr = false)
-    date = datestr || attribute_get(attribute).strftime("%m/%d/%Y")
-    time = timestr || attribute_get(attribute).strftime("%I:%M %p")
+    date = datestr || attribute_time_get(attribute).strftime("%m/%d/%Y")
+    time = timestr || attribute_time_get(attribute).strftime("%I:%M %p")
     attribute_set(attribute, Time.parse(date + " " + time))
   end
   
