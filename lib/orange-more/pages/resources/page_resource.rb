@@ -91,6 +91,15 @@ module Orange
           m.attributes = attrs
         end
       end
+      if mode == :show
+        case packet['route.context']  
+        when :live
+          m = m.versions.last(:published => '1')
+        when :preview
+          m
+        end
+      else {}
+      end
       m
     end
     
@@ -104,6 +113,10 @@ module Orange
     
     def sitemap_row(packet, opts = {})
       do_view(packet, :sitemap_row, opts)
+    end
+    
+    def route_for(packet, id, opts = {})
+      return orange[:sitemap].url_for(packet, {:resource => 'pages', :resource_id => id})
     end
   end
 end
