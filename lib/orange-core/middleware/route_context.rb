@@ -7,7 +7,7 @@ module Orange::Middleware
   class RouteContext < Base
     def initialize(app, core, *args)
       opts = args.extract_options!
-      opts.with_defaults!(:contexts => [:live, :admin, :orange], 
+      opts.with_defaults!(:contexts => [:preview, :live, :admin, :orange], 
                           :default => :live,
                           :urls => {})
       @app = app

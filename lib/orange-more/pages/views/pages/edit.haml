@@ -4,19 +4,21 @@
   %form{:action => route_to(model_name, model[:id], 'save'), :method => 'post'}
     - for prop in props
       %p~ view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
+    %a{:href => route_to(model_name, model['id'], {:context => 'preview', :mode => 'show'}), :rel => 'external', :target => "_blank"}Preview
     %input{:type => 'submit', :value => 'Save Changes'}
-    = route_to(model_name, model[:id], 'publish')
+    / = route_to(model_name, model[:id], 'publish')
   = form_link('Publish', packet.route_to(model_name, model[:id], 'publish'))
-  %h3 Versions
-  %ul
-    %li (Current Draft)
+  %h3 Published Versions
+  %ul.version_list
+    / %li (Current Draft)
     - for version in model.versions.all(:order => :version.desc, :limit=> 3)
       %li 
         .version_container
           %span.version_info
             %strong Version #{version.version} 
           %span.version_info  
-            Last Updated: #{version.updated_at}
+            Last Updated: 
+            %strong #{fuzzy_time(version.updated_at)}
           %span.version_info
             %a{:href => route_to(model_name, model[:id], 'edit', "version", version.version)}Edit
 - else

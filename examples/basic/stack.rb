@@ -7,17 +7,18 @@ require 'openid_dm_store'
 
 class Main < Orange::Application
   stack do
-    # orange.options[:development_mode] = true
+    orange.options[:development_mode] = true
+    orange.options[:contexts] = [:preview, :live, :admin, :orange]
     
     use Rack::CommonLogger
     use Rack::MethodOverride
     use Rack::Session::Cookie, :secret => 'orange_secret'
 
-    # auto_reload!
+     auto_reload!
     use_exceptions
     
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-    prerouting :multi => false
+    prerouting :multi => false, :locked => [:preview, :admin, :orange]
 
     routing :single_user => false
     postrouting
