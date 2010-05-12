@@ -50,5 +50,10 @@ module Orange
       end
       m.destroy if m
     end
+    
+    def asset_html(packet, id)
+      m = model_class.get(id)
+      m ? m.to_asset_tag : false
+    end
   end
 end
