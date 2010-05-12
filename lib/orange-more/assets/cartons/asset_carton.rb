@@ -17,7 +17,7 @@ module Orange
     end
     
     def to_asset_tag
-      "<img src=\"#{file_path}\" />"
+      "<img src=\"#{file_path}\" border=\"0\"/>"
     end
   end
 end

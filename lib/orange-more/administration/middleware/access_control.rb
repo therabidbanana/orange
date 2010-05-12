@@ -16,7 +16,7 @@ module Orange::Middleware
     # @option opts [Boolean] :config_id Whether to use the id set in a config file
     
     def init(opts = {})
-      defs = {:locked => [:admin, :orange], :login => '/login', :logout => '/logout',
+      defs = {:locked => [:preview, :admin, :orange], :login => '/login', :logout => '/logout',
               :handle_login => true, :openid => true, :single_user => false}
       opts = opts.with_defaults!(defs)
       @openid = opts[:openid]
