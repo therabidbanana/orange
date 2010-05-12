@@ -14,7 +14,7 @@ class Main < Orange::Application
     use Rack::MethodOverride
     use Rack::Session::Cookie, :secret => 'orange_secret'
 
-     auto_reload!
+    auto_reload!
     use_exceptions
     
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
