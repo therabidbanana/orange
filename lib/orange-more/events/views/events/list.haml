@@ -1,0 +1,13 @@
+%table
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th Location
+      %th Calendar
+      %th EventBrite Link
+      %th
+  %tbody
+    - for obj in list
+      = view_table_row(model_name, :model => obj)
+%a{:href => route_to(model_name, 'create')} New

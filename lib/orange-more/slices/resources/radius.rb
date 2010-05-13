@@ -7,6 +7,7 @@ module Orange
     call_me :radius
     def afterLoad
       @context = ::Radius::PacketContext.new
+      @defined_tags = []
       orange.fire(:radius_loaded, self)
     end
     
@@ -14,7 +15,12 @@ module Orange
       @context
     end
     
+    def defined_tags
+      @defined_tags
+    end
+    
     def define_tag(*args, &block)
+      @defined_tags << args.first unless @defined_tags.include? args.first
       @context.define_tag(*args, &block)
     end
     

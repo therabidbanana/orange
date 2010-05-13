@@ -3,8 +3,8 @@ require 'orange-core/middleware/base'
 module Orange::Middleware
   class RestfulRouter < Base
     def init(*args)
-      opts = args.extract_options!.with_defaults(:contexts => [:admin, :orange, :preview], :not_found => false)
-      @contexts = opts[:contexts]
+      opts = args.extract_options!.with_defaults(:restful_contexts => [:admin, :orange], :not_found => false)
+      @contexts = opts[:restful_contexts]
       @not_found = opts[:not_found]
     end
     

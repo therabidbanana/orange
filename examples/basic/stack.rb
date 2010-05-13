@@ -14,13 +14,13 @@ class Main < Orange::Application
     use Rack::MethodOverride
     use Rack::Session::Cookie, :secret => 'orange_secret'
 
-     auto_reload!
+    auto_reload!
     use_exceptions
     
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
-    prerouting :multi => false, :locked => [:preview, :admin, :orange]
+    prerouting :multi => false, :locked => [:preview, :admin, :orange], :contexts => [:preview, :live, :admin, :orange]
 
-    routing :single_user => false
+    routing :single_user => false, :restful_contexts => [:preview, :admin, :orange]
     postrouting
     
     responders
