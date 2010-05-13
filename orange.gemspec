@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-05-10}
+  s.date = %q{2010-05-13}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -73,6 +73,11 @@ Gem::Specification.new do |s|
      "lib/orange-more/administration/views/openid_login.haml",
      "lib/orange-more/administration/views/users/create.haml",
      "lib/orange-more/administration/views/users/edit.haml",
+     "lib/orange-more/adverts.rb",
+     "lib/orange-more/adverts/cartons/adverts_carton.rb",
+     "lib/orange-more/adverts/plugin.rb",
+     "lib/orange-more/adverts/resources/adverts_resource.rb",
+     "lib/orange-more/adverts/views/adverts/adverts.haml",
      "lib/orange-more/assets.rb",
      "lib/orange-more/assets/cartons/asset_carton.rb",
      "lib/orange-more/assets/plugin.rb",
@@ -102,13 +107,17 @@ Gem::Specification.new do |s|
      "lib/orange-more/disqus/resources/disqus_resource.rb",
      "lib/orange-more/disqus/views/disqus/comment_thread.haml",
      "lib/orange-more/events.rb",
+     "lib/orange-more/events/assets/js/events.js",
      "lib/orange-more/events/cartons/orange_calendar.rb",
      "lib/orange-more/events/cartons/orange_event.rb",
      "lib/orange-more/events/plugin.rb",
      "lib/orange-more/events/resources/calendar_resource.rb",
      "lib/orange-more/events/resources/event_resource.rb",
+     "lib/orange-more/events/views/calendar/calendar.haml",
      "lib/orange-more/events/views/events/create.haml",
      "lib/orange-more/events/views/events/edit.haml",
+     "lib/orange-more/events/views/events/list.haml",
+     "lib/orange-more/events/views/events/table_row.haml",
      "lib/orange-more/news.rb",
      "lib/orange-more/news/cartons/news.rb",
      "lib/orange-more/news/plugin.rb",
@@ -123,6 +132,7 @@ Gem::Specification.new do |s|
      "lib/orange-more/pages/plugin.rb",
      "lib/orange-more/pages/resources/page_resource.rb",
      "lib/orange-more/pages/views/pages/edit.haml",
+     "lib/orange-more/pages/views/pages/show.haml",
      "lib/orange-more/sitemap.rb",
      "lib/orange-more/sitemap/assets/img/sitemap_down.png",
      "lib/orange-more/sitemap/assets/img/sitemap_down_d.png",

@@ -104,6 +104,7 @@ Required Gems
 * openid_dm_store
 * radius
 * crack
+* eventbright
 
 All dependencies should be loaded if you install the gem except for the datamapper
 adapter relevant to your set up. If, for example, you want to use a mysql database,
