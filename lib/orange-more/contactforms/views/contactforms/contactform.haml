@@ -1,0 +1,10 @@
+%p
+  %h3= model.title
+  %form{ :id => 'contact_form_'+model.id.to_s }
+    %label{ :for => 'contact_from'} Your Name
+    %input{ :type => 'text', :id => 'contact_from', :name => 'contact_from' }
+    %label{ :for => 'contact_email_address'} Your E-mail
+    %input{ :type => 'text', :id => 'contact_email_address', :name => 'contact_email_address' }
+    %label{ :for => 'contact_message'} Message
+    %textarea{ :id => 'contact_message', :name => 'contact_message' }
+    %input{ :type => 'submit', :value => 'Submit' }

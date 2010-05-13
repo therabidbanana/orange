@@ -49,8 +49,8 @@ module Orange
         end
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
-    end
-    
+     end
+
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
     def onNew(packet, params = {})
@@ -64,10 +64,16 @@ module Orange
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
     def onSave(packet, m, params = {})
-      params[:published] = false
-      m.update(params)
-      m.orange_site = packet['site']
-      m.save
+      if (params[:published] == true)
+        m.update(params)
+        m.orange_site = packet['site']
+        orange[:pages].publish(packet, :no_reroute => true)
+      else
+        params[:published] = false
+        m.update(params)
+        m.orange_site = packet['site']
+        m.save
+      end
     end
     
     

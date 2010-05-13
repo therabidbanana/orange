@@ -4,7 +4,7 @@ require 'dm-is-awesome_set'
 class OrangeRoute < Orange::SiteCarton
   id
   admin do
-    text :slug
+    text :slug, :display_name => "Search Engine Friendly Page URL"
     text :link_text
     boolean :show_in_nav, :default => false, :display_name => 'Show in Navigation?'
   end

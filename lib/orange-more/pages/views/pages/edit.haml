@@ -5,9 +5,18 @@
     - for prop in props
       %p~ view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
     %a{:href => route_to(model_name, model['id'], {:context => 'preview', :mode => 'show'}), :rel => 'external', :target => "_blank"}Preview
+    :javascript
+      $(function(){
+        $('button.link_button').click(
+          function(){
+            $('input[name="pages[published]"]').val('true');
+          }
+        );
+      });
+    %input{:type => 'hidden', :id => 'pages[published]', :name => 'pages[published]', :value => 'false'}
     %input{:type => 'submit', :value => 'Save Changes'}
     / = route_to(model_name, model[:id], 'publish')
-  = form_link('Publish', packet.route_to(model_name, model[:id], 'publish'))
+    = form_link('Publish', packet.route_to(model_name, model[:id], 'save'))
   %h3 Published Versions
   %ul.version_list
     / %li (Current Draft)
