@@ -110,12 +110,19 @@ module Orange
       end
     end
     
-    def two_level(packet)
-      do_view(packet, :two_level, :model => home(packet))
+    def one_level(packet, opts = {})
+      opts.with_defaults!(:model => home(packet))
+      do_view(packet, :one_level, opts)
     end
     
-    def breadcrumb(packet)
-      do_view(packet, :breadcrumb, :model => packet['route.route'])
+    def two_level(packet, opts = {})
+      opts.with_defaults!(:model => home(packet))
+      do_view(packet, :two_level, opts)
+    end
+    
+    def breadcrumb(packet, opts = {})
+      opts.with_defaults!(:model => packet['route.route'])
+      do_view(packet, :breadcrumb, opts)
     end
     
     def routes_for(packet, opts = {})

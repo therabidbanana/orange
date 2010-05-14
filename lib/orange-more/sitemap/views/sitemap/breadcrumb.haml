@@ -1,0 +1,5 @@
+%p
+  - for a in model.ancestors
+    %a{:href => a.full_path}= a.link_text
+    &gt;
+  %span.here= model.link_text
