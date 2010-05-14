@@ -36,7 +36,8 @@ module Orange
     def publish(packet, opts = {})
       no_reroute = opts[:no_reroute]
       if packet.request.post? || !opts.blank?
-        m = model_class.get(packet['route.resource_id'])
+        my_id = opts[:resource_id] || packet['route.resource_id']
+        m = model_class.get(my_id)
         if m
           params = {}
           params[:published] = true
@@ -95,6 +96,7 @@ module Orange
         case packet['route.context']  
         when :live
           m = m.versions.last(:published => '1')
+          raise Orange::NotFoundException unless m
         when :preview
           m
         end
