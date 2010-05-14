@@ -114,6 +114,10 @@ module Orange
       do_view(packet, :two_level, :model => home(packet))
     end
     
+    def breadcrumb(packet)
+      do_view(packet, :breadcrumb, :model => packet['route.route'])
+    end
+    
     def routes_for(packet, opts = {})
       keys = {}
       keys[:resource] = opts[:resource] || packet['route.resource'] 
@@ -133,9 +137,10 @@ module Orange
     
     def add_route_for(packet, opts = {})
       unless opts.blank?
+        parent = opts.delete(:parent) || home(packet, opts)
         me = model_class.new(opts)
         me.save
-        me.move(:into => home(packet, opts))
+        me.move(:into => parent)
       end
     end
     
