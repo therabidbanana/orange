@@ -140,12 +140,12 @@ module Orange
     def routing(opts ={})
       stack Orange::Middleware::RestfulRouter, opts.dup
       Orange.plugins.each{|p| p.middleware(:routing).each{|m| stack m, opts.dup} if p.has_middleware?}
-      stack Orange::Middleware::FourOhFour, opts.dup
     end
     
     def postrouting(opts ={})
       Orange.plugins.each{|p| p.middleware(:postrouting).each{|m| stack m, opts.dup} if p.has_middleware?}
       stack Orange::Middleware::Template
+      stack Orange::Middleware::FourOhFour, opts.dup # Last ditch, send route to 404 page.
     end
     
     def responders(opts ={})
