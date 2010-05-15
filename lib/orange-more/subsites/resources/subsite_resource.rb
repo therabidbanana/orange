@@ -27,6 +27,9 @@ module Orange
       orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => packet['subsite'].id})
     end
     
+    def subsite_nav(packet, opts = {})
+      orange[:sitemap].one_level(packet, :model => orange[:sitemap].home(packet, :subsite => true))
+    end
     
   end
   
