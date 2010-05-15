@@ -10,6 +10,7 @@ class OrangeEvent < Orange::Carton
     text :location_zip
     boolean :link_to_eventbrite, :default => false
     text :eventbrite_id
+    fulltext :blurb
     fulltext :description
   end
   orange do
