@@ -57,7 +57,7 @@ module Orange
     def onNew(packet, params = {})
       params[:published] = false
       m = model_class.new(params)
-      m.orange_site = packet['site']
+      m.orange_site = packet['site'] unless m.orange_site
       # m.versions.new(params.merge(:version => 1))
       m
     end
@@ -67,7 +67,7 @@ module Orange
     def onSave(packet, m, params = {})
       params[:published] = false
       m.update(params)
-      m.orange_site = packet['site']
+      m.orange_site = packet['site'] unless m.orange_site
       m.save
     end
     
