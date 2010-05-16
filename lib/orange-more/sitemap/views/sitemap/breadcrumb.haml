@@ -8,4 +8,5 @@
   %p
     - home = orange[:sitemap].home(packet)
     %a{:href => home.full_path}= home.link_text
+    &gt;
     %span.here= packet['route.resource'].to_s.capitalize
