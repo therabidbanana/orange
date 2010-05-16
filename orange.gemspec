@@ -117,6 +117,7 @@ Gem::Specification.new do |s|
      "lib/orange-more/events/views/events/create.haml",
      "lib/orange-more/events/views/events/edit.haml",
      "lib/orange-more/events/views/events/list.haml",
+     "lib/orange-more/events/views/events/show.haml",
      "lib/orange-more/events/views/events/table_row.haml",
      "lib/orange-more/news.rb",
      "lib/orange-more/news/cartons/news.rb",

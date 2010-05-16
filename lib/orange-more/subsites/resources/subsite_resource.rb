@@ -37,7 +37,8 @@ module Orange
     def route_to(packet, resource, *args)
       opts = args.extract_options!
       packet = DefaultHash.new unless packet 
-      context = opts[:context] || packet['route.context', nil]
+      context = opts[:context]
+      context = packet['route.context', nil] unless (context || (packet['route.context'] == :live))
       site = packet['route.faked_site'] ? packet['route.site_url', nil] : nil
       args.unshift(resource)
       args.unshift(orange[:subsites].url_for(packet).gsub(/^\//, '').gsub(/\/$/, '')) if(packet['subsite'])
