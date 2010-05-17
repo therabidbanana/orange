@@ -19,6 +19,7 @@ module Orange
           :link_text => 'Orange News Archive'
         )
       end
+      true
     end
     
     def sitemap_row(packet, opts = {})
