@@ -7,6 +7,17 @@ module Orange
     call_me :sitemap
     def stack_init
       orange[:admin, true].add_link('Content', :resource => @my_orange_name, :text => 'Sitemap')
+      orange[:radius, true].define_tag "link" do |tag|
+        packet = tag.locals.packet
+        slug = tag.expand
+        route = orange[:sitemap].find_route(packet, {:slug => slug})
+        route = orange[:sitemap].find_route(packet, {:link_text => slug}) unless route
+        
+        full_path = route ? route.full_path : "#not-found"
+        link_text = route ? route.link_text : "(Broken link tag)"
+        link_text = tag.attr["text"] if tag.attr["text"]
+	      "<a href='#{full_path}'>#{link_text}</a>"
+      end
     end
     
     def route_actions(packet, opts = {})
@@ -133,6 +144,15 @@ module Orange
       keys[:slug] = opts[:slug]
       keys.delete_if{|k,v| v.blank? }
       model_class.all(keys)
+    end
+    
+    def find_route(packet, opts = {})
+      site_id = packet['site'].id
+      subsite_id = packet['subsite'].blank? ? nil : packet['subsite'].id
+      # First try subsite, if necessary
+      m = model_class.first(opts.merge(:orange_site_id => subsite_id)) if subsite_id
+      m = model_class.first(opts.merge(:orange_site_id => site_id)) unless m
+      m
     end
     
     def add_link_for(packet)

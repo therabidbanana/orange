@@ -20,7 +20,7 @@ class Main < Orange::Application
     use Rack::OpenID, OpenIDDataMapper::DataMapperStore.new
     prerouting :multi => false, :locked => [:preview, :admin, :orange], :contexts => [:preview, :live, :admin, :orange]
 
-    routing :single_user => false, :exposed_actions => {:admin => :all, :orange => :all, :preview => {:all => :show}, :live => :show}
+    routing :single_user => false, :exposed_actions => {:admin => :all, :orange => :all, :preview => {:all => :show}, :live => {:all => :show, :members => [:login, :logout, :profile, :register]}}
     postrouting
     
     responders

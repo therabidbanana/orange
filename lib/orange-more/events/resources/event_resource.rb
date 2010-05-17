@@ -44,10 +44,12 @@ module Orange
     
     def beforeNew(packet, params = {})
       eventbrite_synchronize(packet, params)
+      true
     end
     
     def beforeSave(packet, model, params = {})
       eventbrite_synchronize(packet, params)
+      true
     end
     
     def eventbrite_synchronize(packet, params = {})

@@ -1,0 +1,18 @@
+%form{:action => packet.route_to(model_name, 'register'), :method => 'post'}
+  - if(packet.flash['error'])
+    .error
+      %p= packet.flash('error')
+  %p Fill out the following details to register for an account.
+  %p
+    %label Email
+    %br
+    %input{:type => "text", :name => "members[email]"}
+  %p
+    %label Password
+    %br
+    %input{:type => "password", :name => "members[password]"}
+  %p
+    %label Repeat Password
+    %br
+    %input{:type => "password", :name => "members[repeat_password]"}
+  %input{:type => "submit", :value => "Register"}

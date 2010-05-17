@@ -103,11 +103,11 @@ module Orange
     def new(packet, opts = {})
       no_reroute = opts.delete(:no_reroute)
       if packet.request.post? || !opts.blank?
-        params = opts.with_defaults(packet.request.params[@my_orange_name.to_s] || {})
-        beforeNew(packet, params)
-        obj = onNew(packet, params)
-        afterNew(packet, obj, params)
-        obj.save if obj
+        params = opts.with_defaults(opts.delete(:params) || packet.request.params[@my_orange_name.to_s] || {})
+        before = beforeNew(packet, params)
+        obj = onNew(packet, params) if before
+        afterNew(packet, obj, params) if before
+        obj.save if obj && before
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
       obj || false
@@ -121,6 +121,7 @@ module Orange
     # A callback for before a new item is created
     # @param [Orange::Packet] packet the packet being routed
     def beforeNew(packet, opts = {})
+      true
     end
     
     # A callback for after a new item is created
@@ -137,14 +138,15 @@ module Orange
       if packet.request.delete? || !opts.blank?
         id = opts.delete(:resource_id) || packet['route.resource_id']
         m = model_class.get(packet['route.resource_id'])
-        beforeDelete(packet, m, opts)
-        onDelete(packet, m, opts) if m
-        afterDelete(packet, m, opts)
+        before = beforeDelete(packet, m, opts)
+        onDelete(packet, m, opts) if m && before
+        afterDelete(packet, m, opts) if before
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
     
     def beforeDelete(packet, obj, opts = {})
+      true
     end
     
     # Delete object
@@ -160,18 +162,20 @@ module Orange
     def save(packet, opts = {})
       no_reroute = opts.delete(:no_reroute)
       if packet.request.post? || !opts.blank?
-        params = opts.with_defaults(packet.request.params[@my_orange_name.to_s] || {})
-        m = model_class.get(packet['route.resource_id'])
+        my_id = opts.delete(:resource_id) || packet['route.resource_id']
+        m = opts.delete(:model) || model_class.get(my_id)
+        params = opts.with_defaults(opts.delete(:params) || packet.request.params[@my_orange_name.to_s] || {})
         if m
-          beforeSave(packet, m, params)
-          onSave(packet, m, params)
-          afterSave(packet, m, params)
+          before = beforeSave(packet, m, params)
+          onSave(packet, m, params) if before
+          afterSave(packet, m, params) if before
         end
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
     
     def beforeSave(packet, obj, opts = {})
+      true
     end
     
     def onSave(packet, obj, opts = {})

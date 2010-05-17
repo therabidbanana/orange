@@ -1,0 +1,12 @@
+%form{:action => "#{packet.route_to(model_name, 'new')}", :method => 'post'}
+  - for prop in props
+    %p!= view_attribute(prop, model_name, :label => true)
+  %p
+    %label{:for => "my_password"} Password
+    %br
+    %input{:id => "my_password", :type => "password", :name => "#{model_name}[password]"}
+  %p
+    %label{:for => "my_repeat_password"} Repeat Password
+    %br
+    %input{:id => "my_repeat_password", :type => "password", :name => "#{model_name}[repeat_password]"}
+  %input{:type => 'submit', :value => 'Save New Item'}
