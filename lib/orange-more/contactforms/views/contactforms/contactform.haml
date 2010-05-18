@@ -1,10 +1,17 @@
+- packet.add_js('jquery.validate.pack.js', :module => '_contactforms_')
 %p
   %h3= model.title
-  %form{ :id => 'contact_form_'+model.id.to_s }
+  - if(flash['error'])
+    .error= flash('error')
+  %form{ :id => 'contact_form_'+model.id.to_s, :action => orange[:sitemap].url_for(packet, :resource => :contactforms, :resource_action => :mailer).to_s+model.id.to_s, :method => 'POST' }
     %label{ :for => 'contact_from'} Your Name
     %input{ :type => 'text', :id => 'contact_from', :name => 'contact_from' }
+    %div.contact_phone
+      %label{ :for => 'contact_from'} Your Phone
+      %input{ :type => 'text', :id => 'contact_phone', :name => 'contact_phone', :value => '&nbsp;' }
     %label{ :for => 'contact_email_address'} Your E-mail
     %input{ :type => 'text', :id => 'contact_email_address', :name => 'contact_email_address' }
     %label{ :for => 'contact_message'} Message
     %textarea{ :id => 'contact_message', :name => 'contact_message' }
     %input{ :type => 'submit', :value => 'Submit' }
+    %input{ :type => 'hidden', :id => 'r', :name => 'r', :value => packet['route.return_path'] }

@@ -1,3 +1,6 @@
 #header{
 	border-bottom: 1px solid #ccc;
 }
+.contact_phone {
+	display: none;
+}

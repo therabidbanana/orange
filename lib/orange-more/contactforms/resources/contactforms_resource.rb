@@ -1,3 +1,5 @@
+require 'mail'
+
 module Orange
   class ContactFormsResource < Orange::ModelResource
     use OrangeContactForms
@@ -25,7 +27,30 @@ module Orange
     
     def contactform(packet, opts = {})
       template = opts[:template].to_sym || :contactform
+      packet['route.return_path'] = packet.request.path.to_s
       do_view(packet, template, opts)
+    end
+    
+    def mailer(packet, opts = {})
+      params = packet.request.params
+      route = params['r']
+      if params['contact_phone'] != ''
+        packet.flash['error'] = "An error has occurred. Please try your submission again."
+        packet.reroute(route)
+      end
+      path = packet['route.path']
+      parts = path.split('/')
+      form = model_class.get(parts.last.to_i)
+      mail = Mail.new do
+        from "WNSF <info@wnsf.org>"
+        to form.to_address
+        subject 'E-mail contact from WNSF.org - '+form.title
+        body "From: "+params['contact_from']+" ("+params['contact_email_address']+")\n\nMessage:\n"+params['contact_message']
+      end
+      mail.delivery_method :sendmail
+      mail.deliver
+      packet.flash['error'] = "Thanks for your submission. We will contact you as soon as possible."
+      packet.reroute(route)
     end
   end
 end
