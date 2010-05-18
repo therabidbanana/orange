@@ -24,6 +24,20 @@
         %br
         %input{:id => "my_repeat_password", :type => "password", :name => "#{model_name}[repeat_password]"}
     %fieldset
+      %legend Mailing Lists
+      %p 
+        %input{:type => "hidden", :name => "members[email_subscribe]", :value => "0"}
+        %input{:type => "checkbox", :name => "members[email_subscribe]", :value => "1"}
+        Sign up for the mailing list?
+      %p We separate our mailing list into multiple topics to avoid spamming our users with unwanted emails. Choose the information you would like to receive email about.
+      - for group in list_groups
+        %h2= group["name"].capitalize
+        %input{:type => "hidden", :name => "members[groups][#{group['name']}][]", :value => ""}
+        - for opt in group["groups"]
+          %p
+            %input{:type => "checkbox", :name => "members[groups][#{group['name']}][]", :value => opt["name"]}
+            = opt["name"]
+    %fieldset
       %legend Payment
       - if(orange[:members].paid?(packet, model))
         %p Thanks for supporting the WNSF. You can keep your subscription up to date below:

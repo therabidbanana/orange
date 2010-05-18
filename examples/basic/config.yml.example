@@ -3,5 +3,8 @@ main_user: "http://www.davidhaslem.com/"
 ping_fm_key: "2267dc099645616acfc8d8f8373e5703-xxxxxx"
 eventbrite_key: "xxxx"
 spreedly_key: "xxxx"
+mailchimp_key: "xxxx"
+mailchimp_list: "xxxx"
 spreedly_plan: "5709"
 spreedly_site: "orangesparkletest"
+mailchimp_interests: [regional]
