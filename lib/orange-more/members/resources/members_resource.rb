@@ -109,7 +109,7 @@ module Orange
       hominid.subscribe_many(options[:mailchimp_list], emails, {:double_opt_in => true, :update_existing => true, :replace_interests => false})
     end
     
-    def add_attendee_group(packet, grouping_name, name)
+    def add_attendee_group(packet, grouping_name, name, limit = 15)
       list = options[:mailchimp_list]
       my_groups = hominid.call("listInterestGroupings", list)
       grouping = my_groups.select{|a| a["name"] == grouping_name}.first
@@ -118,7 +118,7 @@ module Orange
         return true if grouping["groups"].select{|a| a["name"] == name }.size > 0
       
         # Keep group size manageable
-        if grouping["groups"].size > 15
+        if grouping["groups"].size > limit
           remove = grouping["groups"].shift 
           hominid.call("listInterestGroupDel", list, remove["name"], grouping["id"])
         end

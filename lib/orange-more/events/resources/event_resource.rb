@@ -55,11 +55,13 @@ module Orange
       packet.reroute(@my_orange_name, :orange, packet['route.resource_id']) unless no_reroute
     end
     
+    # Todo - eventbrite crashes when date in past
     def beforeNew(packet, params = {})
       eventbrite_synchronize(packet, params)
       true
     end
     
+    # Todo - eventbrite crashes when date in past
     def beforeSave(packet, model, params = {})
       eventbrite_synchronize(packet, params)
       true

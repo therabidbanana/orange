@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-05-16}
+  s.date = %q{2010-05-18}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -119,6 +119,17 @@ Gem::Specification.new do |s|
      "lib/orange-more/events/views/events/list.haml",
      "lib/orange-more/events/views/events/show.haml",
      "lib/orange-more/events/views/events/table_row.haml",
+     "lib/orange-more/members.rb",
+     "lib/orange-more/members/cartons/member_carton.rb",
+     "lib/orange-more/members/plugin.rb",
+     "lib/orange-more/members/resources/members_resource.rb",
+     "lib/orange-more/members/views/members/create.haml",
+     "lib/orange-more/members/views/members/edit.haml",
+     "lib/orange-more/members/views/members/live.show.haml",
+     "lib/orange-more/members/views/members/login.haml",
+     "lib/orange-more/members/views/members/logout.haml",
+     "lib/orange-more/members/views/members/profile.haml",
+     "lib/orange-more/members/views/members/register.haml",
      "lib/orange-more/news.rb",
      "lib/orange-more/news/cartons/news.rb",
      "lib/orange-more/news/plugin.rb",
