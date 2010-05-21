@@ -9,7 +9,7 @@ module Orange::Middleware
   # purpose of exposing the context object.
   class RadiusParser < Base
     def init(opts = {})
-      @contexts = opts[:contexts] || [:live]
+      @contexts = opts[:radius_contexts] || [:live]
       # orange.load Orange::Radius.new, :radius
     end
     

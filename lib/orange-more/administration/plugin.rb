@@ -13,8 +13,8 @@ module Orange::Plugins
     resource    Orange::UserResource.new
     resource    Orange::SiteResource.new
     
-    prerouter   Orange::Middleware::AccessControl
     prerouter   Orange::Middleware::SiteLoad
+    router   Orange::Middleware::AccessControl
     
   end
 end

@@ -71,7 +71,9 @@ module Orange
       m.save
     end
     
-    
+    def find_list(packet, mode)
+      model_class.all(:orange_site => packet['site']) || []
+    end
     
     # Returns a single object found by the model class, given an id. 
     # If id isn't given, we return false.
