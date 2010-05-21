@@ -107,6 +107,8 @@ Required Gems
 * eventbright
 * spreedly
 * hominid
+* mail
+* tlsmail (If Ruby version <= 1.8.6)
 
 All dependencies should be loaded if you install the gem except for the datamapper
 adapter relevant to your set up. If, for example, you want to use a mysql database,

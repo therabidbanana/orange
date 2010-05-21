@@ -16,8 +16,8 @@ module Orange
       File.join('', 'assets', 'uploaded', path)
     end
     
-    def to_asset_tag
-      "<img src=\"#{file_path}\" border=\"0\"/>"
+    def to_asset_tag(alt = "")
+      "<img src=\"#{file_path}\" border=\"0\" alt=\"#{alt}\"/>"
     end
   end
 end

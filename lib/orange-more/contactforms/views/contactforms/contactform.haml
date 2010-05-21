@@ -1,0 +1,20 @@
+:javascript
+  $(function(){ 
+    $('.contact_form').validate();
+  });
+%p
+  %h3= model.title
+  - if(flash['error'])
+    .error= flash('error')
+  %form{ :class => 'contact_form', :id => 'contact_form_'+model.id.to_s, :action => orange[:sitemap].url_for(packet, :resource => :contactforms, :resource_action => :mailer).to_s+model.id.to_s, :method => 'POST' }
+    %label{ :for => 'contact_from'} Your Name
+    %input{ :type => 'text', :class => 'required', :minlength => '4', :maxlength => '80', :id => 'contact_from', :name => 'contact_from' }
+    %div.contact_phone
+      %label{ :for => 'contact_from'} Your Phone
+      %input{ :type => 'text', :class => 'phone required', :id => 'contact_phone', :name => 'contact_phone', :value => '' }
+    %label{ :for => 'contact_email_address'} Your E-mail
+    %input{ :type => 'text', :class => 'email required', :id => 'contact_email_address', :name => 'contact_email_address' }
+    %label{ :for => 'contact_message'} Message
+    %textarea{ :class =>'required', :id => 'contact_message', :name => 'contact_message', :minlength => '6', :maxlength => '300' }
+    %input{ :type => 'submit', :value => 'Submit' }
+    %input{ :type => 'hidden', :id => 'r', :name => 'r', :value => packet['route.return_path'] }

@@ -4,6 +4,7 @@
   %head
     %title= part[:title, 'Orange Site'] 
     = part[:css]
+    - packet.add_js('jquery.validate.pack.js', :module => '_contactforms_')
     = part[:js]
   %body
     .container
