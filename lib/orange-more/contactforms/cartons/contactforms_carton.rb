@@ -5,8 +5,8 @@ class OrangeContactForms < Orange::Carton
     text :to_address
   end
   
-  def self.with_tag(tag)
-    all(:tags.like => "%#{tag}%")
+  def self.named(tag)
+    all(:title.like => "%#{tag}%")
   end
 
 end

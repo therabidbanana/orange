@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-05-19}
+  s.date = %q{2010-05-21}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -98,6 +98,16 @@ Gem::Specification.new do |s|
      "lib/orange-more/cloud.rb",
      "lib/orange-more/cloud/plugin.rb",
      "lib/orange-more/cloud/resources/cloud_resource.rb",
+     "lib/orange-more/contactforms.rb",
+     "lib/orange-more/contactforms/assets/js/jquery.validate.pack.js",
+     "lib/orange-more/contactforms/assets/js/lib/jquery-1.4.2.js",
+     "lib/orange-more/contactforms/assets/js/lib/jquery.form.js",
+     "lib/orange-more/contactforms/assets/js/lib/jquery.js",
+     "lib/orange-more/contactforms/assets/js/lib/jquery.metadata.js",
+     "lib/orange-more/contactforms/cartons/contactforms_carton.rb",
+     "lib/orange-more/contactforms/plugin.rb",
+     "lib/orange-more/contactforms/resources/contactforms_resource.rb",
+     "lib/orange-more/contactforms/views/contactforms/contactform.haml",
      "lib/orange-more/debugger.rb",
      "lib/orange-more/debugger/assets/css/debug_bar.css",
      "lib/orange-more/debugger/middleware/debugger.rb",

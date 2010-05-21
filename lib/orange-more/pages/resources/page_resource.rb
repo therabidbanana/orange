@@ -65,12 +65,13 @@ module Orange
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
     def onSave(packet, m, params = {})
-      if (params[:published] == true)
+      if (params["published"] == "1")
+        params["published"] = true
         m.update(params)
         m.orange_site = packet['site'] unless m.orange_site
         orange[:pages].publish(packet, :no_reroute => true)
       else
-        params[:published] = false
+        params["published"] = false
         m.update(params)
         m.orange_site = packet['site'] unless m.orange_site
         m.save
