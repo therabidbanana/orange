@@ -67,12 +67,12 @@ module Orange
     def onSave(packet, m, params = {})
       if (params[:published] == true)
         m.update(params)
-        m.orange_site = packet['site']
+        m.orange_site = packet['site'] unless m.orange_site
         orange[:pages].publish(packet, :no_reroute => true)
       else
         params[:published] = false
         m.update(params)
-        m.orange_site = packet['site']
+        m.orange_site = packet['site'] unless m.orange_site
         m.save
       end
     end
