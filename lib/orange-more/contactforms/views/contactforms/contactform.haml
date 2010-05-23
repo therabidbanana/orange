@@ -11,11 +11,10 @@
     %input{ :type => 'text', :class => 'required', :minlength => '4', :maxlength => '80', :id => 'contact_from', :name => 'contact_from' }
     %div.contact_phone
       %label{ :for => 'contact_from'} Your Phone
-      %input{ :type => 'text', :class => 'phone', :id => 'contact_phone', :name => 'contact_phone', :value => '' }
+      %input{ :type => 'text', :class => '', :id => 'contact_phone', :name => 'contact_phone', :value => '' }
     %label{ :for => 'contact_email_address'} Your E-mail
     %input{ :type => 'text', :class => 'email required', :id => 'contact_email_address', :name => 'contact_email_address' }
     %input{ :type => 'hidden', :id => 'r', :name => 'r', :value => packet['route.return_path'] }
     %label{ :for => 'contact_message'} Message
-    %textarea{ :class =>'required', :id => 'contact_message', :name => 'contact_message', :minlength => '6', :maxlength => '300' } 
-      = ' '
+    %textarea{ :class =>'required', :id => 'contact_message', :name => 'contact_message', :minlength => '6', :maxlength => '300' }= "&nbsp;"
     %input{ :type => 'submit', :value => 'Submit' }
