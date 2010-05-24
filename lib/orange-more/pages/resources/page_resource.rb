@@ -36,27 +36,44 @@ module Orange
     def publish(packet, opts = {})
       no_reroute = opts[:no_reroute]
       if packet.request.post? || !opts.blank?
-        m = model_class.get(packet['route.resource_id'])
+        my_id = opts[:resource_id] || packet['route.resource_id']
+        m = model_class.get(my_id)
         if m
           params = {}
           params[:published] = true
           m.update(params)
+          
           params = m.attributes.merge(params)
           params.delete(:id)
           max = m.versions.max(:version) || 0
           m.versions.new(params.merge(:version => max + 1))
           m.save
+          
+          r = orange[:sitemap].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name)
+          if r.blank?
+            route_hash = {
+              :orange_site_id => m.orange_site_id, 
+              :resource => @my_orange_name, 
+              :resource_id => m.id,
+              :slug => orange[:sitemap].slug_for(m, params), 
+              :show_in_nav => false,
+              :link_text => m.title
+            }
+            parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
+            route_hash[:parent] = parents.first unless parents.blank?
+            orange[:sitemap].add_route_for(packet, route_hash)
+          end
         end
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
-     end
+    end
 
     # Creates a new model object and saves it (if a post), then reroutes to the main page
     # @param [Orange::Packet] packet the packet being routed
     def onNew(packet, params = {})
       params[:published] = false
       m = model_class.new(params)
-      m.orange_site = packet['site']
+      m.orange_site = packet['site'] unless m.orange_site
       # m.versions.new(params.merge(:version => 1))
       m
     end
@@ -64,19 +81,22 @@ module Orange
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
     def onSave(packet, m, params = {})
-      if (params[:published] == true)
+      if (params["published"] == "1")
+        params["published"] = true
         m.update(params)
-        m.orange_site = packet['site']
+        m.orange_site = packet['site'] unless m.orange_site
         orange[:pages].publish(packet, :no_reroute => true)
       else
-        params[:published] = false
+        params["published"] = false
         m.update(params)
-        m.orange_site = packet['site']
+        m.orange_site = packet['site'] unless m.orange_site
         m.save
       end
     end
     
-    
+    def find_list(packet, mode)
+      model_class.all(:orange_site => packet['site']) || []
+    end
     
     # Returns a single object found by the model class, given an id. 
     # If id isn't given, we return false.
@@ -105,6 +125,7 @@ module Orange
             orange[:page_parts].part(packet)[:title] = m.title + " - " + packet['site'].name
           end
           m = m.versions.last(:published => '1')
+          raise Orange::NotFoundException unless m
         when :preview
           # Automatically set title, if possible
           unless orange[:page_parts].part(packet)[:title] != '' 

@@ -1,0 +1,50 @@
+- if model
+  %form{:action => packet.route_to(model_name, 'profile'), :method => 'post'}  
+    - if(packet.flash['error'])
+      .error
+        %p= packet.flash('error')
+    - if(packet.flash['info'])
+      .info
+        %p= packet.flash('info')
+    - for prop in props
+      %p!= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
+    %fieldset
+      %legend Change Password
+      %p You only need to fill out the following information if you want to change your password
+      %p
+        %label{:for => "my_currrent_password"} Current Password
+        %br
+        %input{:id => "my_currrent_password", :type => "password", :name => "#{model_name}[current_password]"}
+      %p
+        %label{:for => "my_password"} Password
+        %br
+        %input{:id => "my_password", :type => "password", :name => "#{model_name}[password]"}
+      %p
+        %label{:for => "my_repeat_password"} Repeat Password
+        %br
+        %input{:id => "my_repeat_password", :type => "password", :name => "#{model_name}[repeat_password]"}
+    %fieldset
+      %legend Mailing Lists
+      %p 
+        %input{:type => "hidden", :name => "members[email_subscribe]", :value => "0"}
+        %input{:type => "checkbox", :name => "members[email_subscribe]", :value => "1"}
+        Sign up for the mailing list?
+      %p We separate our mailing list into multiple topics to avoid spamming our users with unwanted emails. Choose the information you would like to receive email about.
+      - for group in list_groups
+        %h2= group["name"].capitalize
+        %input{:type => "hidden", :name => "members[groups][#{group['name']}][]", :value => ""}
+        - for opt in group["groups"]
+          %p
+            %input{:type => "checkbox", :name => "members[groups][#{group['name']}][]", :value => opt["name"]}
+            = opt["name"]
+    %fieldset
+      %legend Payment
+      - if(orange[:members].paid?(packet, model))
+        %p Thanks for supporting the WNSF. You can keep your subscription up to date below:
+        %a{:href => orange[:members].subscription_url(packet, model)} Make a payment 
+      - else
+        %p To access parts of this site, you'll need to be a supporting member.
+        %a{:href => orange[:members].subscription_url(packet, model)} You can become a supporting member here.
+    %input{:type => 'submit', :value => 'Save Changes'}
+- else
+  %p Couldn't find the item you're looking for.

@@ -1,4 +1,4 @@
-class OrangeTestimonial < Orange::Carton
+class OrangeTestimonial < Orange::SiteCarton
   id
   admin do
     title :name

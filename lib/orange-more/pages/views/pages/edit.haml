@@ -9,11 +9,11 @@
       $(function(){
         $('button.link_button').click(
           function(){
-            $('input[name="pages[published]"]').val('true');
+            $('input[name="pages[published]"]').val('1');
           }
         );
       });
-    %input{:type => 'hidden', :id => 'pages[published]', :name => 'pages[published]', :value => 'false'}
+    %input{:type => 'hidden', :id => 'pages[published]', :name => 'pages[published]', :value => '0'}
     %input{:type => 'submit', :value => 'Save Changes'}
     / = route_to(model_name, model[:id], 'publish')
     = form_link('Publish', packet.route_to(model_name, model[:id], 'save'))

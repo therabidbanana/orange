@@ -6,6 +6,7 @@ class OrangeRoute < Orange::SiteCarton
   admin do
     text :slug, :display_name => "Search Engine Friendly Page URL"
     text :link_text
+    text :reroute_to, :length => 255
     boolean :show_in_nav, :default => false, :display_name => 'Show in Navigation?'
   end
   orange do

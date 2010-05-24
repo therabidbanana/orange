@@ -19,6 +19,7 @@ module Orange
           :link_text => 'Orange News Archive'
         )
       end
+      true
     end
     
     def sitemap_row(packet, opts = {})
@@ -63,6 +64,10 @@ module Orange
     def archive_url(packet)
       url = orange[:sitemap, true].url_for(packet, :resource => :news, :resource_action => :archive)
       url.gsub!(/\/$/, '')
+    end
+    
+    def find_list(packet, mode, opts = {})
+      model_class.all(:order => [:updated_at.desc]) || []
     end
   end
 end

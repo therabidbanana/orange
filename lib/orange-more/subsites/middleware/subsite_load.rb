@@ -15,6 +15,7 @@ module Orange::Middleware
         # If matched, update the loaded site and trim the path down a bit
         if !matched.resource.blank? && matched.resource.to_sym == :subsites
           if(m = site.subsites.first(:id => matched.resource_id))
+            packet['route.main_site_route'] = matched
             packet['route.path'] = extras
             packet['subsite'] = m
           end

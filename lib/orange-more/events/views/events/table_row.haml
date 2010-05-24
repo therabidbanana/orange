@@ -3,7 +3,7 @@
     %td= model.name
     %td= model.description
     %td= model.location_name
-    %td= model.calendar.name
+    %td= model.calendar.blank? ? "None" : model.calendar.name
     %td
       - if model.link_to_eventbrite
         - if model.eventbrite_id && model.eventbrite_id != "new"

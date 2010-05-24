@@ -1,0 +1,15 @@
+- if model
+  %form{:action => packet.route_to(model_name, model[:id], 'save'), :method => 'post'}
+    - for prop in props
+      %p!= view_attribute(prop, model_name, :label => true, :value => model.attribute_get(prop[:name]))
+    %p
+      %label{:for => "my_password"} Password
+      %br
+      %input{:id => "my_password", :type => "password", :name => "#{model_name}[password]"}
+    %p
+      %label{:for => "my_repeat_password"} Repeat Password
+      %br
+      %input{:id => "my_repeat_password", :type => "password", :name => "#{model_name}[repeat_password]"}
+    %input{:type => 'submit', :value => 'Save Changes'}
+- else
+  %p Couldn't find the item you're looking for.

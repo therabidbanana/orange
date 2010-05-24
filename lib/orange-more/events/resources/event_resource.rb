@@ -42,12 +42,29 @@ module Orange
       extras
     end
     
-    def beforeNew(packet, params = {})
-      eventbrite_synchronize(packet, params)
+    def synchronize_attendees(packet, params = {})
+      no_reroute = params.delete(:no_reroute)
+      params = params.with_defaults(:resource_id => packet['route.resource_id'])
+      if packet.request.post? && orange.loaded?(:members) && 
+        event_orange = model_class.get(params[:resource_id])
+        event = eventbrite_user.events.select{|e| e.id.to_s == event_orange.eventbrite_id}.first
+        orange[:members, true].add_attendee_group(packet, "Eventbrite Attendee", "#{event.title} - #{event.id}")
+        emails = event.attendees.map{|a| a.email}
+        orange[:members, true].batch_update_interest_mailchimp(packet, emails, "Eventbrite Attendee", "#{event.title} - #{event.id}")
+      end
+      packet.reroute(@my_orange_name, :orange, packet['route.resource_id']) unless no_reroute
     end
     
+    # Todo - eventbrite crashes when date in past
+    def beforeNew(packet, params = {})
+      eventbrite_synchronize(packet, params)
+      true
+    end
+    
+    # Todo - eventbrite crashes when date in past
     def beforeSave(packet, model, params = {})
       eventbrite_synchronize(packet, params)
+      true
     end
     
     def eventbrite_synchronize(packet, params = {})

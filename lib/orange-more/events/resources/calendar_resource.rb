@@ -8,6 +8,9 @@ module Orange
      	  template = tag.attr["template"] || false
      	  if tag.attr["name"]
      	    calendars = tag.attr["name"].split.map{|x| model_class.first(:name => x)}
+          unless tag.attr["main"] && tag.attr["main"] == "false"
+            calendars << model_class.all(:main => true)
+          end
         else
           calendars = model_class.all
         end

@@ -1,0 +1,17 @@
+%form{:action => packet.route_to(model_name, 'login'), :method => 'post'}
+  - if(packet.flash['error'])
+    .error
+      %p= packet.flash('error')
+  %p
+    %label Email
+    %br
+    %input{:type => "text", :name => "members[login_email]"}
+  %p
+    %label Password
+    %br
+    %input{:type => "password", :name => "members[login_password]"}
+  %input{:type => "submit", :value => "Log in"}
+%hr
+%p 
+  Not a member? You can 
+  %a{:href => route_to(model_name, 'register')} register here

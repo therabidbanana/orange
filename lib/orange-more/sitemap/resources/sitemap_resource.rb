@@ -7,6 +7,17 @@ module Orange
     call_me :sitemap
     def stack_init
       orange[:admin, true].add_link('Content', :resource => @my_orange_name, :text => 'Sitemap')
+      orange[:radius, true].define_tag "link" do |tag|
+        packet = tag.locals.packet
+        slug = tag.expand
+        route = orange[:sitemap].find_route(packet, {:slug => slug})
+        route = orange[:sitemap].find_route(packet, {:link_text => slug}) unless route
+        
+        full_path = route ? route.full_path : "#not-found"
+        link_text = route ? route.link_text : "(Broken link tag)"
+        link_text = tag.attr["text"] if tag.attr["text"]
+	      "<a href='#{full_path}'>#{link_text}</a>"
+      end
     end
     
     def route_actions(packet, opts = {})
@@ -14,6 +25,7 @@ module Orange
     end
     
     def route(packet)
+      return packet.reroute(packet['route.reroute']) if packet['route.reroute']
       resource = packet['route.resource']
       raise 'resource not found' unless orange.loaded? resource
       unless (packet['route.resource_action'])
@@ -45,6 +57,8 @@ module Orange
     def route?(packet, path)
       extras, matched = find_route_info(packet, path)
       return false if(extras.length > 0 && !matched.accept_args)
+      return false if matched.resource.blank? && matched.reroute_to.blank?
+      packet['route.reroute'] = matched.reroute_to unless matched.reroute_to.blank?
       packet['route.path'] = path
       packet['route.route'] = matched
       packet['route.resource'] = matched.resource.to_sym unless matched.resource.blank?
@@ -72,6 +86,26 @@ module Orange
         dir = opts[:direction]
         obj ||= find_one(packet, :move, (opts[:id] || packet['route.resource_id']))
         obj.move(dir) if obj
+      end
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def show_in_nav(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        obj = find_one(packet, :show_in_nav, (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj.show_in_nav = true
+        obj.save
+      end
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def unshow_in_nav(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        obj = find_one(packet, :unshow_in_nav, (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj.show_in_nav = false
+        obj.save
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
@@ -110,8 +144,19 @@ module Orange
       end
     end
     
-    def two_level(packet)
-      do_view(packet, :two_level, :model => home(packet))
+    def one_level(packet, opts = {})
+      opts.with_defaults!(:model => home(packet))
+      do_view(packet, :one_level, opts)
+    end
+    
+    def two_level(packet, opts = {})
+      opts.with_defaults!(:model => home(packet))
+      do_view(packet, :two_level, opts)
+    end
+    
+    def breadcrumb(packet, opts = {})
+      opts.with_defaults!(:model => packet['route.route'])
+      do_view(packet, :breadcrumb, opts)
     end
     
     def routes_for(packet, opts = {})
@@ -119,8 +164,18 @@ module Orange
       keys[:resource] = opts[:resource] || packet['route.resource'] 
       keys[:resource_id] = opts[:resource_id] || packet['route.resource_id'] 
       keys[:orange_site_id] = opts[:orange_site_id] || packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id
+      keys[:slug] = opts[:slug]
       keys.delete_if{|k,v| v.blank? }
       model_class.all(keys)
+    end
+    
+    def find_route(packet, opts = {})
+      site_id = packet['site'].id
+      subsite_id = packet['subsite'].blank? ? nil : packet['subsite'].id
+      # First try subsite, if necessary
+      m = model_class.first(opts.merge(:orange_site_id => subsite_id)) if subsite_id
+      m = model_class.first(opts.merge(:orange_site_id => site_id)) unless m
+      m
     end
     
     def add_link_for(packet)
@@ -133,9 +188,13 @@ module Orange
     
     def add_route_for(packet, opts = {})
       unless opts.blank?
+        parent = opts.delete(:parent) || home(packet, opts)
+        unless parent.is_a? model_class
+          parent = model_class.get(parent) # Get parent object if parent was an id number
+        end
         me = model_class.new(opts)
         me.save
-        me.move(:into => home(packet, opts))
+        me.move(:into => parent)
       end
     end
     

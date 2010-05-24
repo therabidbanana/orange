@@ -5,17 +5,28 @@ module Orange
     def stack_init
       orange[:admin, true].add_link("Content", :resource => @my_orange_name, :text => 'Testimonials')
       orange[:radius].define_tag "testimonials" do |tag|
-     	  if tag.attr["tag"] && model_class.with_tag(tag.attr["tag"]).count >0
-          m = model_class.with_tag(tag.attr["tag"]).first(:offset => rand(model_class.with_tag(tag.attr["tag"]).count)) #selects testimonial based on tag
-	      elsif model_class.all.count > 0
-      	  m = model_class.first(:offset => rand(model_class.all.count)) #selects a random testimonial
+        packet = tag.locals.packet
+     	  if tag.attr["tag"] && for_site(packet).with_tag(tag.attr["tag"]).count >0
+          m = for_site(packet).with_tag(tag.attr["tag"]).first(:offset => rand(for_site(packet).with_tag(tag.attr["tag"]).count)) #selects testimonial based on tag
+	      elsif for_site(packet).count > 0 && !tag.attr.include?("tag")
+      	  m = for_site(packet).first(:offset => rand(for_site(packet).count)) #selects a random testimonial
 	      end
         unless m.nil?
           template = tag.attr["template"] || "testimonials"
-          orange[:testimonials].testimonial(tag.locals.packet, {:model => m, :template => template})
+          orange[:testimonials].testimonial(packet, {:model => m, :template => template})
         else
           ""
         end
+      end
+    end
+    
+    def for_site(packet, opts = {})
+      site_filtered = model_class.all(:orange_site => packet['subsite'].blank? ? packet['site'] : packet['subsite'])
+      if site_filtered.count > 0
+        site_filtered
+      else
+        # Return unfiltered if no site-specific ones
+        model_class.all
       end
     end
     

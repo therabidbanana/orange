@@ -40,7 +40,7 @@ module Orange
         packet['reroute.to']
       # Parsing for orange urls or something
       when :orange
-        packet.route_to(packet['reroute.to'], packet['reroute.args', []])
+        packet.route_to(packet['reroute.to'], *packet['reroute.args', []])
       else
         packet['reroute.to']
       end

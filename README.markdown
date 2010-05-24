@@ -104,6 +104,9 @@ Required Gems
 * openid_dm_store
 * radius
 * crack
+* eventbright
+* spreedly
+* hominid
 * mail
 * tlsmail (If Ruby version <= 1.8.6)
 * gattica

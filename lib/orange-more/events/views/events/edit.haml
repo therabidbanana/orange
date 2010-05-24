@@ -54,5 +54,6 @@
       at
       %input{:type => 'text', :name => "#{model_name}[ends_time]", :size => 8, :value => model.ends_time }
     %input{:type => 'submit', :value => 'Save Event'}
+  = form_link('Synchronize Eventbrite Attendees to Mailchimp', route_to(model_name, model.id, 'synchronize_attendees'))
 - else
   %p Couldn't find the event.

@@ -6,8 +6,8 @@ module Orange::Middleware
     # Passes packet then parses the return
     def packet_call(packet)
       pass packet
-      unless packet['route.context'] != :live
-          ga_key = orange.options['google_analytics_key'];
+      ga_key = orange.options['google_analytics_key'] || false
+      if packet['route.context'] == :live && ga_key
           ga = "<script type=\"text/javascript\">
 
             var _gaq = _gaq || [];
