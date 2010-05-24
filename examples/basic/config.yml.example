@@ -1,4 +1,4 @@
-database: "mysql://root:banana@localhost/orange_test"
-main_user: "http://www.davidhaslem.com/"
+database: "mysql://osb:orange@127.0.0.1/orange2010"
+main_user: "erictasticfosterama@gmail.com"
 ping_fm_key: "2267dc099645616acfc8d8f8373e5703-xxxxxx"
-eventbrite_key: "xxxx"
+google_analytics_key: "UA-16580421-1"
