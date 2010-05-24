@@ -21,6 +21,9 @@
       %p 
         Linked to: 
         %a{:href => model.resource.blank? ?  '#' : route_to(model.resource, model.resource_id, 'edit')} [#{model.resource}] ##{model.resource_id}
+      %p  
+        Views:
+        = orange[:analytics].pageviews(route.full_path)
     .actions
       = form_link('Delete', route_to(model_name, model.id, 'delete'), 'Are you sure you want to delete this?', {:method => 'delete'})
       %a{:href => route_to(model_name, model.id, 'edit')} Edit

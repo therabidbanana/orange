@@ -100,8 +100,16 @@ module Orange
       if mode == :show
         case packet['route.context']  
         when :live
+          # Automatically set title, if possible
+          unless orange[:page_parts].part(packet)[:title] != '' 
+            orange[:page_parts].part(packet)[:title] = m.title + " - " + packet['site'].name
+          end
           m = m.versions.last(:published => '1')
         when :preview
+          # Automatically set title, if possible
+          unless orange[:page_parts].part(packet)[:title] != '' 
+            orange[:page_parts].part(packet)[:title] = m.title + " - " + packet['site'].name
+          end
           m
         end
       else {}
