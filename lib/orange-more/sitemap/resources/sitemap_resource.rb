@@ -25,6 +25,7 @@ module Orange
     end
     
     def route(packet)
+      return packet.reroute(packet['route.reroute']) if packet['route.reroute']
       resource = packet['route.resource']
       raise 'resource not found' unless orange.loaded? resource
       unless (packet['route.resource_action'])
@@ -56,6 +57,8 @@ module Orange
     def route?(packet, path)
       extras, matched = find_route_info(packet, path)
       return false if(extras.length > 0 && !matched.accept_args)
+      return false if matched.resource.blank? && matched.reroute_to.blank?
+      packet['route.reroute'] = matched.reroute_to unless matched.reroute_to.blank?
       packet['route.path'] = path
       packet['route.route'] = matched
       packet['route.resource'] = matched.resource.to_sym unless matched.resource.blank?
