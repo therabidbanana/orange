@@ -93,7 +93,7 @@ module Orange
     def show_in_nav(packet, opts = {})
       no_reroute = opts.delete(:no_reroute)
       if packet.request.post? || !opts.blank?
-        obj = find_one(packet, :show_in_nav, :id => (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj = find_one(packet, :show_in_nav, (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
         obj.show_in_nav = true
         obj.save
       end
@@ -103,7 +103,7 @@ module Orange
     def unshow_in_nav(packet, opts = {})
       no_reroute = opts.delete(:no_reroute)
       if packet.request.post? || !opts.blank?
-        obj = find_one(packet, :unshow_in_nav, :id => (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj = find_one(packet, :unshow_in_nav, (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
         obj.show_in_nav = false
         obj.save
       end

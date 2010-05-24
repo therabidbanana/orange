@@ -8,5 +8,6 @@
       - unless item.descendants.empty?
         %ul.subnav
           - for x in item.children
+            - next unless item.show_in_nav
             %li
               %a{:href => x.full_path}= x.link_text
