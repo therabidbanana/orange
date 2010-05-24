@@ -3,7 +3,7 @@ class OrangeNews < Orange::Carton
   id
   front do
     title :title
-    text :link
+    text :link, :length => 255
     fulltext :description
   end
 

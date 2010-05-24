@@ -8,3 +8,4 @@ mailchimp_list: "xxxx"
 spreedly_plan: "5709"
 spreedly_site: "orangesparkletest"
 mailchimp_interests: [regional]
+google_analytics_key: "gasomething"
