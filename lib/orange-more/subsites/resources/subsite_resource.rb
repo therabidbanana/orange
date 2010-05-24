@@ -10,16 +10,16 @@ module Orange
     # @param [Orange::Packet] packet the packet being routed
     def new(packet, *opts)
       if packet.request.post?
-        m = packet['site'].subsites.new(packet.request.params[@my_orange_name.to_s])
-        m.save
-        orange[:sitemap].add_route_for(packet,
-          :orange_site_id => packet['site'].id, 
-          :resource => :subsites, 
-          :resource_id => m.id,
-          :slug => 'subsite', 
-          :link_text => 'Orange Subsite'
-        )
-      end
+          m = packet['site'].subsites.new(packet.request.params[@my_orange_name.to_s])
+          m.save
+          orange[:sitemap].add_route_for(packet,
+            :orange_site_id => packet['site'].id, 
+            :resource => :subsites, 
+            :resource_id => m.id,
+            :slug => 'subsite', 
+            :link_text => 'Orange Subsite'
+          )
+        end
       packet.reroute(@my_orange_name, :orange)
     end
     
@@ -29,6 +29,10 @@ module Orange
     
     def subsite_nav(packet, opts = {})
       orange[:sitemap].one_level(packet, :model => orange[:sitemap].home(packet, :subsite => true))
+    end
+    
+    def sitemap_row(packet, opts = {})
+      do_view(packet, :sitemap_row, opts)
     end
     
   end
