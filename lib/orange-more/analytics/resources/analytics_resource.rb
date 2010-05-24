@@ -9,12 +9,12 @@ module Orange
     end
     
     def gattica
-      false unless options[:email]
+      return false unless options[:email]
       @gattica ||= Gattica.new(options)
     end
     
     def pageviews(route)
-      return 0 unless gattica
+      return "No GA" unless gattica
       r = route.to_s
       # Strip of trailing slash if present. GA doesn't like it.
       if r.rindex('/') > 0
