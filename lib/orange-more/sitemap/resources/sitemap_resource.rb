@@ -90,6 +90,26 @@ module Orange
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end
     
+    def show_in_nav(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        obj = find_one(packet, :show_in_nav, :id => (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj.show_in_nav = true
+        obj.save
+      end
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
+    def unshow_in_nav(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute)
+      if packet.request.post? || !opts.blank?
+        obj = find_one(packet, :unshow_in_nav, :id => (opts[:id] || opts[:resource_id] || packet['route.resource_id']))
+        obj.show_in_nav = false
+        obj.save
+      end
+      packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+    end
+    
     def higher(packet, opts = {})
       move(packet, false, :direction => :higher)
     end
