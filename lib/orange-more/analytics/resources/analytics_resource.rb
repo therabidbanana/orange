@@ -3,15 +3,25 @@ require 'gattica'
 module Orange
   class AnalyticsResource < Orange::Resource
     call_me :analytics
+    def stack_init
+      options[:email] = orange.options['ga_email']
+      options[:password] = orange.options['ga_password']
+    end
+    
+    def gattica
+      false unless options[:email]
+      @gattica ||= Gattica.new(options)
+    end
     
     def pageviews(route)
+      return 0 unless gattica
       r = route.to_s
       # Strip of trailing slash if present. GA doesn't like it.
       if r.rindex('/') > 0
         r[r.rindex('/')] = ''
       end
       # authenticate with the API via email/password
-      ga = Gattica.new({:email => 'erictasticfosterama@gmail.com', :password => 'tailfish'})
+      ga = gattica
       accounts = ga.accounts
       ga.profile_id = accounts.first.profile_id
       views = ""

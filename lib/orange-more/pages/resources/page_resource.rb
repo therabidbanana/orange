@@ -42,11 +42,27 @@ module Orange
           params = {}
           params[:published] = true
           m.update(params)
+          
           params = m.attributes.merge(params)
           params.delete(:id)
           max = m.versions.max(:version) || 0
           m.versions.new(params.merge(:version => max + 1))
           m.save
+          
+          r = orange[:sitemap].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name)
+          if r.blank?
+            route_hash = {
+              :orange_site_id => m.orange_site_id, 
+              :resource => @my_orange_name, 
+              :resource_id => m.id,
+              :slug => orange[:sitemap].slug_for(m, params), 
+              :show_in_nav => false,
+              :link_text => m.title
+            }
+            parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
+            route_hash[:parent] = parents.first unless parents.blank?
+            orange[:sitemap].add_route_for(packet, route_hash)
+          end
         end
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)

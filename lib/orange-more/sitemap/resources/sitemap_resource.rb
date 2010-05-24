@@ -166,6 +166,9 @@ module Orange
     def add_route_for(packet, opts = {})
       unless opts.blank?
         parent = opts.delete(:parent) || home(packet, opts)
+        unless parent.is_a? model_class
+          parent = model_class.get(parent) # Get parent object if parent was an id number
+        end
         me = model_class.new(opts)
         me.save
         me.move(:into => parent)
