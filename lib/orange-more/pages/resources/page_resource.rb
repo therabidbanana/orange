@@ -116,7 +116,7 @@ module Orange
           [:version, :orange_page_id, :page_id, :id].each { |i| attrs.delete(i) }
           m.attributes = attrs
         end
-      end
+      end # end if version
       if mode == :show
         case packet['route.context']  
         when :live
@@ -133,8 +133,7 @@ module Orange
           end
           m
         end
-      else {}
-      end
+      end # end if show
       m
     end
     

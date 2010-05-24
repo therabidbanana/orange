@@ -23,7 +23,8 @@ module Orange::Middleware
     end
     
     def needs_wrapped?(packet)
-      packet['template.file'] && !packet['template.disable']
+      return false if packet.request.xhr? && !packet['template.enable'] # don't wrap xhr unless specifically asked to
+      packet['template.file'] && !packet['template.disable'] 
     end
     
     def wrap(packet, content = false)
