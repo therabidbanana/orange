@@ -33,7 +33,7 @@ module Orange
         ev_json = {} if ev
         ev.each{|v| ev_json[v.id] = v.attributes.merge(:id => v.id)} if ev
         ee_json = {} if ee
-        ee.each{|v| ee_json[v.id] = v.attributes.merge(:id => v.id)} if ee
+        ee.each{|v| ee_json[v.id] = v.attributes.merge(:id => v.id).reject{|k,v| [:venue, :organizer].include? k}} if ee
         extras.merge!(:eventbrite_venues => ev, :venues_json => ev_json.to_json, 
                       :eventbrite_events => ee, :events_json => ee_json.to_json
                       ) if options[:eventbrite_key]
@@ -116,6 +116,9 @@ module Orange
       venue.save
     end
     
+    def find_list(packet, mode, opts = {})
+      model_class.all(:order => [:starts.desc]) || []
+    end
     
     def post_to_eventbrite
       

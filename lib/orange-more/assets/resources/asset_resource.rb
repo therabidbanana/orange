@@ -1,7 +1,7 @@
 require 'fileutils'
 module Orange
   class AssetResource < Orange::ModelResource
-    use Orange::Asset
+    use OrangeAsset
     call_me :assets
     
     def stack_init

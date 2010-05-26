@@ -38,6 +38,14 @@ module Orange::Middleware
         return ret unless ret.blank? # unless handle_openid returns false, exit immediately
       end
       unless access_allowed?(packet)
+        if packet['user'] && packet['route.context'] == :admin
+          # User doesn't have permissions, try to get to a site that he does
+          site = packet['user'].orange_sites.first
+          if site.class.to_s == "OrangeSubsite" 
+            subsite = orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => site.id})
+            packet.reroute("/admin#{subsite}sitemap")
+          end
+        end
         packet.flash['user.after_login'] = packet.request.path
         packet.reroute(@login)
       end

@@ -145,8 +145,8 @@ module Orange
         params = packet.request.params["members"]
         login = params["login_email"]
         password = params["login_password"]
-        tester = model_class.new({:password => password})
         member = model_class.first({:email => login})
+        tester = model_class.new({:password => password, :salt => member.salt})
         if member && tester.hashed_password == member.hashed_password
           packet.session["member"] = member.id
           packet.reroute(@my_orange_name, :orange, :profile)
@@ -155,6 +155,7 @@ module Orange
           do_view(packet, :login, opts)
         end
       else
+        packet.reroute(@my_orange_name, :orange, :profile) if packet.session["member"]
         do_view(packet, :login, opts)
       end
     end
