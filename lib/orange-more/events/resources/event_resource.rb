@@ -129,7 +129,7 @@ module Orange
       begin
         list = eventbrite_user.venues
       rescue
-        return []
+        return false
       end
       list
     end
@@ -139,7 +139,7 @@ module Orange
       begin
         list = eventbrite_user.events
       rescue
-        return []
+        return false
       end
       list
     end
