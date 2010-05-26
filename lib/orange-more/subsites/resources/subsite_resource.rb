@@ -23,8 +23,8 @@ module Orange
       packet.reroute(@my_orange_name, :orange)
     end
     
-    def url_for(packet)
-      orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => packet['subsite'].id})
+    def url_for(packet, opts = {})
+      orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => (opts.is_a?(model_class) ? opts.id : packet['subsite'].id)})
     end
     
     def subsite_nav(packet, opts = {})

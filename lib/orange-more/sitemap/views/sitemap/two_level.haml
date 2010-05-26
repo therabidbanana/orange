@@ -4,10 +4,10 @@
   - for item in model.children
     - next unless item.show_in_nav
     %li
-      %a{:href => item.full_path}= item.link_text
+      %a{:href => item.full_path}= orange[:sitemap].link_text_for(item)
       - unless item.descendants.empty?
         %ul.subnav
           - for x in item.children
-            - next unless item.show_in_nav
+            - next unless x.show_in_nav
             %li
-              %a{:href => x.full_path}= x.link_text
+              %a{:href => x.full_path}= orange[:sitemap].link_text_for(x)

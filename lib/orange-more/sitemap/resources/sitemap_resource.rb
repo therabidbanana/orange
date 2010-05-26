@@ -228,6 +228,17 @@ module Orange
       return 'route-'+model.id
     end
     
+    def link_text_for(route)
+      return route.link_text unless route.resource && route.resource_id
+      if match = route.link_text.match(/^\{([-a-z0-9A-Z_]+)\}$/)
+        resource = route.resource.to_sym
+        return route.link_text unless orange.loaded?(resource)
+        orange[resource].model_class.get(route.resource_id).__send__(match[1])
+      else
+        route.link_text
+      end
+    end
+    
     def slug(str)
       str.downcase.gsub(/[']+/, "").gsub(/[^a-z0-9]+/, "-")
     end

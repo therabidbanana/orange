@@ -16,7 +16,7 @@
       .move_actions.dent_actions
         = form_link('Indent', route_to(model_name, model.id, 'indent'), false, {:method => 'post', :class => 'indent arrow'}) if model.previous_sibling && model.previous_sibling.level == model.level
         %p= '&nbsp;'
-    %h4 #{model.link_text} <span>(#{model.full_path})</span>
+    %h4 #{orange[:sitemap].link_text_for(item)} <span>(#{model.full_path})</span>
     .linked_to
       %p 
         Linked to: 
