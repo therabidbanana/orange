@@ -2,7 +2,7 @@ class OrangeAdvert < Orange::Carton
   id
   admin do
     title :title
-    text :asset_id
+    asset :asset_id
     text :link
     text :alt_text
   end

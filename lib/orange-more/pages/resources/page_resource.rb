@@ -58,7 +58,7 @@ module Orange
               :resource_id => m.id,
               :slug => orange[:sitemap].slug_for(m, params), 
               :show_in_nav => false,
-              :link_text => m.title
+              :link_text => "{title}"
             }
             parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
             route_hash[:parent] = parents.first unless parents.blank?
@@ -91,7 +91,7 @@ module Orange
           :resource_id => m.id,
           :slug => orange[:sitemap].slug_for(m, params), 
           :show_in_nav => false,
-          :link_text => m.title
+          :link_text => "{title}"
         }
         parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
         route_hash[:parent] = parents.first unless parents.blank?

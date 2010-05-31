@@ -72,6 +72,7 @@ module Orange
       @file = __FILE__
       load(Orange::Parser.new, :parser)
       load(Orange::Mapper.new, :mapper)
+      load(Orange::Scaffold.new, :scaffold)
       load(Orange::PageParts.new, :page_parts)
       Orange.plugins.each{|p| p.resources.each{|args| load(*args)} if p.has_resources?}
       self.register(:stack_loaded) do |s| 

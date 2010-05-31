@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-05-26}
+  s.date = %q{2010-05-31}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
      "lib/orange-core/resources/page_parts.rb",
      "lib/orange-core/resources/parser.rb",
      "lib/orange-core/resources/routable_resource.rb",
+     "lib/orange-core/resources/scaffold.rb",
      "lib/orange-core/stack.rb",
      "lib/orange-core/templates/exceptions.haml",
      "lib/orange-core/views/default_resource/create.haml",

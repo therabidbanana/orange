@@ -1,5 +1,13 @@
 require 'fileutils'
 module Orange
+  class Orange::Carton
+    # Define a helper for input type="text" type database stuff
+    # Show in a context if wrapped in one of the helpers
+    def self.asset(name, opts = {})
+      add_scaffold(name, :asset, Integer, opts)
+    end
+  end
+  
   class AssetResource < Orange::ModelResource
     use OrangeAsset
     call_me :assets
@@ -12,6 +20,9 @@ module Orange
         else
           ''
         end
+      end
+      orange[:scaffold].add_scaffold_type(:asset) do |name, val, opts|
+        "foo"
       end
     end
     
