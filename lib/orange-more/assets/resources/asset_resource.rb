@@ -22,7 +22,20 @@ module Orange
         end
       end
       orange[:scaffold].add_scaffold_type(:asset) do |name, val, opts|
-        "foo"
+        if opts[:show]
+          opts[:model].to_asset_tag
+        else
+          packet = opts[:packet]
+          
+          asset_html = val ? orange[:assets].asset_html(packet, val) : ""
+          ret = "<input type=\"hidden\" value=\"#{val}\" name=\"#{opts[:model_name]}[#{name}]\" />"
+          if val.blank?
+            ret += "<span class='asset_preview'></span><a class='insert_asset' rel=\"#{opts[:model_name]}[#{name}]\" href='/admin/assets/insert'>Insert Asset</a>"
+          else
+            ret += "<span class='asset_preview'>#{asset_html}</span><a class='insert_asset' rel=\"#{opts[:model_name]}[#{name}]\" href='/admin/assets/#{val}/change'>Change Asset</a>"
+          end
+          ret = "<label for=''>#{opts[:display_name]}</label><br />" + ret if opts[:label]
+        end
       end
     end
     
@@ -52,6 +65,35 @@ module Orange
       m
     end
     
+    # Creates a new model object and saves it (if a post), then reroutes to the main page
+    # @param [Orange::Packet] packet the packet being routed
+    def new(packet, opts = {})
+      no_reroute = opts.delete(:no_reroute) 
+      xhr = packet.request.xhr? || packet.request.params["fake_xhr"]
+      if packet.request.post? || !opts.blank?
+        params = opts.with_defaults(opts.delete(:params) || packet.request.params[@my_orange_name.to_s] || {})
+        before = beforeNew(packet, params)
+        obj = onNew(packet, params) if before
+        afterNew(packet, obj, params) if before
+        obj.save if obj && before
+      end
+      packet.reroute(@my_orange_name, :orange) unless (xhr || no_reroute)
+      packet['template.disable'] = true if xhr
+      (xhr ? obj.to_s : obj) || false
+    end
+    
+    def insert(packet, opts = {})
+      do_view(packet, :insert, opts)
+    end
+    
+    def change(packet, opts = {})
+      do_view(packet, :change, opts)
+    end
+    
+    def find_extras(packet, mode, opts = {})
+      {:list => model_class.all}
+    end
+    
     def onDelete(packet, m, opts = {})
       begin
         FileUtils.rm(orange.app_dir('assets','uploaded', m.path)) if m.path
@@ -62,7 +104,8 @@ module Orange
       m.destroy if m
     end
     
-    def asset_html(packet, id)
+    def asset_html(packet, id = false)
+      id ||= packet['route.resource_id']
       m = model_class.get(id)
       m ? m.to_asset_tag : false
     end

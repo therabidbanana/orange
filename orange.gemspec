@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Haslem"]
-  s.date = %q{2010-05-31}
+  s.date = %q{2010-06-01}
   s.description = %q{Orange is a Ruby framework for building managed websites with code as simple as Sinatra}
   s.email = %q{therabidbanana@gmail.com}
   s.extra_rdoc_files = [
@@ -87,7 +87,9 @@ Gem::Specification.new do |s|
      "lib/orange-more/assets/cartons/asset_carton.rb",
      "lib/orange-more/assets/plugin.rb",
      "lib/orange-more/assets/resources/asset_resource.rb",
+     "lib/orange-more/assets/views/assets/change.haml",
      "lib/orange-more/assets/views/assets/create.haml",
+     "lib/orange-more/assets/views/assets/insert.haml",
      "lib/orange-more/blog.rb",
      "lib/orange-more/blog/cartons/blog.rb",
      "lib/orange-more/blog/cartons/blog_post.rb",

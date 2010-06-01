@@ -169,5 +169,10 @@ module Orange
       add_scaffold(name, my_type, type, opts)
     end
     
+    def to_s
+      <<-DOC
+      {"class": "#{self.class.to_s}", "id": "#{self.id}"}
+      DOC
+    end
   end
 end
