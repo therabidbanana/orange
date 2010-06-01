@@ -4,7 +4,7 @@ require 'orange-more/administration/cartons/site_carton'
 class OrangePage < Orange::SiteCarton
   id
   front do
-    title :title
+    title :title, :length => 255
     fulltext :body
   end
   boolean :published, :default => false

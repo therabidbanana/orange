@@ -4,6 +4,7 @@ module Orange::Middleware
   class Debugger < Base
     def init(opts = {})
       orange.add_pulp Orange::Pulp::DebuggerHelpers if orange.options[:development_mode]
+      orange.mixin Orange::Mixins::DebuggerMixin if orange.options[:development_mode]
     end
     
     # Passes packet then parses the return
@@ -31,6 +32,13 @@ module Orange::Pulp::DebuggerHelpers
     else
       Rack::Utils.escape_html(obj.inspect)
     end
+  end
+end
+
+
+module Orange::Mixins::DebuggerMixin
+  def resources
+    @resources
   end
 end
 

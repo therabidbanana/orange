@@ -3,7 +3,7 @@ require 'orange-more/administration/cartons/site_carton'
 
 class OrangePageVersion < Orange::SiteCarton
   id
-  title :title
+  title :title, :length => 255
   fulltext :body
   property :updated_at, DateTime
   boolean :published

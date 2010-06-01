@@ -2,7 +2,7 @@ require 'dm-timestamps'
 class OrangeNews < Orange::Carton
   id
   front do
-    title :title
+    title :title, :length => 255
     text :link, :length => 255
     fulltext :description
   end
