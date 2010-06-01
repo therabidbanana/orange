@@ -1,5 +1,5 @@
 .news_items
-  - list.each do |news|
+  - for news in list
     .news_item
       %h2.news_title
         %a{:href => news.link} #{news.title}

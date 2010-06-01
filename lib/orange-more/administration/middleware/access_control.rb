@@ -43,7 +43,7 @@ module Orange::Middleware
           site = packet['user'].orange_sites.first
           if site.class.to_s == "OrangeSubsite" 
             subsite = orange[:sitemap].url_for(packet, {:resource => 'subsites', :resource_id => site.id})
-            packet.reroute("/admin#{subsite}sitemap")
+            packet.reroute("/admin#{subsite}#{packet['route.path'].gsub(/^\//, '')}")
           end
         end
         packet.flash['user.after_login'] = packet.request.path

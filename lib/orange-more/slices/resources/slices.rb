@@ -20,12 +20,16 @@ module Orange
       end
     end
     
+    def view(packet, *args)
+      mode = packet['route.resource_action']
+      do_view(packet, mode, args.extract_options!)
+    end
     
     def method_missing(mode, *args)
       packet = args.first if args.first.kind_of? Orange::Packet
       opts = args.extract_options!
       opts[:resource_name] = 'slices'
-      orange[:parser].haml("#{mode.to_s}.haml", packet, opts)
+      do_view(packet, mode, opts)
     end
   end
 end

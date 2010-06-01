@@ -40,7 +40,7 @@ module Orange
     def latest(packet, opts = {})
       limit = packet['news.latest_news_limit', 3]
       do_list_view(packet, :latest, {
-        :list => model_class.all(:order => :created_at.desc, :limit => limit)
+        :list => model_class.all(:order => :updated_at.desc, :limit => limit)
       })
     end
     
@@ -49,7 +49,7 @@ module Orange
       opts.merge!( :archive_url => archive_url(packet))
       opts[:page] = opts[:page].blank? ? 1 : opts[:page].to_i
       page = opts[:page].blank? ? 0 : opts[:page] - 1 
-      opts[:list] = model_class.all(:order => :created_at.desc, 
+      opts[:list] = model_class.all(:order => [:updated_at.desc], 
           :limit => 5, 
           :offset => (5*page)
       )
