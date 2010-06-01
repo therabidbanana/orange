@@ -14,6 +14,8 @@ module Orange::Middleware
                               :name => 'An Orange Site'})
         s.save
         packet['site'] = s
+      else
+        packet['site'] = OrangeSite.first
       end
       pass packet
     end
