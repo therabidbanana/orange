@@ -19,7 +19,7 @@ module Orange::Middleware
 
     def call(env)
       @app.call(env)
-    rescue StandardError, LoadError, SyntaxError => e
+    rescue Exception => e
       backtrace = pretty(env, e)
       
       [500,
