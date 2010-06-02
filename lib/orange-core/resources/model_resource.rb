@@ -172,6 +172,7 @@ module Orange
         end
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
+      m || false
     end
     
     def beforeSave(packet, obj, opts = {})

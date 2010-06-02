@@ -3,4 +3,4 @@
     .blog_post
       %h2
         %span #{post.created_at.strftime("%B %d, %Y")}
-        %a{:href => "#{blog_url}/#{post.created_at.year}/#{post.created_at.month}/#{post.slug}"}= post.title
+        %a{:href => "#{blog_url}/#{post.published_at.year}/#{post.published_at.month}/#{post.slug}"}= post.title

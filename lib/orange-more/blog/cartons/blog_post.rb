@@ -25,18 +25,20 @@ class OrangeBlogPost < Orange::Carton
   end
   
   def published=(val)
-    self.published = val
-    publish if val
+    if val == '1' || val === true
+      self.publish
+    else
+      self.attribute_set('published', false)
+    end
   end
   
   def publish
-    self.published_at = Time.now
-    self.published = true
+    self.published_at = Time.now if self.published_at.blank?
+    self.attribute_set('published', true)
   end
   
   def publish!
-    self.published_at = Time.now
-    self.published = true
+    self.publish
     self.save
   end
   

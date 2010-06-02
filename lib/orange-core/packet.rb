@@ -128,6 +128,8 @@ module Orange
     # Returns the content ready to be used by Rack (wrapped in an array)
     # @return [Array] array of strings to be rendered
     def content
+      # Stringify content if it isn't a string for some weird reason.
+      packet[:content] = packet[:content].to_s unless packet[:content].is_a? String
       return [packet[:content]] if packet[:content]
       return ['']
     end

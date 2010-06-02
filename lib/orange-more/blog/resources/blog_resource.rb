@@ -29,7 +29,7 @@ module Orange
       opts.merge!( :blog_url => blog_url_for(packet))
       parts = resource_path.split('/')
       if parts.size == 2
-        post = blog.posts.all(:id => parts[1].to_i)
+        post = blog.posts.first(:id => parts[1].to_i)
       elsif parts.size == 4
         post = blog.posts.year_and_month(parts[1].to_i, parts[2].to_i).slug(parts[3]) 
       end
