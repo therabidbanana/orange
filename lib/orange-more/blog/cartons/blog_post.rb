@@ -24,6 +24,11 @@ class OrangeBlogPost < Orange::Carton
     self.attribute_set('slug', t.downcase.gsub(/[']+/, "").gsub(/[^a-z0-9]+/, "_"))
   end
   
+  def published=(val)
+    self.published = val
+    publish if val
+  end
+  
   def publish
     self.published_at = Time.now
     self.published = true
