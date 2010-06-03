@@ -12,7 +12,7 @@ module Orange::Middleware
       unless orange.options.has_key?('database') && orange.options['database'] == false
         db = orange.options['database'] || 'sqlite3::memory:'
         orange.load_db!(db) 
-        orange.upgrade_db! unless @options[:no_auto_upgrade]
+        orange.upgrade_db! unless @options[:no_auto_upgrade] || orange.options['db_no_auto_upgrade']
       end
     end
     
