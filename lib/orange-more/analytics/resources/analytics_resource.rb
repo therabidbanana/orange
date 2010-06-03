@@ -13,7 +13,7 @@ module Orange
       @gattica ||= Gattica.new(options)
     end
     
-    def pageviews(route)
+    def pageviews(route, opts = {})
       return "No GA" unless gattica
       r = route.to_s
       # Strip of trailing slash if present. GA doesn't like it.
@@ -30,7 +30,7 @@ module Orange
                       :dimensions => ['pagePath'],
                       :metrics => ['pageviews'],
                       :filters => ['pagePath == '+route.to_s[0..-1]]
-                      })
+                      }.merge(opts))
       unless data.points.length == 0
         views = data.points[0].metrics[0][:pageviews]
         views 
