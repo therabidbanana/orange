@@ -60,6 +60,7 @@ module Orange
     
     
     def paid?(packet, member)
+      return true unless options[:spreedly_key]
       unless member.is_a? model_class
         member = model_class.get(member)
       end
@@ -68,6 +69,7 @@ module Orange
     end
     
     def subscription_url(packet, member)
+      return "" unless options[:spreedly_key]
       unless member.is_a? model_class
         member = model_class.get(member)
       end
