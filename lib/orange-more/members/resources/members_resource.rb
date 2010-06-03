@@ -12,6 +12,7 @@ module Orange
       options[:mailchimp_key] = orange.options["mailchimp_key"] || false
       options[:mailchimp_list] = orange.options["mailchimp_list"] || false
       options[:mailchimp_interests] = orange.options["mailchimp_interests"] || false
+      options[:mailchimp_merge_fields] = orange.options["mailchimp_merge_fields"] || {}
       Spreedly.configure(options[:spreedly_site], options[:spreedly_key]) if options[:spreedly_key]
       
       orange[:admin, true].add_link("Settings", :resource => @my_orange_name, :text => 'Members')
@@ -99,10 +100,23 @@ module Orange
       old_email = member_params["old_email"] || email
       fname = member_params["first_name"] || ''
       lname = member_params["last_name"] || ''
+      others = {}
+      for key, val in options[:mailchimp_merge_fields]
+        others[val.upcase.to_sym] = member_params[key] || ''
+      end
       interests = member_params["groups"].blank? ? [] : member_params["groups"].map{|key, val| 
         { "name" => key, "groups" => val.reject{|str| str.blank? }.map{|str| str.gsub(/,/, '\,')}.join(",") }
       }
-      hominid.subscribe(options[:mailchimp_list], old_email, {:FNAME => fname, :LNAME => lname, :GROUPINGS => interests}, {:update_existing => true})
+      hominid.subscribe(options[:mailchimp_list], old_email, {:FNAME => fname, :LNAME => lname, :GROUPINGS => interests}.merge(others), {:update_existing => true})
+    end
+    
+    def synchronize_from_mailchimp(packet, member)
+      email = member.email
+      member_info = mailchimp_member_info(packet, member)
+      for key, val in options[:mailchimp_merge_fields]
+        member.attribute_set(key, member_info["merges"][val])
+      end
+      member.save
     end
     
     def batch_update_interest_mailchimp(packet, emails, grouping_name, groups)
@@ -214,7 +228,13 @@ module Orange
           new(packet, {:no_reroute => true, :params => params})
           # success ?
           member = model_class.first(:email => params["email"])
-          if member
+          if member && !(mailchimp_member_info(packet, member).blank?)
+            packet.session["member"] = member.id
+            synchronize_from_mailchimp(packet, member)
+            synchronize_with_mailchimp(packet, params.merge("groups" => groups)) if mailing_list
+            packet.flash("info", "Looks like this email address was already on our mailing list. Please take the time to correct our details about you.")
+            packet.reroute(@my_orange_name, :orange, :profile)
+          elsif member
             packet.session["member"] = member.id
             params.merge!("groups" => groups)
             synchronize_with_mailchimp(packet, params.merge("groups" => groups)) if mailing_list

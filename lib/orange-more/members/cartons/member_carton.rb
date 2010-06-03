@@ -6,8 +6,8 @@ class OrangeMember < Orange::Carton
     text :first_name
     text :last_name
     text :email
-    text :position
-    text :company
+    text :title
+    text :organization
   end  
   text :hashed_password
   text :salt
