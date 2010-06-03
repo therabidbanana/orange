@@ -20,6 +20,10 @@ module Orange
       end
     end
     
+    def afterNew(packet, obj, params = {})
+      obj.orange_site = packet['subsite'].blank? ? packet['site'] : packet['subsite']
+    end
+    
     def for_site(packet, opts = {})
       site_filtered = model_class.all(:orange_site => packet['subsite'].blank? ? packet['site'] : packet['subsite'])
       if site_filtered.count > 0
