@@ -52,7 +52,7 @@ module Orange
         emails = event.attendees.map{|a| a.email}
         orange[:members, true].batch_update_interest_mailchimp(packet, emails, "Eventbrite Attendee", "#{event.title} - #{event.id}")
       end
-      packet.reroute(@my_orange_name, :orange, packet['route.resource_id']) unless no_reroute
+      packet.reroute(@my_orange_name, :orange, packet['route.resource_id'], 'edit') unless no_reroute
     end
     
     # Todo - eventbrite crashes when date in past
