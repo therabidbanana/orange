@@ -84,6 +84,7 @@ module Orange
       no_reroute = opts.delete(:no_reroute)
       if packet.request.post? || !opts.blank?
         dir = opts[:direction]
+        dir = {:into => opts[:parent]} if (dir == :into)
         obj ||= find_one(packet, :move, (opts[:id] || packet['route.resource_id']))
         obj.move(dir) if obj
       end
@@ -112,6 +113,12 @@ module Orange
     
     def higher(packet, opts = {})
       move(packet, false, :direction => :higher)
+    end
+    
+    def into(packet, opts = {})
+      opts[:parent_id] ||= packet['route.resource_path'].split('/').last
+      opts[:parent] = find_one(packet, :move, (opts[:parent_id])) unless opts[:parent]
+      move(packet, false, :direction => :into, :parent => opts[:parent])
     end
     
     def lower(packet, opts = {})

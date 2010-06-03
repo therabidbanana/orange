@@ -6,10 +6,11 @@ module Orange
     call_me :cloud
     def stack_init
       options[:ping_fm_key] = orange.options['ping_fm_key'] || false
+      options[:ping_fm_app_key] = orange.options['ping_fm_app_key'] || false
     end
     
     def microblog(packet, status, opts = {})
-      params = {    :api_key => ORANGE_PING_KEY, 
+      params = {    :api_key => options[:ping_fm_app_key] || ORANGE_PING_KEY, 
                     :user_app_key => options[:ping_fm_key], 
                     :post_method => "microblog",
                     :body => status}.merge(opts)
