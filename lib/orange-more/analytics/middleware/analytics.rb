@@ -21,7 +21,7 @@ module Orange::Middleware
             })();
 
           </script>"
-          packet[:content] = packet[:content].sub(/.*<\/body>$/, ga + '</body>')
+          packet[:content] = packet[:content].sub(/.*<\/head>$/, ga + '</head>')
       end
       packet.finish
     end
