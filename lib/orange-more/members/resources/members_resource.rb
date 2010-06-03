@@ -134,12 +134,19 @@ module Orange
       hominid.unsubscribe(options[:mailchimp_list], email)
     end
     
-    def member_list_groups(packet, member)
+    def mailchimp_member_info(packet, member)
       # Can give member id, hydrate to member before continuing.
       unless member.is_a? model_class
         member = model_class.get(member)
       end
-      
+      return [] unless member && options[:mailchimp_list]
+      list = options[:mailchimp_list]
+      begin
+        mailchimp_info = hominid.member_info(list, member.email)
+      rescue Hominid::ListError => e
+        mailchimp_info = {}
+      end
+      mailchimp_info
     end
     
     def login(packet, opts = {})
@@ -148,7 +155,8 @@ module Orange
         login = params["login_email"]
         password = params["login_password"]
         member = model_class.first({:email => login})
-        tester = model_class.new({:password => password, :salt => member.salt})
+        tester = model_class.new({:salt => (member.salt || "")})
+        tester.password = password
         if member && tester.hashed_password == member.hashed_password
           packet.session["member"] = member.id
           packet.reroute(@my_orange_name, :orange, :profile)
@@ -165,7 +173,12 @@ module Orange
     def register(packet, opts = {})
       if packet.request.post?
         params = packet.request.params["members"]
-        
+        unless params["name"].blank?
+          # Problem, stay on registration
+          packet.flash("error", "It looks like you might be a spam robot. Make sure you didn't fill out an extra field by mistake.")
+          return do_view(packet, :register, opts.merge(:list_groups => list_groups(packet)))
+        end
+        params.delete("name")
         member = model_class.first(:email => params["email"])
         if member
           # Existing member... do they already have password?

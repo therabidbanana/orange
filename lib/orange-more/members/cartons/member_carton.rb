@@ -15,7 +15,6 @@ class OrangeMember < Orange::Carton
   property :reset_on, DateTime
   
   def password=(val)
-    salt = self.salt
     attribute_set(:hashed_password, Digest::MD5.hexdigest("#{salt}orange-is-awesome#{val}"))
   end
   
