@@ -1,6 +1,6 @@
 #header{
 	border-bottom: 1px solid #ccc;
 }
-.contact_phone {
+.contact_phone, .donor_phone {
 	display: none;
 }
