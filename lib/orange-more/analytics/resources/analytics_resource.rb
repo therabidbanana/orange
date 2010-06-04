@@ -16,7 +16,7 @@ module Orange
     def pageviews(route, opts = {})
       return "No GA" unless gattica
       r = route.to_s
-      # Strip of trailing slash if present. GA doesn't like it.
+      # Strip trailing slash if present. GA doesn't like it.
       if r.rindex('/') > 0
         r[r.rindex('/')] = ''
       end
