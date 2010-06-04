@@ -5,7 +5,7 @@
   %input{ :type => 'hidden', :name => 'item_name', :value => "WNSF Donation" }
   %input{ :type => 'hidden', :name => 'currency_code', :value => "USD" }
   %input{ :type => 'hidden', :name => 'amount', :value => donation_amount }
-  %input{ :type => 'hidden', :name => 'return', :value => 'http://'+packet['route.site_url'] + orange[:sitemap].url_for(packet, :resource => :donations, :resource_action => :donate_success).to_s }
+  %input{ :type => 'hidden', :name => 'return', :value => 'http://'+packet['route.site_url'] + route_to(:donations, :donate_success) }
   %input{ :type => 'hidden', :name => 'cancel_return', :value => 'http://'+packet['route.site_url'] }
 :javascript
   $(function(){

@@ -232,7 +232,7 @@ module Orange
       hash = model.attributes
       # return slug(model.title) if hash.has_key?(:title)
       # return slug(model.name) if hash.has_key?(:name)
-      return 'page-'+model.id
+      return 'page-'+model.id.to_s
     end
     
     def link_text_for(route)

@@ -5,7 +5,7 @@
 %p
   - if(flash['error'])
     .error= flash('error')
-  %form{ :class => 'donate_form', :id => 'donate_form', :action => orange[:sitemap].url_for(packet, :resource => :donations, :resource_action => :process).to_s, :method => 'POST' }
+  %form{ :class => 'donate_form', :id => 'donate_form', :action => route_to(:donations, :process), :method => 'POST' }
     %label{ :for => 'donor_name'} Your Name
     %input{ :type => 'text', :minlength => '4', :maxlength => '80', :id => 'donor_name', :name => 'donor_name', :class => 'required' }
     %div.donor_phone

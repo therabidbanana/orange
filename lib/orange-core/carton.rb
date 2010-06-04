@@ -45,7 +45,7 @@ module Orange
       include DataMapper::Resource
       property(:id, Serial)
       self.scaffold_properties ||= []
-      init
+      self.init
     end
     
     # Stub init method
