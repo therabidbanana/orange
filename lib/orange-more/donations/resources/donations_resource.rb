@@ -16,6 +16,10 @@ module Orange
       do_view(packet, template, opts)
     end
     
+    def donate_cancel(packet, opts = {})
+      m = model_class.get(id)
+    end
+    
     def process(packet, opts = {})
       params = packet.request.params
       route = params['r']
