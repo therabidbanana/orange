@@ -19,10 +19,11 @@ module Orange
     def process(packet, opts = {})
       params = packet.request.params
       route = params['r']
-      if params['donor_phone'] == '' && packet.request.post?
+      params['donation_amount'] = params['donation_amount'].sub(/\$/, '')
+      if params['donor_phone'] == '' && packet.request.post? && params['donation_amount'] != '' && params['donation_amount'].to_i > 0
         template = "paypal_form"
         opts[:donation_amount] = params['donation_amount']
-        opts[:paypal_id] = orange.options['paypal_id'] || ""
+        opts[:paypal_id] = orange.options['paypal_id'] || ''
         do_view(packet, template, opts)
       else
         packet.flash['error'] = "An error has occurred. Please try your submission again."
