@@ -28,7 +28,7 @@ module Orange
       params = packet.request.params
       route = params.delete('r')
       params['donation_amount'] = params['donation_amount'].sub(/\$/, '')
-      if params['donor_phone'] == '' && packet.request.post? && params['donation_amount'] != '' && params['donation_amount'].to_f >= 0
+      if params['donor_phone'] == '' && packet.request.post? && params['donation_amount'] != '' && params['donation_amount'].to_f > 0
         template = "paypal_form"
         params.delete('donor_phone')
         obj = self.new(packet, {:no_reroute => true, :params => params})
