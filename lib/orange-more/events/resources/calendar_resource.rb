@@ -14,7 +14,7 @@ module Orange
         else
           calendars = model_class.all
         end
-        events = OrangeEvent.all(:calendar => calendars, :starts.gt => Time.now, :order => [:starts.asc], :limit => 10)
+        events = OrangeEvent.all(:calendar => calendars, :starts.gt => Time.now, :order => [:starts.asc])
         orange[:calendar].calendar(tag.locals.packet, {:list => events, :template => template})
       end
     end
