@@ -141,6 +141,7 @@ module Orange
         before = beforeDelete(packet, m, opts)
         onDelete(packet, m, opts) if m && before
         afterDelete(packet, m, opts) if before
+        orange.fire(:model_resource_deleted, packet, {:resource_id => id, :resource => @my_orange_name})
       end
       packet.reroute(@my_orange_name, :orange) unless (packet.request.xhr? || no_reroute)
     end

@@ -203,11 +203,11 @@ module Orange
     #   causing the fire. This is passed to each Proc registered.
     # @return [Boolean] returns false if nothing has been registered for the
     #   event, otherwise true.
-    def fire(event, packet)
+    def fire(event, packet, *args)
       return false unless @events[event]
       @events[event].compact!
       for callback in @events[event]
-        callback.call(packet)
+        callback.call(packet, *args)
       end
       true
     end
