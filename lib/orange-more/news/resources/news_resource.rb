@@ -22,6 +22,15 @@ module Orange
       true
     end
     
+    def link_for(packet, news)
+      match = news.link.match(/\[(\d+)\]/)
+      if match
+        orange[:sitemap, true].to_href(packet, match[1].to_i)
+      else
+        news.link
+      end
+    end
+    
     def sitemap_row(packet, opts = {})
       do_view(packet, :sitemap_row, opts)
     end

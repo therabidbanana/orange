@@ -1,8 +1,8 @@
 - list.each do |news|
   .news_item
     %p.news_title
-      %a{:href => news.link} #{news.title}
+      %a{:href => (resource.link_for(news))} #{news.title}
     .news_description
       = news.description
     %p
-      %a{:href => news.link, :class => 'view_story'} View Story &raquo;
+      %a{:href => (resource.link_for(news)), :class => 'view_story'} View Story &raquo;

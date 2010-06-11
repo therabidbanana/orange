@@ -2,11 +2,11 @@
   - for news in list
     .news_item
       %h2.news_title
-        %a{:href => news.link} #{news.title}
+        %a{:href => (resource.link_for(news))} #{news.title}
       .news_description
         = news.description
       %p
-        %a{:href => news.link, :class => 'view_story'} View Story &raquo;
+        %a{:href => (resource.link_for(news)), :class => 'view_story'} View Story &raquo;
 .news_nav
   - if page > 1
     %a.newer{:href => "#{archive_url}/page/#{page-1}"} Newer Posts

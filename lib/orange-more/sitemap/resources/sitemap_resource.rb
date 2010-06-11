@@ -10,17 +10,33 @@ module Orange
       orange[:radius, true].define_tag "link" do |tag|
         packet = tag.locals.packet
         slug = tag.expand
-        route = orange[:sitemap].find_route(packet, {:slug => slug})
+        id = tag.attr['id'] if tag.attr['id']
+        route = orange[:sitemap].find_route(packet, {:id => id}) if id
+        route = orange[:sitemap].find_route(packet, {:slug => slug}) unless route
         route = orange[:sitemap].find_route(packet, {:link_text => slug}) unless route
         
-        full_path = route ? route.full_path : "#not-found"
-        link_text = route ? route.link_text : "(Broken link tag)"
-        link_text = tag.attr["text"] if tag.attr["text"]
-	      "<a href='#{full_path}'>#{link_text}</a>"
+        orange[:sitemap].to_html(packet, route, tag.attr["text"])
       end
       orange.register(:model_resource_deleted) do |packet, opts|
         model_class.all(opts).destroy!
       end
+    end
+    
+    def to_href(packet, route)
+      unless route.is_a? model_class
+        route = model_class.get(route)
+      end
+      full_path = route ? route.full_path : "#not-found"
+    end
+    
+    def to_html(packet, route, text = false)
+      unless route.is_a? model_class
+        route = model_class.get(route)
+      end
+      full_path = route ? route.full_path : "#not-found"
+      link_text = route ? route.link_text : "(Broken link tag)"
+      link_text = text if text
+      "<a href='#{full_path}'>#{link_text}</a>"
     end
     
     def route_actions(packet, opts = {})
