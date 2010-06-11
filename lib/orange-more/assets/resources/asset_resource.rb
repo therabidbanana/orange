@@ -51,7 +51,9 @@ module Orange
         end
         # Move the files
         FileUtils.cp(file.path, file_path)
+        FileUtils.chmod(0644, file_path)
         FileUtils.cp(secondary.path, secondary_path) if secondary_path
+        FileUtils.chmod(0644, secondary_path) if secondary_path
         
         params['path'] = params['file'][:filename] if file_path
         params['secondary_path'] = params['file2'][:filename] if secondary_path
