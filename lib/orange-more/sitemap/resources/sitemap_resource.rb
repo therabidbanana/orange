@@ -18,6 +18,9 @@ module Orange
         link_text = tag.attr["text"] if tag.attr["text"]
 	      "<a href='#{full_path}'>#{link_text}</a>"
       end
+      orange.register(:model_resource_deleted) do |packet, opts|
+        model_class.all(opts).destroy!
+      end
     end
     
     def route_actions(packet, opts = {})
