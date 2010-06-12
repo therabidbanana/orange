@@ -49,18 +49,19 @@ module Orange
           m.versions.new(params.merge(:version => max + 1))
           m.save
           
-          r = orange[:sitemap, true].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name)
+          r = orange[:sitemap, true].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name, :orange_site_id => m.orange_site.id)
           # Add route if none.
           if (r.blank? && orange.loaded?(:sitemap))
+            
             route_hash = {
-              :orange_site_id => m.orange_site_id, 
+              :orange_site_id => m.orange_site.id, 
               :resource => @my_orange_name, 
               :resource_id => m.id,
               :slug => orange[:sitemap].slug_for(m, params), 
               :show_in_nav => false,
               :link_text => "{title}"
             }
-            parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
+            parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages", :orange_site_id => m.orange_site.id)
             route_hash[:parent] = parents.first unless parents.blank?
             orange[:sitemap].add_route_for(packet, route_hash)
           end
@@ -74,7 +75,7 @@ module Orange
     def onNew(packet, params = {})
       params[:published] = false
       m = model_class.new(params)
-      m.orange_site = packet['subsite', false] ? packet['subsite'] : packet['site'] unless m.orange_site
+      m.orange_site = (packet['subsite', false] ? packet['subsite'] : packet['site']) unless m.orange_site
       # m.versions.new(params.merge(:version => 1))
       m
     end
@@ -82,30 +83,30 @@ module Orange
     # Saves updates to an object specified by packet['route.resource_id'], then reroutes to main
     # @param [Orange::Packet] packet the packet being routed
     def onSave(packet, m, params = {})
-      r = orange[:sitemap, true].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name)
+      r = orange[:sitemap, true].routes_for(packet, :resource_id => m.id, :resource => @my_orange_name, :orange_site_id => m.orange_site.id)
       # Add route if none.
       if (r.blank? && orange.loaded?(:sitemap))
         route_hash = {
-          :orange_site_id => m.orange_site_id, 
+          :orange_site_id => m.orange_site.id, 
           :resource => @my_orange_name, 
           :resource_id => m.id,
           :slug => orange[:sitemap].slug_for(m, params), 
           :show_in_nav => false,
           :link_text => "{title}"
         }
-        parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages")
+        parents = orange[:sitemap].routes_for(packet, :resource => '', :resource_id => '', :slug => "pages", :orange_site_id => m.orange_site.id)
         route_hash[:parent] = parents.first unless parents.blank?
         orange[:sitemap].add_route_for(packet, route_hash)
       end
       if (params["published"] == "1")
         params["published"] = true
-        m.orange_site = packet['subsite', false] ? packet['subsite'] : packet['site'] unless m.orange_site
+        m.orange_site = (packet['subsite', false] ? packet['subsite'] : packet['site']) unless m.orange_site
         
         m.update(params)
         orange[:pages].publish(packet, :no_reroute => true, :model => m)
       else
         params["published"] = false
-        m.orange_site = packet['subsite', false] ? packet['subsite'] : packet['site'] unless m.orange_site
+        m.orange_site = (packet['subsite', false] ? packet['subsite'] : packet['site']) unless m.orange_site
         m.update(params)
       end
     end

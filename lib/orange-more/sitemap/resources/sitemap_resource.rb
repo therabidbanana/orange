@@ -34,7 +34,7 @@ module Orange
         route = model_class.get(route)
       end
       full_path = route ? route.full_path : "#not-found"
-      link_text = route ? route.link_text : "(Broken link tag)"
+      link_text = route ? link_text_for(route) : "(Broken link tag)"
       link_text = text if text
       "<a href='#{full_path}'>#{link_text}</a>"
     end
@@ -189,7 +189,7 @@ module Orange
       keys = {}
       keys[:resource] = opts[:resource] || packet['route.resource'] 
       keys[:resource_id] = opts[:resource_id] || packet['route.resource_id'] 
-      keys[:orange_site_id] = opts[:orange_site_id] || packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id
+      keys[:orange_site_id] = opts[:orange_site_id] || (packet['subsite'].blank? ? packet['site'].id : packet['subsite'].id)
       keys[:slug] = opts[:slug]
       keys.delete_if{|k,v| v.blank? }
       model_class.all(keys)
