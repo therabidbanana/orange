@@ -44,9 +44,10 @@ module Orange
       m
     end
     
-    def find_list(packet, mode, id =false)
+    def find_list(packet, mode, opts = {})
       blog = orange[:blog].blog_for_site(packet)
-      blog ? blog.posts.all(:order => [:updated_at.desc]) : [] 
+      opts[:order] = [:updated_at.desc]
+      blog ? blog.posts.all(opts) : [] 
     end
     
   end
