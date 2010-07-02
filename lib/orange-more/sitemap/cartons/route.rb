@@ -16,7 +16,7 @@ class OrangeRoute < Orange::SiteCarton
     boolean :accept_args, :default => true
   end
   include DataMapper::Transaction::Resource # Make sure Transactions are included (for awesome_set)
-  is :awesome_set, :scope => [:orange_site_id]
+  is :awesome_set, :scope => [:orange_site]
 
   def full_path
     self_and_ancestors.inject('') do |path, part| 
@@ -29,7 +29,8 @@ class OrangeRoute < Orange::SiteCarton
   end
 
   def self.home_for_site(site_id)
-    root(:orange_site_id => site_id) 
+    site_id = OrangeSite.get(site_id) unless site_id.is_a? OrangeSite
+    root(:orange_site => site_id) 
   end
 
 
