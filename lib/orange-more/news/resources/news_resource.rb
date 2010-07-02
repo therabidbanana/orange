@@ -76,7 +76,8 @@ module Orange
     end
     
     def find_list(packet, mode, opts = {})
-      model_class.all(:order => [:updated_at.desc]) || []
+      opts[:order] = [:updated_at.desc]
+      model_class.all(opts) || []
     end
   end
 end
