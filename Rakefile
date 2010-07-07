@@ -25,7 +25,8 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.files = FileList['lib/**/*']
   gemspec.test_files = FileList['spec/**/*.rb']
   gemspec.add_dependency('rack', '>= 1.0.1')
-  gemspec.add_dependency('haml', '>= 2.2.13')
+  gemspec.add_dependency('orange-core', '>= 0.5.6')
+  gemspec.add_dependency('orange-more', '>= 0.5.6')
   gemspec.add_development_dependency "rspec", ">= 0"
   gemspec.add_development_dependency "rack-test", ">= 0"
 end

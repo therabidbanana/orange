@@ -1,1 +1,0 @@
-require File.join('orange-more', 'administration', 'plugin')

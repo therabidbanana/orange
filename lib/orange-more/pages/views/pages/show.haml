@@ -1,6 +1,0 @@
-- if model
-  %div{ :class => model_name}
-    - for prop in props
-      = view_attribute(prop, model_name, :show => true, :value => model.attribute_get(prop[:name]))
-    - if props.empty?
-      %p= model.body

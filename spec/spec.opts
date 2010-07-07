@@ -1,1 +1,1 @@
---require spec/orange-core/spec_helper.rb --colour --format specdoc
+--require spec/spec_helper.rb --colour --format specdoc

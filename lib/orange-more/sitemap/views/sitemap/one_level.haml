@@ -1,7 +1,0 @@
-%ul.nav
-  %li.first
-    %a{:href => model.full_path} Home
-  - for item in model.children
-    - next unless item.show_in_nav
-    %li
-      %a{:href => item.full_path}= orange[:sitemap].link_text_for(item)

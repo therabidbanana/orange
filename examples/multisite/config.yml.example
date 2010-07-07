@@ -1,3 +1,0 @@
-database: "mysql://root:banana@localhost/orange_test"
-main_user: "http://www.davidhaslem.com/"
-ping_fm_key: "2267dc099645616acfc8d8f8373e5703-xxxxxxx"
