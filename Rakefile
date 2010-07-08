@@ -27,6 +27,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.add_dependency('rack', '>= 1.0.1')
   gemspec.add_dependency('orange-core', '>= 0.5.7')
   gemspec.add_dependency('orange-more', '>= 0.5.7')
+  gemspec.add_dependency('orange-sparkles', '>= 0.5.7')
   gemspec.add_development_dependency "rspec", ">= 0"
   gemspec.add_development_dependency "rack-test", ">= 0"
 end
